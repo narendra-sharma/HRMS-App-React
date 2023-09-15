@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import { apiResetPassword } from "../apis/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import Toast from "react-native-root-toast";
 
 const passwords = {
   newPassword: "",
   confirmPassword: "",
 };
 
-const ResetPasswordScreen = ({ navigation }) => {
+const ResetPasswordScreen = ({ navigation, route }) => {
   const [formData, setFormData] = useState(passwords);
   const [newPasswordError, setNewPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
 
   //handle change in input text
   const handleChange = (value, label) => {
@@ -34,10 +40,15 @@ const ResetPasswordScreen = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    setNewPasswordError(null);
+    setConfirmPasswordError(null);
+  }, [navigation]);
+
   //handle password validation
   const validatePassword = (password) => {
     if (password == "") {
-      setNewPasswordError("*Required");
+      setNewPasswordError("New password is required");
       return false;
     }
 
@@ -56,7 +67,7 @@ const ResetPasswordScreen = ({ navigation }) => {
   //check if the passwords are matching
   const validateConfirmPassword = (value) => {
     if (value == "") {
-      setConfirmPasswordError("*Required");
+      setConfirmPasswordError("Confirm password is required");
       return false;
     }
     if (value == formData.newPassword) {
@@ -74,9 +85,29 @@ const ResetPasswordScreen = ({ navigation }) => {
       validateConfirmPassword(formData.confirmPassword) &&
       formData.newPassword === formData.confirmPassword
     ) {
-      // const res = await apiResetPassword();
-      // console.log(res);
-      navigation.navigate("Dashboard");
+      try {
+        const res = await apiResetPassword({
+          email: route.params.email,
+          password: formData.newPassword,
+          password_confirmation: formData.confirmPassword,
+        });
+        console.log(res);
+        if (res.status == 200) {
+          // await AsyncStorage.setItem("token", token);
+          // await AsyncStorage.setItem("profile", profile);
+          Toast.show("Password changed successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
+          navigation.navigate("Login");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
     if (
       !validatePassword(formData.newPassword) ||
@@ -97,28 +128,75 @@ const ResetPasswordScreen = ({ navigation }) => {
         justifyContent: "center",
       }}
     >
-      <Text>Reset Password</Text>
+      <Text style={styles.heading}>Reset Password</Text>
       {/**********  INPUT PASSWORDS VIEW *********/}
       <View style={{ width: "80%", display: "flex" }}>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           name="newPassword"
-          placeholder="Password"
+          placeholder="New Password"
           value={formData.newPassword}
           onChangeText={(text) => handleChange(text, "newPassword")}
           secureTextEntry={true}
         />
         {newPasswordError ? (
           <Text style={styles.errorText}>{newPasswordError}</Text>
+        ) : null} */}
+
+        <View
+          style={[
+            {
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            },
+            styles.input,
+          ]}
+        >
+          <TextInput
+            name="newPassword"
+            placeholder="New Password"
+            value={formData.newPassword}
+            onChangeText={(text) => handleChange(text, "newPassword")}
+            secureTextEntry={isNewPasswordVisible ? false : true}
+          />
+          {formData.newPassword.length > 0 ? (
+            <Icon
+              onPress={() => setIsNewPasswordVisible((prev) => !prev)}
+              name={isNewPasswordVisible ? "eye-slash" : "eye"}
+              size={20}
+            />
+          ) : null}
+        </View>
+        {newPasswordError ? (
+          <Text style={styles.errorText}>{newPasswordError}</Text>
         ) : null}
-        <TextInput
-          style={styles.input}
-          name="confirmPassword"
-          placeholder="Password"
-          value={formData.confirmPassword}
-          onChangeText={(text) => handleChange(text, "confirmPassword")}
-          secureTextEntry={true}
-        />
+
+        <View
+          style={[
+            {
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            },
+            styles.input,
+          ]}
+        >
+          <TextInput
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChangeText={(text) => handleChange(text, "confirmPassword")}
+            secureTextEntry={isConfirmPasswordVisible ? false : true}
+          />
+          {formData.confirmPassword.length > 0 ? (
+            <Icon
+              onPress={() => setIsConfirmPasswordVisible((prev) => !prev)}
+              name={isConfirmPasswordVisible ? "eye-slash" : "eye"}
+              size={20}
+            />
+          ) : null}
+        </View>
         {confirmPasswordError ? (
           <Text style={styles.errorText}>{confirmPasswordError}</Text>
         ) : null}
@@ -153,7 +231,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "80%",
@@ -167,7 +245,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 10,
-    transition: "0.2s",
   },
 });
 
