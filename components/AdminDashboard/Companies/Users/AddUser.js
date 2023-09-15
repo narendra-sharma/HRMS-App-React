@@ -6,7 +6,6 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
 import RolesDropdown from "./RolesDropdown";
 
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

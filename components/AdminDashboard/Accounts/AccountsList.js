@@ -6,7 +6,6 @@ import {
   View,
   Pressable,
   Alert,
-  ToastAndroid,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useFocusEffect } from "@react-navigation/native";

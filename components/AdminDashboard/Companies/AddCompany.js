@@ -7,8 +7,8 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { apiCreateNewCompany, apiGetAllUsers } from "../../../apis/companies";
 import { Dropdown } from "react-native-element-dropdown";
@@ -198,7 +198,7 @@ const AddCompany = ({ navigation }) => {
       validatePhone(newCompanyData.phoneNo) &&
       validateCm(newCompanyData.consultantManager) &&
       validateConsultant(newCompanyData.consultant) &&
-      validateContractor(newCompanyData.contractor) &&
+      // validateContractor(newCompanyData.contractor) &&
       validateCountry(newCompanyData.country) &&
       validateState(newCompanyData.state) &&
       validateZipcode(newCompanyData.zipcode)
@@ -215,13 +215,34 @@ const AddCompany = ({ navigation }) => {
         console.log("response: ");
         console.log(res);
         if (res.data.success == true) {
-          ToastAndroid.show("New Company Added", ToastAndroid.SHORT);
+          Toast.show("New Company Added", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.goBack();
         } else {
-          ToastAndroid.show("Cannot Add New Company", ToastAndroid.SHORT);
+          Toast.show("Cannot Add New Company", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       } catch (error) {
-        ToastAndroid.show("Cannot Add New Company", ToastAndroid.SHORT);
+        Toast.show("Cannot Add New Company", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         console.log(error);
       }
       // setNewCompanyData(initialFormData);
@@ -231,7 +252,7 @@ const AddCompany = ({ navigation }) => {
       validateVat(newCompanyData.vatNumber);
       validateCm(newCompanyData.consultantManager);
       validateConsultant(newCompanyData.consultant);
-      validateContractor(newCompanyData.contractor);
+      // validateContractor(newCompanyData.contractor);
       validateCountry(newCompanyData.country);
       validateZipcode(newCompanyData.zipcode);
       validateState(newCompanyData.state);
@@ -330,7 +351,7 @@ const AddCompany = ({ navigation }) => {
             <Text style={styles.errorText}>{consultantError}</Text>
           ) : null}
 
-          <Text style={styles.fieldName}>Assign Contractor:</Text>
+          {/* <Text style={styles.fieldName}>Assign Contractor:</Text>
           <DropdownMenu
             data={contractorsList}
             placeholder="Select Contractor"
@@ -342,7 +363,7 @@ const AddCompany = ({ navigation }) => {
           />
           {contractorError ? (
             <Text style={styles.errorText}>{contractorError}</Text>
-          ) : null}
+          ) : null} */}
 
           <Text>Address:</Text>
           <GooglePlacesAutocomplete
@@ -654,7 +675,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

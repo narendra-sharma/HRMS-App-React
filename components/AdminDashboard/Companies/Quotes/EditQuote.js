@@ -7,8 +7,8 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 // import { apiCreateNewCompany, apiGetAllUsers } from "../../../apis/companies";
 import { Dropdown } from "react-native-element-dropdown";
 import { Country, State, City } from "country-state-city";
@@ -218,13 +218,42 @@ const EditQuote = ({ navigation, route }) => {
         console.log("response: ");
         console.log(res.data);
         if (res.status == 200) {
-          ToastAndroid.show("Quote Updated", ToastAndroid.SHORT);
+          Toast.show("Quote Updated", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.goBack();
         } else {
-          ToastAndroid.show("Cannot Update Quote", ToastAndroid.SHORT);
+          Toast.show("Cannot Update Quote", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
+          Toast.show("Cannot UPdate Quote", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       } catch (error) {
-        ToastAndroid.show("Error in API call", ToastAndroid.SHORT);
+        Toast.show("Error in while editing quote", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         console.log(error);
       }
       // setFormData(initialFormData);
@@ -484,7 +513,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

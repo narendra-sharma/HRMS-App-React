@@ -7,11 +7,11 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
-  ToastAndroid,
 } from "react-native";
 import { apiAuth } from "../apis/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import Toast from "react-native-root-toast";
 
 const initialValues = {
   email: "",
@@ -32,6 +32,7 @@ const AuthScreen = ({ navigation }) => {
   useEffect(() => {
     const checkUserExists = async () => {
       const profile = await AsyncStorage.getItem("profile");
+      const firstLogin = await AsyncStorage.getItem("firstLogin");
       const parsedProfile = JSON.parse(profile);
       console.log(parsedProfile.user_type);
 
@@ -39,7 +40,7 @@ const AuthScreen = ({ navigation }) => {
         setUserType(parsedProfile.user_type); // Set the user type in the state
       }
 
-      if (res.data.first_login == 1) {
+      if (JSON.parse(firstLogin) == 1) {
         handleUserType(parsedProfile.user_type);
       }
     };
@@ -109,26 +110,26 @@ const AuthScreen = ({ navigation }) => {
       case 1:
         //userCode: 1 => admin
         navigation.navigate("Admin Dashboard");
-        ToastAndroid.show("Logged in successfully", ToastAndroid.SHORT);
+        Toast.show("Logged in successfully", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         return;
       case 2:
         //userCode: 2 => admin
-        navigation.navigate("Admin Dashboard");
-        ToastAndroid.show("Logged in successfully", ToastAndroid.SHORT);
-        return;
-      case 3:
-        //userCode: 3 => Consultant Manager / Sales Manager
-        navigation.navigate("Sales Manager Dashboard");
-        return;
-      case 4:
-        //userCode: 4 => Consultant / Interior Designer
-        navigation.navigate("Interior Designer Dashboard");
-        // setToken(JSON.stringify(res.data.token));
-        // setProfile(JSON.stringify(res.data.users));
-        return;
-
-      case 18:
-        navigation.navigate("Supplier Staff Dashboard");
+        navigation.navigate("Staff Dashboard");
+        Toast.show("Logged in successfully", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         return;
 
       default:
@@ -143,26 +144,30 @@ const AuthScreen = ({ navigation }) => {
       //call the api function
       try {
         const res = await apiAuth(formData);
-        console.log(res.data);
-        setToken(JSON.stringify(res.data.token));
-        setProfile(JSON.stringify(res.data.users));
-        if (res.data.first_login == 0) {
-          navigation.navigate("First Login");
-        } else if (res.status == 200) {
-          // handleUserType(16);
-          handleUserType(
-            res.data.users.user_type,
-            res.data.token,
-            res.data.users
-          );
-          // navigation.navigate("Dashboard");
-        }
+        // console.log(res.data.authorization.token);
+        setToken(JSON.stringify(res.data.authorization.token));
+        setProfile(JSON.stringify(res.data.user));
+        // if (res.data.first_login == 0) {
+        //   navigation.navigate("First Login");
+        // } else if (res.status == 200) {
+        handleUserType(1);
+        // handleUserType(
+        //   res.data.users.user_type,
+        //   res.data.token,
+        //   res.data.users
+        // );
+        // navigation.navigate("Dashboard");
+        // }
+        // await AsyncStorage.setItem("firstLogin", res.data.first_login);
       } catch (error) {
-        ToastAndroid.show(
-          "Invalid Credentials",
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP
-        );
+        Toast.show("Invalid Credentials", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         console.log(error);
       }
 
@@ -191,7 +196,7 @@ const AuthScreen = ({ navigation }) => {
         <TextInput
           style={styles.input}
           name="email"
-          placeholder="Email / Username"
+          placeholder="Email"
           value={formData.email}
           onChangeText={(text) => handleChange(text, "email")}
           type="email"
@@ -268,7 +273,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "80%",

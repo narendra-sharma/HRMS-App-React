@@ -7,8 +7,8 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -136,10 +136,24 @@ const EditProject = ({ navigation, route }) => {
       );
       console.log("res: ", res);
       if (res.status == 200) {
-        ToastAndroid.show("Project Updated", ToastAndroid.SHORT);
+        Toast.show("Project Updated", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         navigation.goBack();
       } else {
-        ToastAndroid.show("Project Updated", ToastAndroid.SHORT);
+        Toast.show("Project Update Failed", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -621,7 +635,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

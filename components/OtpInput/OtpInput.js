@@ -9,11 +9,11 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Keyboard,
-  ToastAndroid,
 } from "react-native";
 import { apiVerifyOtp } from "../../apis/auth";
 import Countdown from "./ResendOtp";
 import ResendOtp from "./ResendOtp";
+import Toast from "react-native-root-toast";
 
 const OtpInput = ({
   code,
@@ -52,19 +52,47 @@ const OtpInput = ({
 
   const handleSubmit = async () => {
     try {
-      ToastAndroid.show("Please Wait", ToastAndroid.LONG);
+      Toast.show("Please Wait", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       const res = await apiVerifyOtp({ email: route.params.email, otp: code });
       if (res.data.status == true) {
-        ToastAndroid.show("OTP Verified", ToastAndroid.SHORT);
+        Toast.show("OTP Verified", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         navigation.navigate("Reset Password", {
           email: route.params.email,
         });
       } else {
-        ToastAndroid.show("OTP Validation Failed", ToastAndroid.LONG);
+        Toast.show("OTP validation failed", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
       // console.log(res);
     } catch (error) {
-      ToastAndroid.show("OTP Validation Failed", ToastAndroid.LONG);
+      Toast.show("OTP validation failed", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       console.log(error);
     }
   };
@@ -183,7 +211,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 20,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "64%",

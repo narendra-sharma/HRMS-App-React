@@ -13,16 +13,19 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import AllConsultantManagers from "./AllConsultantManagers";
+import AddConsultant from "./AddConsultant";
+import AllConsultants from "./AllConsultants";
+import EditConsultant from "./EditConsultant";
+import ConsultantDetails from "./ConsultantDetails";
 
 const Stack = createNativeStackNavigator();
 
-const ConsultantManagerStack = ({ navigation }) => {
+const ConsultantStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="All Consultant Managers"
-        component={AllConsultantManagers}
+        name="All Consultants"
+        component={AllConsultants}
         options={({ navigation }) => ({
           headerLeft: () => (
             <MaterialIcons
@@ -34,11 +37,14 @@ const ConsultantManagerStack = ({ navigation }) => {
           ),
         })}
       />
+      <Stack.Screen name="Consultant Details" component={ConsultantDetails} />
+      <Stack.Screen name="Add Consultant" component={AddConsultant} />
+      <Stack.Screen name="Edit Consultant" component={EditConsultant} />
     </Stack.Navigator>
   );
 };
 
-export default ConsultantManagerStack;
+export default ConsultantStack;
 
 const styles = StyleSheet.create({
   container: {
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
 
   button: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
   },
 
   buttonClose: {
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
   },
 
   textStyle: {
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
 
   addButton: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",

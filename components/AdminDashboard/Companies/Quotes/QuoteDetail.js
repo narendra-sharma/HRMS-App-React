@@ -7,8 +7,8 @@ import {
   FlatList,
   ScrollView,
   Alert,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { apiGetQuoteDetails, apiDeleteQuote } from "../../../../apis/quotes";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -42,7 +42,14 @@ const QuoteDetail = ({ navigation, route }) => {
         console.log(res.data);
         if (res.data.message == "Deleted successfully") {
           setDeteleFlag((prev) => !prev);
-          ToastAndroid.show("Quote Deleted Successfully", ToastAndroid.SHORT);
+          Toast.show("Quote Deleted Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.goBack();
         }
       } catch (error) {
@@ -220,7 +227,7 @@ const styles = StyleSheet.create({
 
   button: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",
@@ -230,7 +237,7 @@ const styles = StyleSheet.create({
   },
 
   buttonClose: {
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
   },
 
   textStyle: {

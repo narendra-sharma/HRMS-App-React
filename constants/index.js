@@ -1,1 +1,1 @@
-export const url = "https://ovd.visionvivante.com/api/";
+export const url = "https://smarthrm.visionvivante.com/api/";

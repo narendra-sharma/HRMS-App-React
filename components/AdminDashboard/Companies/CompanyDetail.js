@@ -7,8 +7,8 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProjectsList from "./Projects/ProjectsList";
 import QuotesList from "./Quotes/QuotesList";
@@ -41,7 +41,14 @@ const CompanyInfo = ({
         const res = await apiDeleteCompany(route.params.id);
         console.log(res.data);
         if (res.data.message == "Deleted successfully") {
-          ToastAndroid.show("Company Deleted Successfully", ToastAndroid.SHORT);
+          Toast.show("Company Deleted Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.navigate("All Companies");
         }
       } catch (error) {
@@ -345,7 +352,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     transition: "0.2s",
     // backgroundColor: "yellow",
-    borderBottomColor: "#B76E79",
+    borderBottomColor: "#055C9D",
   },
 
   scrollBox: {
@@ -381,7 +388,7 @@ const styles = StyleSheet.create({
 
   button: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",
@@ -391,7 +398,7 @@ const styles = StyleSheet.create({
   },
 
   buttonClose: {
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
   },
 
   textStyle: {
@@ -424,7 +431,7 @@ const styles = StyleSheet.create({
 
   addButton: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",

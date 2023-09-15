@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
 
   button: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
 
   buttonClose: {
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
   },
 
   textStyle: {

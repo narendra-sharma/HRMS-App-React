@@ -6,9 +6,9 @@ import {
   Pressable,
   View,
   Alert,
-  ToastAndroid,
   TouchableNativeFeedback,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from "react-native-gesture-handler";
 import { apiDeleteCompany, apiGetAllCompanies } from "../../../apis/companies";
@@ -68,7 +68,14 @@ const AllCompanies = ({ navigation }) => {
         console.log(res.data);
         if (res.data.message == "Deleted successfully") {
           setDeteleFlag((prev) => !prev);
-          ToastAndroid.show("Company Deleted Successfully", ToastAndroid.SHORT);
+          Toast.show("Company Deleted Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           // navigation.navigate("All Companies");
         }
       } catch (error) {
@@ -188,7 +195,7 @@ const styles = StyleSheet.create({
 
   button: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "40%",
@@ -234,7 +241,7 @@ const styles = StyleSheet.create({
 
   addButton: {
     margin: 5,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "40%",

@@ -6,8 +6,8 @@ import {
   View,
   Pressable,
   Alert,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { mockProjects } from "./MockProjects";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useFocusEffect } from "@react-navigation/native";
@@ -51,7 +51,14 @@ const ProjectsList = ({ navigation, companyId }) => {
         console.log(res.data);
         if (res.data.message == "Deleted successfully") {
           setDeteleFlag((prev) => !prev);
-          ToastAndroid.show("Project Deleted Successfully", ToastAndroid.SHORT);
+          Toast.show("Project Deleted Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       } catch (error) {
         console.log(error);

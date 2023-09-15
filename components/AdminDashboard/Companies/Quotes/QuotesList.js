@@ -7,8 +7,8 @@ import {
   Pressable,
   TouchableNativeFeedback,
   Alert,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { MockQuotes } from "./MockQuotes";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { apiDeleteQuote, apiGetAllQuotes } from "../../../../apis/quotes";
@@ -78,7 +78,14 @@ const QuotesList = ({ navigation, companyId }) => {
         console.log(res.data);
         if (res.data.message == "Deleted successfully") {
           setDeteleFlag((prev) => !prev);
-          ToastAndroid.show("Quote Deleted Successfully", ToastAndroid.SHORT);
+          Toast.show("Quote Deleted Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           // navigation.navigate("All Companies");
         }
       } catch (error) {
@@ -215,7 +222,7 @@ const styles = StyleSheet.create({
 
   addButton: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "50%",

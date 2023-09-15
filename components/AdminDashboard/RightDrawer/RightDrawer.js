@@ -25,9 +25,12 @@ import AccountsStackScreen from "../Accounts/AccountsStackScreen";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import ViewProjects from "../Companies/Projects/ViewProjects";
-import ViewQuotes from "../Companies/Quotes/ViewQuotes";
-import AddProject from "../Companies/Projects/AddProject";
-import ConsultantManagerStack from "../Companies/Users/ConsultantManager.js/ConsultantManagerStack";
+import ConsultantManagerStack from "../Companies/Users/ConsultantManagers/ConsultantManagerStack";
+import ConsultantStack from "../Companies/Users/Consultants/ConsultantStack";
+import ContractorStack from "../Companies/Users/Contractors/ContractorStack";
+import CustomerStack from "../Companies/Users/Customers/CustomerStack";
+import QRCodeGenerator from "../QRCode/QRCodeGenerator";
+import QRStackScreen from "../QRCode/QRStackScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -81,40 +84,12 @@ const RightDrawer = ({ navigation }) => {
         }
       };
 
-      // switch (activeScreenName) {
-      //   case "Manage Companies":
-      //     setIsUsersSubMenuOpen(false);
-      //     return;
-      //   case "Accounts":
-      //     setIsCompaniesSubMenuOpen(false);
-      //     return;
-      //   default:
-      //     setIsCompaniesSubMenuOpen(false);
-      //     setIsUsersSubMenuOpen(false);
-      //     return;
-      // }
-
       getData();
       return () => {
         isActive = false;
       };
     }, [userData])
   );
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const user = await AsyncStorage.getItem("profile");
-  //       const parsedUser = JSON.parse(user);
-  //       setUserData({ ...userData, ...parsedUser });
-  //       // console.log(userData);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   getData();
-  // }, [navigation]);
 
   return (
     <Drawer.Navigator
@@ -239,33 +214,43 @@ const RightDrawer = ({ navigation }) => {
                       </Pressable>
                       <Pressable
                         onPress={() => {
+                          props.navigation.navigate("Consultants");
+                          setActiveScreenName("Consultants");
                           // Handle sub-menu item click here
                         }}
-                        style={styles.subMenuItem}
+                        style={[
+                          styles.subMenuItem,
+                          activeScreenName == "Consultants" &&
+                            styles.activeSubMenu,
+                        ]}
                       >
                         <Text>Consultants</Text>
                       </Pressable>
                       <Pressable
                         onPress={() => {
+                          props.navigation.navigate("Contractors");
+                          setActiveScreenName("Contractors");
                           // Handle sub-menu item click here
                         }}
-                        style={styles.subMenuItem}
+                        style={[
+                          styles.subMenuItem,
+                          activeScreenName == "Contractors" &&
+                            styles.activeSubMenu,
+                        ]}
                       >
                         <Text>Contractors</Text>
                       </Pressable>
                       <Pressable
                         onPress={() => {
+                          props.navigation.navigate("Customers");
+                          setActiveScreenName("Customers");
                           // Handle sub-menu item click here
                         }}
-                        style={styles.subMenuItem}
-                      >
-                        <Text>Customers</Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() => {
-                          // Handle sub-menu item click here
-                        }}
-                        style={styles.subMenuItem}
+                        style={[
+                          styles.subMenuItem,
+                          activeScreenName == "Customers" &&
+                            styles.activeSubMenu,
+                        ]}
                       >
                         <Text>Customers</Text>
                       </Pressable>
@@ -273,6 +258,25 @@ const RightDrawer = ({ navigation }) => {
                     </View>
                   </View>
                 )}
+
+                {/* Custom QR Generator */}
+                <Pressable
+                  onPress={() => {
+                    props.navigation.navigate("QR Code");
+                    setActiveScreenName("QR Code");
+                  }}
+                  style={[
+                    styles.subMenuButton,
+                    activeScreenName == "QR Code" && styles.activeSubMenu,
+                  ]}
+                >
+                  <MaterialIcons
+                    style={styles.drawerIcon}
+                    name="qr-code"
+                    size={28}
+                  />
+                  <Text>Generate QR Code</Text>
+                </Pressable>
 
                 {/* Custom Companies */}
                 <Pressable
@@ -292,26 +296,6 @@ const RightDrawer = ({ navigation }) => {
                     size={28}
                   />
                   <Text>All Companies</Text>
-                </Pressable>
-
-                {/* Custom Quotes Link */}
-                <Pressable
-                  onPress={() => {
-                    props.navigation.navigate("Quotes");
-                    setActiveScreenName("Quotes");
-                  }}
-                  style={[
-                    styles.subMenuButton,
-                    activeScreenName == "Quotes" && styles.activeSubMenu,
-                  ]}
-                >
-                  <MaterialIcons
-                    style={styles.drawerIcon}
-                    name="request-quote"
-                    size={28}
-                  />
-                  {/* <Icon name="home" size={28} /> */}
-                  <Text>All Quotes</Text>
                 </Pressable>
 
                 {/* Custom Projects */}
@@ -442,6 +426,55 @@ const RightDrawer = ({ navigation }) => {
         component={AccountsStackScreen}
       />
 
+      {/* Consultant Manager Screens */}
+      <Drawer.Screen
+        name="Consultant Managers"
+        component={ConsultantManagerStack}
+        options={({ navigation }) => ({
+          title: "Consultant Managers",
+          headerShown: false,
+        })}
+      />
+
+      {/* Consultants Screens */}
+      <Drawer.Screen
+        name="Consultants"
+        component={ConsultantStack}
+        options={({ navigation }) => ({
+          title: "Consultants",
+          headerShown: false,
+        })}
+      />
+
+      {/* Contractors Screens */}
+      <Drawer.Screen
+        name="Contractors"
+        component={ContractorStack}
+        options={({ navigation }) => ({
+          title: "Contractors",
+          headerShown: false,
+        })}
+      />
+
+      {/* Customers Screens */}
+      <Drawer.Screen
+        name="Customers"
+        component={CustomerStack}
+        options={({ navigation }) => ({
+          title: "Customers",
+          headerShown: false,
+        })}
+      />
+
+      <Drawer.Screen
+        name="QR Code"
+        component={QRStackScreen}
+        options={({ navigation }) => ({
+          title: "QR Code",
+          headerShown: false,
+        })}
+      />
+
       {/* Profile Stack */}
       <Drawer.Screen
         options={{
@@ -451,26 +484,6 @@ const RightDrawer = ({ navigation }) => {
         }}
         name="Profile"
         component={ProfileStackScreen}
-      />
-
-      {/* Quotes Screens */}
-      <Drawer.Screen
-        name="Quotes"
-        component={ViewQuotes}
-        options={({ navigation }) => ({
-          title: "All Quotes",
-          headerShown: false,
-        })}
-      />
-
-      {/* Quotes Screens */}
-      <Drawer.Screen
-        name="Consultant Managers"
-        component={ConsultantManagerStack}
-        options={({ navigation }) => ({
-          title: "Consultant Managers",
-          headerShown: false,
-        })}
       />
 
       {/* Project Screens */}
@@ -513,7 +526,7 @@ const styles = StyleSheet.create({
   detailsContainer: {
     height: 140,
     width: "100%",
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     marginBottom: 5,
     display: "flex",
     alignItems: "center",
@@ -570,7 +583,7 @@ const styles = StyleSheet.create({
   settingsButton: {
     height: 50,
     borderWidth: 0.5,
-    borderColor: "#B76E79",
+    borderColor: "#055C9D",
     borderRadius: 8,
     width: "60%",
     justifyContent: "center",
@@ -583,7 +596,7 @@ const styles = StyleSheet.create({
 
   logoutButton: {
     height: 50,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     borderRadius: 8,
     width: "60%",
     justifyContent: "center",

@@ -7,8 +7,8 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 // import { apiCreateNewCompany, apiGetAllUsers } from "../../../apis/companies";
 import { Dropdown } from "react-native-element-dropdown";
 import { Country, State, City } from "country-state-city";
@@ -207,14 +207,35 @@ const AddQuote = ({ navigation }) => {
         console.log("response: ");
         console.log(res);
         if (res.status == 200) {
-          ToastAndroid.show("New Quote Added", ToastAndroid.SHORT);
+          Toast.show("New Quote Added", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.goBack();
           setFormData(initialFormData);
         } else {
-          ToastAndroid.show("Cannot Add New Quote", ToastAndroid.SHORT);
+          Toast.show("Cannot Add New Quote", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       } catch (error) {
-        ToastAndroid.show("Error in quote", ToastAndroid.SHORT);
+        Toast.show("An error has occurred", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         console.log(error);
       }
     } else {
@@ -473,7 +494,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

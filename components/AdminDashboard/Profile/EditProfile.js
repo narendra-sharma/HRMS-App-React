@@ -7,8 +7,8 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -40,8 +40,8 @@ const EditProfile = ({ navigation }) => {
       try {
         const res = await apiGetProfileDetails();
         // console.log("we got from api: ", res.data);
-        setUserData(res.data.users);
-        await AsyncStorage.setItem("profile", JSON.stringify(res.data.users));
+        setUserData(res.data);
+        // await AsyncStorage.setItem("profile", JSON.stringify(res.data));
         // const user = await AsyncStorage.getItem("profile");
         // const parsedUser = JSON.parse(user);
         // setUserData({
@@ -60,30 +60,35 @@ const EditProfile = ({ navigation }) => {
     try {
       const res = await apiUpdateProfile({
         ...userData,
-        name: userData.name,
-        phonenumber: userData.phone_number,
-        address: userData.address,
-        org: userData.org,
-        state: userData.state,
-        country: userData.country,
-        country_code: userData.country_code,
-        latitude: userData.lat,
-        longitude: userData.long,
-        zipcode: userData.zip_code,
       });
       // console.log(userData);
-      //   console.log(res);
+      console.log(res.data);
       if (res.status == 200) {
-        ToastAndroid.show("Profile Updated Successfully", ToastAndroid.SHORT);
+        Toast.show("Profile updated successfully", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         const resp = await apiGetProfileDetails();
         console.log("we got from api: ", res.data);
         setUserData(resp.data.users);
-        await AsyncStorage.setItem("profile", JSON.stringify(resp.data.users));
+        // await AsyncStorage.setItem("profile", JSON.stringify(resp.data.users));
 
         navigation.navigate("My Profile");
       }
       //   console.log(res.data);
     } catch (error) {
+      Toast.show("Cannot update profile", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       console.log(error);
     }
   };
@@ -129,7 +134,7 @@ const EditProfile = ({ navigation }) => {
           <TextInput
             style={styles.input}
             name="name"
-            value={userData.name}
+            value={userData?.name}
             onChangeText={(text) => setUserData({ ...userData, name: text })}
             placeholder="Name"
           />
@@ -137,20 +142,21 @@ const EditProfile = ({ navigation }) => {
           <TextInput
             style={styles.input}
             name="name"
-            value={userData.username}
+            value={userData?.username}
             onChangeText={(text) =>
               setUserData({ ...userData, username: text })
             }
             placeholder="Username"
           />
-          <Text>Organization:</Text>
+          <Text>Email:</Text>
           <TextInput
             style={styles.input}
-            name="organization"
-            value={userData.org}
-            onChangeText={(text) => setUserData({ ...userData, org: text })}
+            name="email"
+            value={userData?.email}
+            onChangeText={(text) => setUserData({ ...userData, email: text })}
           />
-          <Text>Phone Number:</Text>
+
+          {/* <Text>Phone Number:</Text>
           <TextInput
             style={styles.input}
             name="phonenumber"
@@ -287,7 +293,7 @@ const EditProfile = ({ navigation }) => {
                 state: null,
               });
             }}
-          />
+          /> */}
           {/* <TextInput
               style={styles.input}
               name="country"
@@ -296,7 +302,7 @@ const EditProfile = ({ navigation }) => {
                 setUserData({ ...userData, country: text })
               }
             /> */}
-          <Text>State/UT: </Text>
+          {/* <Text>State/UT: </Text>
           <Dropdown
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
@@ -318,7 +324,7 @@ const EditProfile = ({ navigation }) => {
             onChange={(item) => {
               setUserData({ ...userData, state: item.label });
             }}
-          />
+          /> */}
           {/* <TextInput
               style={styles.input}
               name="state"
@@ -326,7 +332,7 @@ const EditProfile = ({ navigation }) => {
               onChangeText={(text) => setUserData({ ...userData, state: text })}
             /> */}
 
-          <Text>Zip Code: </Text>
+          {/* <Text>Zip Code: </Text>
           <TextInput
             style={styles.input}
             name="zip_code"
@@ -334,7 +340,7 @@ const EditProfile = ({ navigation }) => {
             onChangeText={(text) =>
               setUserData({ ...userData, zip_code: text })
             }
-          />
+          /> */}
         </View>
         <View
           style={{
@@ -470,7 +476,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

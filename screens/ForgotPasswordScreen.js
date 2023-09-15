@@ -6,9 +6,9 @@ import {
   TextInput,
   Pressable,
   SafeAreaView,
-  ToastAndroid,
 } from "react-native";
 import { apiSendForgotPasswordCode } from "../apis/auth";
+import Toast from "react-native-root-toast";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -40,21 +40,41 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   //handle form submit
   const handleSubmit = async () => {
-    // ToastAndroid.show("Please Wait", ToastAndroid.LONG);
     try {
       if (validateEmail(email)) {
         const res = await apiSendForgotPasswordCode({ email: email });
         console.log(res.data);
         if (res.data.success == true) {
-          ToastAndroid.show("Code Sent", ToastAndroid.SHORT);
+          Toast.show("Code Sent", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.navigate("OTP", { email });
           // navigation.navigate("OTP", { email });
         } else {
-          ToastAndroid.show("Email does not exist", ToastAndroid.SHORT);
+          Toast.show("Email does not exist", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       }
     } catch (error) {
-      ToastAndroid.show("Something went wrong!", ToastAndroid.SHORT);
+      Toast.show("Something went wrong!", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
 
       console.log(error);
     }
@@ -112,7 +132,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     margin: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "80%",

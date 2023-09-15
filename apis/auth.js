@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const apiAuth = async (formData) => {
   const response = await request({
-    path: "auth/login",
+    path: "login",
     method: "post",
     body: formData,
   });
@@ -13,8 +13,7 @@ export const apiAuth = async (formData) => {
 export const apiLogout = async () => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/logout",
-    method: "post",
+    path: "logout",
     headers: {
       Authorization: `Bearer ${JSON.parse(token)}`,
     },
@@ -25,8 +24,8 @@ export const apiLogout = async () => {
 export const apiUpdateProfile = async (userData) => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/updateProfile",
-    method: "post",
+    path: "profile",
+    method: "put",
     body: userData,
     headers: {
       Authorization: `Bearer ${JSON.parse(token)}`,
@@ -38,7 +37,7 @@ export const apiUpdateProfile = async (userData) => {
 export const apiGetProfileDetails = async () => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/edit-profile",
+    path: "profile",
     headers: {
       Authorization: `Bearer ${JSON.parse(token)}`,
     },
@@ -76,7 +75,7 @@ export const apiResetPassword = async (formData) => {
 export const apiChangePasswordFromDashboard = async (formData) => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/change-user-password",
+    path: "change-password",
     method: "post",
     body: formData,
     headers: {

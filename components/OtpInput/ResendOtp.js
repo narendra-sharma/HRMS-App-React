@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, Text, View, StyleSheet, ToastAndroid } from "react-native";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import { apiSendForgotPasswordCode } from "../../apis/auth";
+import Toast from "react-native-root-toast";
 
 const ResendOtp = ({ email }) => {
   const timeInSeconds = 10;
@@ -9,7 +10,14 @@ const ResendOtp = ({ email }) => {
   const timerRef = useRef(time);
 
   const handleResendOtp = async () => {
-    ToastAndroid.show("Please Wait", ToastAndroid.SHORT);
+    Toast.show("Please wait", {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+    });
     setTime(timeInSeconds);
     timerRef.current = timeInSeconds;
     setResetCount((prev) => prev + 1);
@@ -17,7 +25,14 @@ const ResendOtp = ({ email }) => {
       const res = await apiSendForgotPasswordCode({ email });
       console.log(res.data);
       if (res.status == 200) {
-        ToastAndroid.show("Code Sent", ToastAndroid.SHORT);
+        Toast.show("Code sent", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
     } catch (error) {
       timerRef.current = 0;
@@ -70,18 +85,18 @@ export default ResendOtp;
 const styles = StyleSheet.create({
   submitButton: {
     // marginTop: 20,
-    // backgroundColor: "#B76E79",
+    // backgroundColor: "#055C9D",
     // padding: 8,
     borderRadius: 8,
     // width: "64%",
     alignItems: "center",
     borderWidth: 0.5,
-    borderColor: "#B76E79",
+    borderColor: "#055C9D",
     paddingHorizontal: 4,
   },
 
   submitText: {
-    color: "#B76E79",
+    color: "#055C9D",
     display: "flex",
     flexDirection: "row",
   },

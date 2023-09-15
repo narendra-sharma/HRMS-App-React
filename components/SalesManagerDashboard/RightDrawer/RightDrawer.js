@@ -88,8 +88,8 @@ const RightDrawer = ({ navigation }) => {
               }}
             >
               {/* <Pressable style={styles.settingsButton}>
-                <MaterialIcons name="settings" size={20} color="#B76E79" />
-                <Text style={{ color: "#B76E79" }}>Settings</Text>
+                <MaterialIcons name="settings" size={20} color="#055C9D" />
+                <Text style={{ color: "#055C9D" }}>Settings</Text>
               </Pressable> */}
               <Pressable style={styles.logoutButton} onPress={handleLogout}>
                 <Icon name="sign-out" size={28} />
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   detailsContainer: {
     height: 140,
     width: "100%",
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     marginBottom: 5,
     display: "flex",
     alignItems: "center",
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   settingsButton: {
     height: 50,
     borderWidth: 0.5,
-    borderColor: "#B76E79",
+    borderColor: "#055C9D",
     borderRadius: 8,
     width: "60%",
     justifyContent: "center",
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 
   logoutButton: {
     height: 50,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     borderRadius: 8,
     width: "60%",
     justifyContent: "center",

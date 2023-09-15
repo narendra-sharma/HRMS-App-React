@@ -6,8 +6,8 @@ import {
   Pressable,
   ScrollView,
   TextInput,
-  ToastAndroid,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
   apiUpdateCompanyDetails,
@@ -258,17 +258,30 @@ const EditCompanyDetails = ({ navigation, route }) => {
             ...companyData,
             consultant_manager: companyData.cons_manager_id,
             consultant: companyData.consultant_id,
-            contractor: companyData.contractor_id,
             zipcode: companyData.zip_code,
           },
           companyData.id
         );
         console.log("response: ", res.data);
         if (res.data.success == true) {
-          ToastAndroid.show("Details updated successfully", ToastAndroid.SHORT);
+          Toast.show("Details Updated Successfully", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
           navigation.goBack();
         } else {
-          ToastAndroid.show("Details cannot be updated", ToastAndroid.SHORT);
+          Toast.show("Details cannot be updated", {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
         }
       } catch (error) {
         console.log(error);
@@ -369,7 +382,7 @@ const EditCompanyDetails = ({ navigation, route }) => {
             originalObj={companyData}
           />
 
-          <Text style={styles.fieldName}>Contractor:</Text>
+          {/* <Text style={styles.fieldName}>Contractor:</Text>
           <DropdownMenu
             data={contractorsList}
             placeholder="Select Contractor"
@@ -377,7 +390,7 @@ const EditCompanyDetails = ({ navigation, route }) => {
             setValue={setCompanyData}
             label="contractor_id"
             originalObj={companyData}
-          />
+          /> */}
 
           {/* Address Fields */}
           <Text>Address:</Text>
@@ -686,7 +699,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",

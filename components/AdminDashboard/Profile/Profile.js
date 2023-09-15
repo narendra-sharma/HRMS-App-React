@@ -16,7 +16,7 @@ const Profile = ({ navigation }) => {
         try {
           const res = await apiGetProfileDetails();
           // console.log("we got from api: ", res.data);
-          setUserData(res.data.users);
+          setUserData(res.data);
           // await AsyncStorage.setItem("profile", JSON.stringify(res.data.users));
           // const user = await AsyncStorage.getItem("profile");
           // // console.log("local storage: ", user);
@@ -69,7 +69,7 @@ const Profile = ({ navigation }) => {
               <Icon name="user-circle-o" size={55} />
               <Pressable
                 style={{
-                  backgroundColor: "#B76E79",
+                  backgroundColor: "#055C9D",
                   padding: 12,
                   padding: 12,
                   borderRadius: 8,
@@ -99,10 +99,10 @@ const Profile = ({ navigation }) => {
             <Text> {userData.username} </Text>
           </View>
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Organization: </Text>
-            <Text> {userData.org} </Text>
+            <Text style={styles.fieldName}>ID: </Text>
+            <Text> {userData.employee_id} </Text>
           </View>
-          <View style={styles.fieldContainer}>
+          {/* <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>Phone Number: </Text>
             <Text> {userData.phone_number} </Text>
           </View>
@@ -121,7 +121,7 @@ const Profile = ({ navigation }) => {
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>Zip Code: </Text>
             <Text> {userData.zip_code} </Text>
-          </View>
+          </View> */}
         </View>
         <Pressable
           onPress={() => navigation.navigate("Edit Profile")}
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 
   submitButton: {
     marginTop: 10,
-    backgroundColor: "#B76E79",
+    backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
     width: "30%",
