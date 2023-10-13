@@ -1,20 +1,19 @@
 import react from "react";
 import { View, Text, Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Profile from "./Profile";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import EditProfile from "./EditProfile";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import AllAccounts from "./AllAccounts";
+import EditAccount from "./EditAccount";
+import AccountDetails from "./AccountDetails";
 
 const Stack = createNativeStackNavigator();
 
-const ProfileStackScreen = () => {
+const AccountsStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="My Profile"
-        component={Profile}
+        name="All Accounts"
+        component={AllAccounts}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Icon
@@ -26,9 +25,22 @@ const ProfileStackScreen = () => {
           ),
         })}
       />
-      <Stack.Screen name="Edit Profile" component={EditProfile} />
+      <Stack.Screen
+        name="Account Details"
+        component={AccountDetails}
+        options={({ navigation }) => ({
+          title: "Account Details",
+        })}
+      />
+      <Stack.Screen
+        name="Edit Account"
+        component={EditAccount}
+        options={({ navigation }) => ({
+          title: "Edit Account",
+        })}
+      />
     </Stack.Navigator>
   );
 };
 
-export default ProfileStackScreen;
+export default AccountsStackScreen;

@@ -5,7 +5,6 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
-  TouchableOpacity,
   Button,
   ScrollView,
   ActivityIndicator,
@@ -51,6 +50,8 @@ const ChangePassword = ({ navigation }) => {
     }, [])
   );
 
+  // useEffect(() => {});
+
   //handle change in input text
   const handleChange = (value, label) => {
     setFormData({ ...formData, [label]: value });
@@ -63,18 +64,14 @@ const ChangePassword = ({ navigation }) => {
         } else {
           return false;
         }
-
       case "newPassword":
         if (formData.confirmPassword == value) setConfirmPasswordError(null);
-
         if (validatePassword(value)) {
           setNewPasswordError(null);
-
           return true;
         } else {
           return false;
         }
-
       case "confirmPassword":
         if (validateConfirmPassword(value)) {
           setConfirmPasswordError(null);
@@ -115,11 +112,11 @@ const ChangePassword = ({ navigation }) => {
 
   //check if the passwords are matching
   const validateConfirmPassword = (value) => {
-    if (value == "" || value == null) {
+    if (value == "") {
       setConfirmPasswordError("Confirm password is required*");
       return false;
-    } else if (value == formData.newPassword) {
-      setConfirmPasswordError(null);
+    }
+    if (value == formData.newPassword) {
       return true;
     } else {
       setConfirmPasswordError("Passwords do not match");
@@ -172,6 +169,7 @@ const ChangePassword = ({ navigation }) => {
         console.log(error.response.data);
       }
     } else {
+      setIsLoading(false);
       validateOldPassword(formData.oldPassword);
       validatePassword(formData.newPassword);
       validateConfirmPassword(formData.confirmPassword);
@@ -190,6 +188,7 @@ const ChangePassword = ({ navigation }) => {
     >
       {/**********  INPUT PASSWORDS VIEW *********/}
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           width: 300,
           display: "flex",
@@ -211,8 +210,8 @@ const ChangePassword = ({ navigation }) => {
             {
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
               alignItems: "center",
+              justifyContent: "space-between",
             },
             styles.input,
           ]}
@@ -303,9 +302,9 @@ const ChangePassword = ({ navigation }) => {
           <Text style={styles.errorText}>{confirmPasswordError}</Text>
         ) : null}
 
-        <View style={{ width: "100%", marginVertical: 18 }}>
+        <View style={{ marginVertical: 18 }}>
           <Button
-            style={{ marginBottom: 10 }}
+            style={{ width: "30%", marginBottom: 10 }}
             onPress={handleSubmit}
             title="Submit"
             color="#055C9D"
@@ -314,9 +313,9 @@ const ChangePassword = ({ navigation }) => {
         {isLoading && <ActivityIndicator size="large" />}
       </ScrollView>
 
-      {/* <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
+      {/* <Pressable onPress={handleSubmit} style={styles.submitButton}>
         <Text style={styles.submitText}>Submit</Text>
-      </TouchableOpacity> */}
+      </Pressable> */}
     </View>
   );
 };

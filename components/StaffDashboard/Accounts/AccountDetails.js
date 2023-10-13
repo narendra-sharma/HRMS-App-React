@@ -1,49 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, Pressable } from "react-native";
-import { apiGetProfileDetails, apiUpdateProfile } from "../../../apis/auth";
-import { useFocusEffect } from "@react-navigation/native";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import { useState, useEffect } from "react";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 
-// import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+const AccountDetails = ({ navigation, route }) => {
+  const [userData, setUserData] = useState({ ...route.params });
 
-const Profile = ({ navigation }) => {
-  const [userData, setUserData] = useState({});
+  //  useFocusEffect(
+  //    React.useCallback(() => {
+  //      let isActive = true;
 
-  const isDrawerOpen = useDrawerStatus();
+  //      const fetchUser = async () => {
+  //        try {
+  //          const res = await apiGetProfileDetails();
+  //          // console.log("we got from api: ", res.data);
+  //          setUserData(res.data.users);
+  //          // await AsyncStorage.setItem("profile", JSON.stringify(res.data.users));
+  //          // const user = await AsyncStorage.getItem("profile");
+  //          // // console.log("local storage: ", user);
+  //          // const parsedUser = JSON.parse(user);
+  //          // setUserData({
+  //          //   ...parsedUser,
+  //          // });
+  //        } catch (err) {
+  //          console.log(err);
+  //        }
+  //      };
 
-  const { setDrawerStatus } = useCustomDrawerStatus();
-  console.log(isDrawerOpen);
-  setDrawerStatus(isDrawerOpen);
+  //      fetchUser();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      let isActive = true;
-
-      const fetchUser = async () => {
-        try {
-          const res = await apiGetProfileDetails();
-          // console.log("we got from api: ", res.data);
-          setUserData(res.data);
-          // await AsyncStorage.setItem("profile", JSON.stringify(res.data.users));
-          // const user = await AsyncStorage.getItem("profile");
-          // // console.log("local storage: ", user);
-          // const parsedUser = JSON.parse(user);
-          // setUserData({
-          //   ...parsedUser,
-          // });
-        } catch (err) {
-          console.log(err);
-        }
-      };
-
-      fetchUser();
-
-      return () => {
-        isActive = false;
-      };
-    }, [])
-  );
+  //      return () => {
+  //        isActive = false;
+  //      };
+  //    }, [])
+  //  );
 
   // useEffect(() => {
   //   const getProfileData = async () => {
@@ -70,50 +58,9 @@ const Profile = ({ navigation }) => {
   useEffect(() => {}, [userData]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        padding: 10,
-        justifyContent: "center",
-      }}
-    >
+    <View style={{ flex: 1, alignItems: "center", padding: 10 }}>
       <>
-        <View
-          style={{
-            width: 300,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: 22,
-            // alignItems: "center",
-            backgroundColor: "#fff",
-            // height: "92%",
-            borderRadius: 16,
-            height: "70%",
-          }}
-        >
-          {/* <View style={{ display: "flex", flexDirection: "row", margin: 10 }}>
-              <Icon name="user-circle-o" size={55} />
-              <Pressable
-                style={{
-                  backgroundColor: "#055C9D",
-                  padding: 12,
-                  padding: 12,
-                  borderRadius: 8,
-                  marginLeft: 10,
-                  width: "70%",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                }}
-                onPress={handleUploadPhoto}
-              >
-                <Text style={styles.submitText}>Upload New Photo</Text>
-                <Icon name="edit" size={20} style={{ color: "#fff" }} />
-              </Pressable>
-            </View> */}
+        <View style={{ width: "80%", maxWidth: "85%" }}>
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>Name: </Text>
             <Text>{userData.name}</Text>
@@ -126,11 +73,11 @@ const Profile = ({ navigation }) => {
             <Text style={styles.fieldName}>Username: </Text>
             <Text> {userData.username} </Text>
           </View>
-          {/*<View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>ID: </Text>
-            <Text> {userData.employee_id} </Text>
+          <View style={styles.fieldContainer}>
+            <Text style={styles.fieldName}>Organization: </Text>
+            <Text> {userData.org} </Text>
           </View>
-           <View style={styles.fieldContainer}>
+          <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>Phone Number: </Text>
             <Text> {userData.phone_number} </Text>
           </View>
@@ -149,26 +96,20 @@ const Profile = ({ navigation }) => {
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>Zip Code: </Text>
             <Text> {userData.zip_code} </Text>
-          </View> */}
-          <View style={{ marginVertical: 18, width: "100%" }}>
-            <Button
-              style={{ marginBottom: 10 }}
-              onPress={() => navigation.navigate("Edit Profile")}
-              title="Edit"
-              color="#055C9D"
-            />
           </View>
         </View>
-        {/* <Pressable
-          onPress={() => navigation.navigate("Edit Profile")}
+        <Pressable
+          onPress={() => navigation.navigate("Edit Account")}
           style={styles.submitButton}
         >
           <Text style={styles.submitText}>Edit</Text>
-        </Pressable> */}
+        </Pressable>
       </>
     </View>
   );
 };
+
+export default AccountDetails;
 
 const styles = StyleSheet.create({
   dropdown: {
@@ -262,11 +203,7 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: "green",
+    color: "red",
     fontSize: 10,
-    marginTop: -6,
-    marginBottom: 8,
   },
 });
-
-export default Profile;

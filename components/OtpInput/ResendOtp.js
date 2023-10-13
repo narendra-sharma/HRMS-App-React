@@ -4,7 +4,7 @@ import { apiSendForgotPasswordCode } from "../../apis/auth";
 import Toast from "react-native-root-toast";
 
 const ResendOtp = ({ email }) => {
-  const timeInSeconds = 10;
+  const timeInSeconds = 59;
   const [time, setTime] = useState(timeInSeconds);
   const [resetCount, setResetCount] = useState(0);
   const timerRef = useRef(time);
@@ -23,7 +23,7 @@ const ResendOtp = ({ email }) => {
     setResetCount((prev) => prev + 1);
     try {
       const res = await apiSendForgotPasswordCode({ email });
-      console.log(res.data);
+      // console.log(res.data);
       if (res.status == 200) {
         Toast.show("Code sent", {
           duration: Toast.durations.SHORT,
@@ -40,7 +40,7 @@ const ResendOtp = ({ email }) => {
     }
   };
 
-  console.log(timerRef.current);
+  // console.log(timerRef.current);
   useEffect(() => {
     const timerId = setInterval(() => {
       timerRef.current -= 1;

@@ -5,7 +5,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import QRCodeGenerator from "./QRCodeGenerator";
 import QRMainScreen from "./QRMainScreen";
 import QRScanner from "./QRScanner";
-import PickLocation from "./PickLocation";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,8 +26,8 @@ const QRStackScreen = () => {
         })}
       /> */}
       <Stack.Screen
-        name="Generate QR Code"
-        component={QRCodeGenerator}
+        name="Scan QR Code"
+        component={QRScanner}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Icon
@@ -40,14 +39,7 @@ const QRStackScreen = () => {
           ),
         })}
       />
-      <Stack.Screen
-        name="Pick Location"
-        component={PickLocation}
-        options={({ navigation }) => ({
-          headerShown: true,
-        })}
-      />
-      <Stack.Screen name="Scan QR Code" component={QRScanner} />
+      {/* <Stack.Screen name="Generate QR Code" component={QRCodeGenerator} /> */}
     </Stack.Navigator>
   );
 };

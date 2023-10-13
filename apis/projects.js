@@ -1,11 +1,11 @@
-import { useEffect } from "react";
 import { request } from "./index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import qs from "qs";
 
 export const apiGetAllProjects = async () => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/view-all-projects",
+    path: "projects",
     headers: {
       Authorization: `Bearer ${JSON.parse(token)}`,
     },
@@ -13,10 +13,12 @@ export const apiGetAllProjects = async () => {
   return response;
 };
 
-export const apiGetProjectsDropdownData = async () => {
+export const apiGetProjectDetails = async (formData) => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/create-project",
+    path: "project-data",
+    method: "post",
+    body: qs.stringify(formData),
     headers: {
       Authorization: `Bearer ${JSON.parse(token)}`,
     },
@@ -24,10 +26,23 @@ export const apiGetProjectsDropdownData = async () => {
   return response;
 };
 
-export const apiAddNewProject = async (formData) => {
+export const apiGetDropdownEmployeesList = async (formData) => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({
-    path: "auth/add-project",
+    path: "employees",
+    method: "post",
+    body: qs.stringify(formData),
+    headers: {
+      Authorization: `Bearer ${JSON.parse(token)}`,
+    },
+  });
+  return response;
+};
+
+export const apiAssignEmployeeToProject = async (formData) => {
+  const token = await AsyncStorage.getItem("token");
+  const response = await request({
+    path: "assign-employee",
     method: "post",
     body: formData,
     headers: {
@@ -37,38 +52,26 @@ export const apiAddNewProject = async (formData) => {
   return response;
 };
 
-export const apiGetPreFilledProjectDetails = async (id) => {
-  const token = await AsyncStorage.getItem("token");
-  const response = await request({
-    path: `auth/edit-project/${id}`,
-    headers: {
-      Authorization: `Bearer ${JSON.parse(token)}`,
-    },
-  });
-  return response;
-};
+// export const apiGetPreFilledProjectDetails = async (id) => {
+//   const token = await AsyncStorage.getItem("token");
+//   const response = await request({
+//     path: `auth/edit-project/${id}`,
+//     headers: {
+//       Authorization: `Bearer ${JSON.parse(token)}`,
+//     },
+//   });
+//   return response;
+// };
 
-export const apiUpdateProjectDetails = async (formData, id) => {
-  const token = await AsyncStorage.getItem("token");
-  const response = await request({
-    method: "post",
-    path: `auth/update-project/${id}`,
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${JSON.parse(token)}`,
-    },
-  });
-  return response;
-};
-
-export const apiDeleteProject = async (id) => {
-  const token = await AsyncStorage.getItem("token");
-  const response = await request({
-    method: "delete",
-    path: `auth/delete-project/${id}`,
-    headers: {
-      Authorization: `Bearer ${JSON.parse(token)}`,
-    },
-  });
-  return response;
-};
+// export const apiUpdateProjectDetails = async (formData, id) => {
+//   const token = await AsyncStorage.getItem("token");
+//   const response = await request({
+//     method: "post",
+//     path: `auth/update-project/${id}`,
+//     body: formData,
+//     headers: {
+//       Authorization: `Bearer ${JSON.parse(token)}`,
+//     },
+//   });
+//   return response;
+// };

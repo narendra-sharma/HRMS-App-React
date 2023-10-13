@@ -1,17 +1,18 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
+import { useDrawerStatus } from "@react-navigation/drawer";
+import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
 
 const Home = () => {
+  // const isDrawerOpen = useDrawerStatus();
+
+  // const { setDrawerStatus } = useCustomDrawerStatus();
+  // console.log(isDrawerOpen);
+  // setDrawerStatus(isDrawerOpen);
+
   return (
     <View>
-      <Text>Home component</Text>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Home Screen</Text>
-        <Button
-          // onPress={() => navigation.navigate("About")}
-          title="About"
-        />
-      </View>
+      <Text>Admin Dashboard</Text>
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -7,7 +7,6 @@ import {
   View,
   Alert,
   StatusBar,
-  TouchableOpacity,
 } from "react-native";
 import {
   DrawerItemList,
@@ -16,20 +15,29 @@ import {
 import Home from "../Home/Home";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiLogout } from "../../../apis/auth";
+import CompanyStackScreen from "../Companies/CompanyStackScreen";
 import ProfileStackScreen from "../Profile/ProfileStackScreen";
 import { useFocusEffect } from "@react-navigation/native";
 import ChangePassword from "../Settings/ChangePassword";
+import AccountsStackScreen from "../Accounts/AccountsStackScreen";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import ViewProjects from "../Companies/Projects/ViewProjects";
+import ConsultantManagerStack from "../Companies/Users/ConsultantManagers/ConsultantManagerStack";
+import ConsultantStack from "../Companies/Users/Consultants/ConsultantStack";
+import ContractorStack from "../Companies/Users/Contractors/ContractorStack";
+import CustomerStack from "../Companies/Users/Customers/CustomerStack";
 import QRCodeGenerator from "../QRCode/QRCodeGenerator";
 import QRStackScreen from "../QRCode/QRStackScreen";
+import HomeStackScreen from "../Home/HomeStackScreen";
 import MonthlyCalendar from "../Calendar/MonthlyCalendar";
-import ViewProjects from "../Projects/ViewProjects";
-import { useIsFocused } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
+import Leaves from "../Leaves/ApplyLeaves";
+import LeavesStackScreen from "../Leaves/LeavesStackScreen";
 import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import QRScanner from "../QRCode/QRScanner";
 
 const Drawer = createDrawerNavigator();
 
@@ -42,10 +50,8 @@ const RightDrawer = ({ navigation }) => {
   // const [isManageCompaniesActive, setIsManageCompaniesActive] = useState(false);
   const [userFlag, setUserFlag] = useState(false);
 
-  // const isFocused = useIsFocused();
-  // const route = useRoute();
-
-  console.log("user data", userData);
+  const route = useRoute();
+  // console.log(route.name);
 
   const handleLogout = () => {
     const logout = async () => {
@@ -119,6 +125,7 @@ const RightDrawer = ({ navigation }) => {
   return (
     <Drawer.Navigator
       hideStatusBarOnOpen={true}
+      initialRoute="Home"
       initialRouteName="Home"
       drawerContent={(props) => {
         return (
@@ -139,7 +146,7 @@ const RightDrawer = ({ navigation }) => {
                 }}
               >
                 <View style={styles.innerContainer}>
-                  <Icon
+                  <Icon 
                     // style={styles.drawerIcon}
                     name="user-circle-o"
                     size={35}
@@ -157,8 +164,8 @@ const RightDrawer = ({ navigation }) => {
               </Pressable>
 
               <ScrollView>
-                {/* Custom Home */}
-                {/* <Pressable
+                {/* Custom Home 
+                <Pressable
                   onPress={() => {
                     props.navigation.navigate("Home");
                     setActiveScreenName("Home");
@@ -177,8 +184,8 @@ const RightDrawer = ({ navigation }) => {
                   <Text>Home</Text>
                 </Pressable> */}
 
-                {/* Accounts/Users Sub-Menu */}
-                {/* <Pressable
+                {/* Accounts/Users Sub-Menu 
+                <Pressable
                   onPress={() => {
                     setIsUsersSubMenuOpen(!isUsersSubMenuOpen);
                     setIsCompaniesSubMenuOpen(false);
@@ -268,9 +275,9 @@ const RightDrawer = ({ navigation }) => {
                       </Pressable>
                     </View>
                   </View>
-                )} */}
+                )}  */}
 
-                {/* Custom QR Generator */}
+                {/* Custom QR Scanner */}
                 {/* <Pressable
                   onPress={() => {
                     props.navigation.navigate("QR Code");
@@ -286,27 +293,7 @@ const RightDrawer = ({ navigation }) => {
                     name="qr-code"
                     size={28}
                   />
-                  <Text>Generate QR Code</Text>
-                </Pressable> */}
-
-                {/* Custom Calendar Screen */}
-                {/* <Pressable
-                  onPress={() => {
-                    props.navigation.navigate("Monthly Calendar");
-                    setActiveScreenName("Monthly Calendar");
-                  }}
-                  style={[
-                    styles.subMenuButton,
-                    activeScreenName == "Monthly Calendar" &&
-                      styles.activeSubMenu,
-                  ]}
-                >
-                  <MaterialIcons
-                    style={styles.drawerIcon}
-                    name="calendar-today"
-                    size={28}
-                  />
-                  <Text>Calendar</Text>
+                  <Text>Scan QR Code</Text>
                 </Pressable> */}
 
                 {/* Custom Companies */}
@@ -346,7 +333,7 @@ const RightDrawer = ({ navigation }) => {
                     name="view-sidebar"
                     size={28}
                   />
-                  <Text>Projects</Text>
+                  <Text>All Projects</Text>
                 </Pressable> */}
 
                 {/* Custom Profile */}
@@ -369,8 +356,8 @@ const RightDrawer = ({ navigation }) => {
                   <Text>Profile </Text>
                 </Pressable> */}
 
-                {/* Custom Change Password */}
-                {/* <Pressable
+                {/* Custom Change Password 
+                <Pressable
                   onPress={() => {
                     setActiveScreenName("Change Password");
                     props.navigation.navigate("Change Password");
@@ -389,18 +376,18 @@ const RightDrawer = ({ navigation }) => {
                     size={28}
                   />
                   <Text>Change Password</Text>
-                </Pressable> */}
-
-                <DrawerItemList
-                  {...props}
-                  onItemPress={({ route }) => {
-                    if (route.name !== "Manage Companies") {
-                      setIsManageCompaniesActive(false);
-                    }
-                    props.navigation.navigate(route.name);
-                  }}
-                />
+                </Pressable>
+                */}
               </ScrollView>
+              <DrawerItemList
+                {...props}
+                onItemPress={({ route }) => {
+                  if (route.name !== "Manage Companies") {
+                    setIsManageCompaniesActive(false);
+                  }
+                  props.navigation.navigate(route.name);
+                }}
+              />
             </View>
 
             <View
@@ -411,10 +398,7 @@ const RightDrawer = ({ navigation }) => {
                 marginBottom: 50,
               }}
             >
-              <TouchableOpacity
-                style={styles.logoutButton}
-                onPress={handleLogout}
-              >
+              <Pressable style={styles.logoutButton} onPress={handleLogout}>
                 <Icon
                   name="sign-out"
                   size={28}
@@ -422,110 +406,12 @@ const RightDrawer = ({ navigation }) => {
                   style={{ paddingHorizontal: 8 }}
                 />
                 <Text style={{ color: "#fff" }}>Logout</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </SafeAreaView>
         );
       }}
     >
-      {/* Home Screen */}
-      <Drawer.Screen
-        name="Home"
-        options={{
-          drawerIcon: () => <Icon name="home" size={28} />,
-          // drawerItemStyle: { display: "none" },
-        }}
-        component={Home}
-      />
-
-      {/* All Company Screens */}
-      {/* <Drawer.Screen
-        options={{
-          drawerIcon: () => (
-            <MaterialIcons name="admin-panel-settings" size={28} />
-          ),
-          // headerTitle: () => <></>,
-          headerShown: false,
-          // drawerItemStyle: { display: "none" },
-        }}
-        name="Manage Companies"
-        component={CompanyStackScreen}
-      /> */}
-
-      {/*All Accounts/Users Screens */}
-      {/* <Drawer.Screen
-        options={{
-          drawerIcon: () => <Icon name="users" size={28} />,
-          title: "Accounts",
-          headerShown: false,
-          // drawerItemStyle: { display: "none" },
-        }}
-        name="Accounts"
-        component={AccountsStackScreen}
-      /> */}
-
-      {/* Consultant Manager Screens */}
-      {/* <Drawer.Screen
-        name="Consultant Managers"
-        component={ConsultantManagerStack}
-        options={({ navigation }) => ({
-          title: "Consultant Managers",
-          headerShown: false,
-        })}
-      /> */}
-
-      {/* Consultants Screens */}
-      {/* <Drawer.Screen
-        name="Consultants"
-        component={ConsultantStack}
-        options={({ navigation }) => ({
-          title: "Consultants",
-          headerShown: false,
-        })}
-      /> */}
-
-      {/* Contractors Screens */}
-      {/* <Drawer.Screen
-        name="Contractors"
-        component={ContractorStack}
-        options={({ navigation }) => ({
-          title: "Contractors",
-          headerShown: false,
-        })}
-      /> */}
-
-      {/* Customers Screens */}
-      {/* <Drawer.Screen
-        name="Customers"
-        component={CustomerStack}
-        options={({ navigation }) => ({
-          title: "Customers",
-          headerShown: false,
-        })}
-      /> */}
-
-      <Drawer.Screen
-        name="QR Code"
-        component={QRStackScreen}
-        options={({ navigation }) => ({
-          drawerIcon: () => <Icon name="qrcode" size={28} />,
-          title: "Generate QR Code",
-          headerShown: false,
-        })}
-      />
-
-      {/* Calendar Screens */}
-      {/* <Drawer.Screen
-        options={{
-          drawerIcon: () => <MaterialIcons name="calendar-today" size={28} />,
-          // headerTitle: () => <></>,
-          headerShown: false,
-          // drawerItemStyle: { display: "none" },
-        }}
-        name="Monthly Calendar"
-        component={MonthlyCalendar}
-      /> */}
-
       {/* Profile Stack */}
       <Drawer.Screen
         options={{
@@ -538,41 +424,147 @@ const RightDrawer = ({ navigation }) => {
         component={ProfileStackScreen}
       />
 
+      {/* Home Screen */}
+      <Drawer.Screen
+        name="Home"
+        options={{
+          drawerIcon: () => <Icon name="home" size={28} />,
+          headerShown: false,
+          // drawerItemStyle: { display: "none" },
+        }}
+        component={HomeStackScreen}
+      />
+
+      {/* QR Screen */}
+      <Drawer.Screen
+        name="QR Code"
+        component={QRScanner}
+        options={({ navigation }) => ({
+          title: "Scan QR Code",
+          // headerShown: false,
+          drawerIcon: () => <Icon name="qrcode" size={28} />,
+        })}
+      />
+
       {/* Calendar Screen */}
-      {/* <Drawer.Screen
+      <Drawer.Screen
         options={({ navigation }) => ({
           drawerIcon: () => <Icon name="calendar" size={28} />,
           title: "Calendar",
-          headerShown: true,
-          headerTitle: () => <></>,
+          // headerShown: false,
           headerTransparent: true,
-          drawerItemStyle: { display: "none" },
         })}
         name="View Calendar"
         component={MonthlyCalendar}
-      /> */}
+      />
 
-      {/* Project Screens */}
+      {/* Leaves Screen */}
       <Drawer.Screen
-        name="Projects"
-        component={ViewProjects}
         options={({ navigation }) => ({
-          drawerIcon: () => <Icon name="th-list" size={28} />,
-          title: "Projects",
+          drawerIcon: () => (
+            <MaterialCommunityIcons name="party-popper" size={28} />
+          ),
+          title: "Leaves",
           headerShown: false,
         })}
+        name="Leaves"
+        component={LeavesStackScreen}
       />
 
       {/* Change Password */}
       <Drawer.Screen
         options={({ navigation }) => ({
-          drawerIcon: () => <MaterialIcons name="settings" size={28} />,
+          drawerIcon: () => <Icon name="cog" size={28} />,
           title: "Change Password",
           // headerShown: false,
         })}
         name="Change Password"
         component={ChangePassword}
       />
+
+      {/* All Company Screens 
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => (
+            <MaterialIcons name="admin-panel-settings" size={28} />
+          ),
+          // headerTitle: () => <></>,
+          headerShown: false,
+          // drawerItemStyle: { display: "none" },
+        }}
+        name="Manage Companies"
+        component={CompanyStackScreen}
+      />
+    */}
+
+      {/*All Accounts/Users Screens 
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => <Icon name="users" size={28} />,
+          title: "Accounts",
+          headerShown: false,
+          // drawerItemStyle: { display: "none" },
+        }}
+        name="Accounts"
+        component={AccountsStackScreen}
+      />
+        */}
+
+      {/* Consultant Manager Screens 
+      <Drawer.Screen
+        name="Consultant Managers"
+        component={ConsultantManagerStack}
+        options={({ navigation }) => ({
+          title: "Consultant Managers",
+          headerShown: false,
+        })}
+      />
+        */}
+
+      {/* Consultants Screens 
+      <Drawer.Screen
+        name="Consultants"
+        component={ConsultantStack}
+        options={({ navigation }) => ({
+          title: "Consultants",
+          headerShown: false,
+        })}
+      />
+        */}
+
+      {/* Contractors Screens 
+      <Drawer.Screen
+        name="Contractors"
+        component={ContractorStack}
+        options={({ navigation }) => ({
+          title: "Contractors",
+          headerShown: false,
+        })}
+      />
+        */}
+
+      {/* Customers Screens 
+      <Drawer.Screen
+        name="Customers"
+        component={CustomerStack}
+        options={({ navigation }) => ({
+          title: "Customers",
+          headerShown: false,
+        })}
+      />
+        */}
+
+      {/* Project Screens 
+      <Drawer.Screen
+        name="Projects"
+        component={ViewProjects}
+        options={({ navigation }) => ({
+          title: "My Projects",
+          headerShown: false,
+        })}
+      />
+      */}
+
       {/* <Drawer.Screen
         options={{
           drawerIcon: () => <Icon name="user" size={28} />,
@@ -591,7 +583,7 @@ export default RightDrawer;
 
 const styles = StyleSheet.create({
   detailsContainer: {
-    height: 140,
+    height: 150,
     width: "100%",
     backgroundColor: "#055C9D",
     marginBottom: 5,

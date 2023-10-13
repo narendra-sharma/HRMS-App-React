@@ -1,10 +1,12 @@
 import { Text, View } from "react-native";
+import RightDrawer from "../components/StaffDashboard/RightDrawer/RightDrawer";
 
-const StaffScreen = () => {
+const StaffScreen = ({ navigation }) => {
   return (
-    <View>
-      <Text>Staff Screen</Text>
-    </View>
+    // <View>
+    //   <Text>Staff Screen</Text>
+    // </View>
+    <RightDrawer navigation={navigation} />
   );
 };
 

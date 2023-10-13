@@ -1,59 +1,31 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
-  View,
-  Text,
-  Button,
+  FlatList,
   StyleSheet,
+  Text,
   Pressable,
-  TextInput,
-  ScrollView,
+  View,
+  Alert,
+  TouchableNativeFeedback,
 } from "react-native";
 import Toast from "react-native-root-toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { apiGetProfileDetails, apiUpdateProfile } from "../../../apis/auth";
-import { Country, State, City } from "country-state-city";
-import { Dropdown } from "react-native-element-dropdown";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { ScrollView } from "react-native-gesture-handler";
+import { apiDeleteCompany, apiGetAllCompanies } from "../../../apis/companies";
+import { useFocusEffect } from "@react-navigation/native";
+import { apiUpdateProfile } from "../../../apis/auth";
 
-// import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-
-const initialUserData = {
-  // name: "",
-  // email: "",
-  // organization: "",
-  // phonenumber: "",
-  // address: "",
-  // country: "",
-  // state: "",
-  // zipcode: "",
-  // latitude: "",
-  // longitude: "",
-};
-
-const EditProfile = ({ navigation }) => {
+const EditAccount = () => {
   const [userData, setUserData] = useState(initialUserData);
   const [isFocus, setIsFocus] = useState(false);
-
-  const [nameError, setNameError] = useState(null);
-  const [usernameError, setUsernameError] = useState(null);
-  const [emailError, setEmailError] = useState(null);
-
-  const isDrawerOpen = useDrawerStatus();
-
-  const { setDrawerStatus } = useCustomDrawerStatus();
-  console.log(isDrawerOpen);
-  setDrawerStatus(isDrawerOpen);
 
   useEffect(() => {
     const getProfileData = async () => {
       try {
         const res = await apiGetProfileDetails();
         // console.log("we got from api: ", res.data);
-        setUserData(res.data);
-        // await AsyncStorage.setItem("profile", JSON.stringify(res.data));
+        setUserData(res.data.users);
+        await AsyncStorage.setItem("profile", JSON.stringify(res.data.users));
         // const user = await AsyncStorage.getItem("profile");
         // const parsedUser = JSON.parse(user);
         // setUserData({
@@ -68,47 +40,25 @@ const EditProfile = ({ navigation }) => {
     getProfileData();
   }, []);
 
-  //validation functions
-  const requiredValidation = (setError, value, label) => {
-    if (value == "" || value == null) {
-      setError(`${label} is required*`);
-      return false;
-    }
-    return true;
-  };
-
-  //handle form submit
   const handleSubmit = async () => {
-    if (
-      requiredValidation(setNameError, userData.name, "Name") &&
-      requiredValidation(setUsernameError, userData.username, "Username") &&
-      requiredValidation(setEmailError, userData.email, "Email")
-    ) {
-      try {
-        const res = await apiUpdateProfile({
-          ...userData,
-        });
-        // console.log(userData);
-        console.log(res.data);
-        if (res.status == 200) {
-          Toast.show("Profile updated successfully", {
-            duration: Toast.durations.SHORT,
-            position: Toast.positions.BOTTOM,
-            shadow: true,
-            animation: true,
-            hideOnPress: true,
-            delay: 0,
-          });
-          const resp = await apiGetProfileDetails();
-          console.log("we got from api: ", res.data);
-          setUserData(resp.data.users);
-          await AsyncStorage.setItem("profile", JSON.stringify(resp.data));
-
-          navigation.navigate("My Profile");
-        }
-        //   console.log(res.data);
-      } catch (error) {
-        Toast.show("Cannot update profile", {
+    try {
+      const res = await apiUpdateProfile({
+        ...userData,
+        name: userData.name,
+        phonenumber: userData.phone_number,
+        address: userData.address,
+        org: userData.org,
+        state: userData.state,
+        country: userData.country,
+        country_code: userData.country_code,
+        latitude: userData.lat,
+        longitude: userData.long,
+        zipcode: userData.zip_code,
+      });
+      // console.log(userData);
+      //   console.log(res);
+      if (res.status == 200) {
+        Toast.show("Profile Updated Successfully", {
           duration: Toast.durations.SHORT,
           position: Toast.positions.BOTTOM,
           shadow: true,
@@ -116,60 +66,24 @@ const EditProfile = ({ navigation }) => {
           hideOnPress: true,
           delay: 0,
         });
-        console.log(error);
+        const resp = await apiGetProfileDetails();
+        console.log("we got from api: ", res.data);
+        setUserData(resp.data.users);
+        await AsyncStorage.setItem("profile", JSON.stringify(resp.data.users));
+
+        navigation.navigate("My Profile");
       }
-    } else {
-      requiredValidation(setNameError, userData.name, "Name");
-      requiredValidation(setUsernameError, userData.username, "Username");
-      requiredValidation(setEmailError, userData.email, "Email");
+      //   console.log(res.data);
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  // const handleUploadPhoto = async () => {
-  //   const options = {
-  //     selectionLimit: 1,
-  //     mediaType: "photo",
-  //     includeBase64: false,
-  //   };
-  //   const result = await launchImageLibrary(options);
-  // };
-
-  // const allCountries = Country.getAllCountries().map((country) => {
-  //   return {
-  //     label: country.name,
-  //     value: country.isoCode,
-  //   };
-  // });
-
-  // console.log(allCountries);
-
-  // const renderLabel = () => {
-  //   if (value || isFocus) {
-  //     return (
-  //       <Text style={[styles.label, isFocus && { color: "blue" }]}>
-  //         Dropdown label
-  //       </Text>
-  //     );
-  //   }
-  //   return null;
-  // };
 
   return (
     <View style={styles.centeredView}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          width: 300,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: 22,
-          // alignItems: "center",
-          backgroundColor: "#fff",
-          // height: "92%",
-          borderRadius: 16,
-          minHeight: "95%",
-        }}
+        contentContainerStyle={{ justifyContent: "center", padding: 10 }}
         keyboardShouldPersistTaps="always"
       >
         <View style={styles.formContainer}>
@@ -177,46 +91,28 @@ const EditProfile = ({ navigation }) => {
           <TextInput
             style={styles.input}
             name="name"
-            value={userData?.name}
-            onChangeText={(text) => {
-              setUserData({ ...userData, name: text });
-              setNameError(null);
-            }}
+            value={userData.name}
+            onChangeText={(text) => setUserData({ ...userData, name: text })}
             placeholder="Name"
           />
-          {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-
           <Text>Username:</Text>
           <TextInput
             style={styles.input}
             name="name"
-            value={userData?.username}
-            onChangeText={(text) => {
-              setUserData({ ...userData, username: text });
-              setUsernameError(null);
-            }}
+            value={userData.username}
+            onChangeText={(text) =>
+              setUserData({ ...userData, username: text })
+            }
             placeholder="Username"
           />
-          {usernameError ? (
-            <Text style={styles.errorText}>{usernameError}</Text>
-          ) : null}
-
-          <Text>Email:</Text>
+          <Text>Organization:</Text>
           <TextInput
             style={styles.input}
-            name="email"
-            value={userData?.email}
-            onChangeText={(text) => {
-              setUserData({ ...userData, email: text });
-              setEmailError(null);
-            }}
-            placeholder="Email"
+            name="organization"
+            value={userData.org}
+            onChangeText={(text) => setUserData({ ...userData, org: text })}
           />
-          {emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
-
-          {/* <Text>Phone Number:</Text>
+          <Text>Phone Number:</Text>
           <TextInput
             style={styles.input}
             name="phonenumber"
@@ -353,7 +249,7 @@ const EditProfile = ({ navigation }) => {
                 state: null,
               });
             }}
-          /> */}
+          />
           {/* <TextInput
               style={styles.input}
               name="country"
@@ -362,7 +258,7 @@ const EditProfile = ({ navigation }) => {
                 setUserData({ ...userData, country: text })
               }
             /> */}
-          {/* <Text>State/UT: </Text>
+          <Text>State/UT: </Text>
           <Dropdown
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
@@ -384,7 +280,7 @@ const EditProfile = ({ navigation }) => {
             onChange={(item) => {
               setUserData({ ...userData, state: item.label });
             }}
-          /> */}
+          />
           {/* <TextInput
               style={styles.input}
               name="state"
@@ -392,7 +288,7 @@ const EditProfile = ({ navigation }) => {
               onChangeText={(text) => setUserData({ ...userData, state: text })}
             /> */}
 
-          {/* <Text>Zip Code: </Text>
+          <Text>Zip Code: </Text>
           <TextInput
             style={styles.input}
             name="zip_code"
@@ -400,101 +296,40 @@ const EditProfile = ({ navigation }) => {
             onChangeText={(text) =>
               setUserData({ ...userData, zip_code: text })
             }
-          /> */}
+          />
         </View>
         <View
           style={{
             display: "flex",
-            flexDirection: "column",
-            // justifyContent: "space-around",
+            flexDirection: "row",
+            justifyContent: "space-around",
           }}
         >
-          <View style={{ marginVertical: 18 }}>
-            <Button
-              style={{ width: "30%", marginBottom: 10 }}
-              onPress={handleSubmit}
-              title="Submit"
-              color="#055C9D"
-            />
-          </View>
-          {/* <Pressable onPress={handleSubmit} style={styles.submitButton}>
+          <Pressable onPress={handleSubmit} style={styles.submitButton}>
             <Text>Submit</Text>
-          </Pressable> */}
-          <View style={{ marginBottom: 10 }}>
-            <Button
-              onPress={() => navigation.goBack()}
-              title="Cancel"
-              color="#055C9D"
-            />
-          </View>
-
-          {/* <Pressable
+          </Pressable>
+          <Pressable
             onPress={() => navigation.goBack()}
             style={styles.submitButton}
           >
             <Text>Cancel</Text>
-          </Pressable> */}
+          </Pressable>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-export default EditProfile;
-
-const placesStyle = StyleSheet.create({
-  textInputContainer: {
-    // backgroundColor: "rgba(0,0,0,0)",
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    width: "100%",
-    borderColor: "gray",
-  },
-  textInput: {
-    backgroundColor: "transparent",
-    height: 45,
-    color: "#5d5d5d",
-    fontSize: 16,
-    borderWidth: 0.5,
-    borderColor: "gray",
-  },
-  predefinedPlacesDescription: {
-    color: "#1faadb",
-  },
-  listView: {
-    color: "black",
-    borderColor: "gray",
-    maxWidth: "100%",
-  },
-  separator: {
-    flex: 1,
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "blue",
-  },
-  description: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    fontSize: 14,
-    maxWidth: "89%",
-  },
-});
+export default EditAccount;
 
 const styles = StyleSheet.create({
-  centeredView: {
-    display: "flex",
-    padding: 22,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   dropdown: {
     height: 50,
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    width: "100%",
+    width: "90%",
     marginBottom: 5,
   },
   icon: {
@@ -539,7 +374,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: "100%",
+    width: 300,
     height: 35,
     marginTop: 2,
     marginBottom: 10,
@@ -581,7 +416,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 10,
-    marginBottom: 10,
-    marginTop: -4,
   },
 });

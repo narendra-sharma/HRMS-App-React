@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { apiVerifyOtp } from "../../apis/auth";
 import Countdown from "./ResendOtp";
@@ -25,6 +26,8 @@ const OtpInput = ({
   route,
 }) => {
   const [isInputBoxFocused, setIsInputBoxFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const inputRef = useRef();
 
   // console.log(route, code);
@@ -52,14 +55,15 @@ const OtpInput = ({
 
   const handleSubmit = async () => {
     try {
-      Toast.show("Please Wait", {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        delay: 0,
-      });
+      setIsLoading(true);
+      // Toast.show("Please Wait", {
+      //   duration: Toast.durations.SHORT,
+      //   position: Toast.positions.BOTTOM,
+      //   shadow: true,
+      //   animation: true,
+      //   hideOnPress: true,
+      //   delay: 0,
+      // });
       const res = await apiVerifyOtp({ email: route.params.email, otp: code });
       if (res.data.status == true) {
         Toast.show("OTP Verified", {
@@ -70,10 +74,13 @@ const OtpInput = ({
           hideOnPress: true,
           delay: 0,
         });
+        setIsLoading(false);
         navigation.navigate("Reset Password", {
           email: route.params.email,
+          otp: code,
         });
       } else {
+        setIsLoading(false);
         Toast.show("OTP validation failed", {
           duration: Toast.durations.SHORT,
           position: Toast.positions.BOTTOM,
@@ -85,6 +92,7 @@ const OtpInput = ({
       }
       // console.log(res);
     } catch (error) {
+      setIsLoading(false);
       Toast.show("OTP validation failed", {
         duration: Toast.durations.SHORT,
         position: Toast.positions.BOTTOM,
@@ -150,7 +158,11 @@ const OtpInput = ({
               : [styles.submitButton, { backgroundColor: "gray" }]
           }
         >
-          <Text style={styles.submitText}> Submit </Text>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.submitText}> Submit </Text>
+          )}
         </TouchableOpacity>
 
         <ResendOtp email={route?.params?.email} />
@@ -192,21 +204,28 @@ const styles = StyleSheet.create({
     padding: "12px",
     width: 35,
     height: 40,
+    display: "flex",
+    justifyContent: "center",
   },
 
   splitBoxesFocused: {
     marginTop: 10,
-    borderColor: "pink",
+    borderColor: "#e5e5e5",
     borderWidth: 1,
     bordeRadius: "5px",
     padding: "12px",
     width: 35,
     height: 40,
+    display: "flex",
+    justifyContent: "center",
+    elevation: 1,
+    shadowColor: "#52006A",
   },
 
   splitBoxText: {
     textAlign: "center",
     color: "#000",
+    // color: "magenta",
   },
 
   submitButton: {
@@ -214,12 +233,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
-    width: "64%",
+    width: "80%",
     alignItems: "center",
   },
 
   submitText: {
     color: "white",
+    width: "80%",
   },
 });
 

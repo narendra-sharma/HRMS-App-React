@@ -1,20 +1,17 @@
 import react from "react";
 import { View, Text, Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Profile from "./Profile";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import EditProfile from "./EditProfile";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import Home from "./Home";
 
 const Stack = createNativeStackNavigator();
 
-const ProfileStackScreen = () => {
+const HomeStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="My Profile"
-        component={Profile}
+        name="Staff Dashboard"
+        component={Home}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Icon
@@ -26,9 +23,8 @@ const ProfileStackScreen = () => {
           ),
         })}
       />
-      <Stack.Screen name="Edit Profile" component={EditProfile} />
     </Stack.Navigator>
   );
 };
 
-export default ProfileStackScreen;
+export default HomeStackScreen;

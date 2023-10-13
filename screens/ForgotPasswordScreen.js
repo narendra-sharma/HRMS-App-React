@@ -6,6 +6,7 @@ import {
   TextInput,
   Pressable,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { apiSendForgotPasswordCode } from "../apis/auth";
 import Toast from "react-native-root-toast";
@@ -13,6 +14,7 @@ import Toast from "react-native-root-toast";
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   //handle change in input
   const handleChange = (text) => {
@@ -42,6 +44,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const handleSubmit = async () => {
     try {
       if (validateEmail(email)) {
+        setIsLoading(true);
         const res = await apiSendForgotPasswordCode({ email: email });
         console.log(res.data);
         if (res.data.success == true) {
@@ -53,9 +56,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
             hideOnPress: true,
             delay: 0,
           });
+          setIsLoading(false);
           navigation.navigate("OTP", { email });
           // navigation.navigate("OTP", { email });
         } else {
+          setIsLoading(false);
           Toast.show("Email does not exist", {
             duration: Toast.durations.SHORT,
             position: Toast.positions.BOTTOM,
@@ -67,7 +72,12 @@ const ForgotPasswordScreen = ({ navigation }) => {
         }
       }
     } catch (error) {
-      Toast.show("Something went wrong!", {
+      setIsLoading(false);
+      const msg = error.response.data
+        ? error.response.data.errors.email[0]
+        : "Something Went Wrong";
+      console.log(msg);
+      Toast.show(`${msg}`, {
         duration: Toast.durations.SHORT,
         position: Toast.positions.BOTTOM,
         shadow: true,
@@ -104,7 +114,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
         // onPress={() => setResetTokenExists(true)}
         style={styles.submitButton}
       >
-        <Text style={styles.submitText}>Submit</Text>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.submitText}> Submit </Text>
+        )}
       </Pressable>
     </SafeAreaView>
   );

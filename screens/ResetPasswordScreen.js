@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { apiResetPassword } from "../apis/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -17,6 +24,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //handle change in input text
   const handleChange = (value, label) => {
@@ -86,12 +94,14 @@ const ResetPasswordScreen = ({ navigation, route }) => {
       formData.newPassword === formData.confirmPassword
     ) {
       try {
+        setIsLoading(true);
         const res = await apiResetPassword({
           email: route.params.email,
           password: formData.newPassword,
           password_confirmation: formData.confirmPassword,
+          otp: route.params.otp,
         });
-        console.log(res);
+        console.log(res.data);
         if (res.status == 200) {
           // await AsyncStorage.setItem("token", token);
           // await AsyncStorage.setItem("profile", profile);
@@ -103,9 +113,20 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             hideOnPress: true,
             delay: 0,
           });
+          setIsLoading(false);
           navigation.navigate("Login");
         }
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
+        Toast.show("Something Went Wrong!", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         console.log(error);
       }
     }
@@ -203,7 +224,11 @@ const ResetPasswordScreen = ({ navigation, route }) => {
       </View>
 
       <Pressable onPress={handleSubmit} style={styles.submitButton}>
-        <Text style={styles.submitText}>Submit</Text>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.submitText}> Submit </Text>
+        )}
       </Pressable>
     </View>
   );

@@ -262,10 +262,8 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: "green",
+    color: "red",
     fontSize: 10,
-    marginTop: -6,
-    marginBottom: 8,
   },
 });
 

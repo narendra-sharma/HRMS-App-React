@@ -1,20 +1,18 @@
 import react from "react";
 import { View, Text, Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Profile from "./Profile";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import EditProfile from "./EditProfile";
-import { useDrawerStatus } from "@react-navigation/drawer";
-import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import ApplyLeaves from "./ApplyLeaves";
+import AllLeaves from "./AllLeaves";
 
 const Stack = createNativeStackNavigator();
 
-const ProfileStackScreen = () => {
+const LeavesStackScreen = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="All Leaves">
       <Stack.Screen
-        name="My Profile"
-        component={Profile}
+        name="All Leaves"
+        component={AllLeaves}
         options={({ navigation }) => ({
           headerLeft: () => (
             <Icon
@@ -26,9 +24,9 @@ const ProfileStackScreen = () => {
           ),
         })}
       />
-      <Stack.Screen name="Edit Profile" component={EditProfile} />
+      <Stack.Screen name="Apply Leaves" component={ApplyLeaves} />
     </Stack.Navigator>
   );
 };
 
-export default ProfileStackScreen;
+export default LeavesStackScreen;

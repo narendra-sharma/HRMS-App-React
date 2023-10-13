@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { apiAuth } from "../apis/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -28,25 +29,26 @@ const AuthScreen = ({ navigation }) => {
   const [profile, setProfile] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [userType, setUserType] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const checkUserExists = async () => {
-      const profile = await AsyncStorage.getItem("profile");
-      const firstLogin = await AsyncStorage.getItem("firstLogin");
-      const parsedProfile = JSON.parse(profile);
-      console.log(parsedProfile.user_type);
+  // useEffect(() => {
+  //   const checkUserExists = async () => {
+  //     const profile = await AsyncStorage.getItem("profile");
+  //     await AsyncStorage.removeItem("coords");
+  //     const parsedProfile = JSON.parse(profile);
+  //     // console.log("parsed profile: ", parsedProfile.user_role);
 
-      if (parsedProfile.user_type) {
-        setUserType(parsedProfile.user_type); // Set the user type in the state
-      }
+  //     // handleUserType(parsedProfile.user_type);
 
-      if (JSON.parse(firstLogin) == 1) {
-        handleUserType(parsedProfile.user_type);
-      }
-    };
+  //     if (parsedProfile.user_role) {
+  //       setUserType(parsedProfile.user_role); // Set the user type in the state
+  //       handleUserType(Number(parsedProfile.user_role));
+  //     }
+  //     // handleUserType(2);
+  //   };
 
-    checkUserExists();
-  }, []);
+  //   checkUserExists();
+  // }, []);
 
   useEffect(() => {
     const setLocalStorage = async () => {
@@ -74,7 +76,7 @@ const AuthScreen = ({ navigation }) => {
   //handle email validation
   const validateEmail = (email) => {
     if (email == "") {
-      setEmailError("Email / username is required");
+      setEmailError("Email is required");
       return false;
     }
 
@@ -105,10 +107,10 @@ const AuthScreen = ({ navigation }) => {
 
   //handle user type dashboard screen
   const handleUserType = (userCode) => {
-    console.log(userCode);
+    // console.log("usercode: ", userCode);
     switch (userCode) {
       case 1:
-        //userCode: 1 => admin
+        //userCode: 1 => superadmin
         navigation.navigate("Admin Dashboard");
         Toast.show("Logged in successfully", {
           duration: Toast.durations.LONG,
@@ -121,6 +123,19 @@ const AuthScreen = ({ navigation }) => {
         return;
       case 2:
         //userCode: 2 => admin
+        navigation.navigate("Admin Dashboard");
+        Toast.show("Logged in successfully", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
+        return;
+
+      case 3:
+        //userCode: 3 => staff
         navigation.navigate("Staff Dashboard");
         Toast.show("Logged in successfully", {
           duration: Toast.durations.SHORT,
@@ -143,23 +158,34 @@ const AuthScreen = ({ navigation }) => {
     if (formData.password.length > 0 && validateEmail(formData.email)) {
       //call the api function
       try {
+        setIsLoading(true);
         const res = await apiAuth(formData);
+        console.log(res.data);
         // console.log(res.data.authorization.token);
         setToken(JSON.stringify(res.data.authorization.token));
         setProfile(JSON.stringify(res.data.user));
         // if (res.data.first_login == 0) {
         //   navigation.navigate("First Login");
-        // } else if (res.status == 200) {
-        handleUserType(1);
-        // handleUserType(
-        //   res.data.users.user_type,
-        //   res.data.token,
-        //   res.data.users
-        // );
-        // navigation.navigate("Dashboard");
-        // }
+        // } else
+        if (res.status == 200) {
+          await AsyncStorage.setItem(
+            "token",
+            JSON.stringify(res.data.authorization.token)
+          );
+          await AsyncStorage.setItem("profile", JSON.stringify(res.data.user));
+          handleUserType(Number(res.data.user.user_role));
+          // handleUserType(2);
+          // handleUserType(
+          //   res.data.users.user_type,
+          //   res.data.token,
+          //   res.data.users
+          // );
+          // navigation.navigate("Dashboard");
+        }
+        setIsLoading(false);
         // await AsyncStorage.setItem("firstLogin", res.data.first_login);
       } catch (error) {
+        setIsLoading(false);
         Toast.show("Invalid Credentials", {
           duration: Toast.durations.SHORT,
           position: Toast.positions.BOTTOM,
@@ -215,6 +241,7 @@ const AuthScreen = ({ navigation }) => {
         >
           <TextInput
             name="password"
+            style={{ width: "90%" }}
             placeholder="Password"
             value={formData.password}
             onChangeText={(text) => handleChange(text, "password")}
@@ -228,7 +255,6 @@ const AuthScreen = ({ navigation }) => {
             />
           ) : null}
         </View>
-
         {passwordError ? (
           <Text style={styles.errorText}>{passwordError}</Text>
         ) : null}
@@ -239,7 +265,11 @@ const AuthScreen = ({ navigation }) => {
         // onPress={() => navigation.navigate("Dashboard")}
         style={styles.submitButton}
       >
-        <Text style={styles.submitText}> Login </Text>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.submitText}> Login </Text>
+        )}
       </Pressable>
       <Pressable
         style={styles.opacity}
