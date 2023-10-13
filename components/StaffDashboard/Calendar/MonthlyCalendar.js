@@ -32,6 +32,7 @@ const MonthlyCalendar = ({ navigation }) => {
   const [shiftLogs, setShiftLogs] = useState([]);
   const [isCheckIn, setIsCheckIn] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [checkinMsg, setCheckinMsg] = useState("");
 
   useFocusEffect(
     useCallback(() => {
@@ -45,6 +46,7 @@ const MonthlyCalendar = ({ navigation }) => {
         });
         console.log("response", checkinRes.data);
         setIsCheckIn(!checkinRes.data.checkin);
+        setCheckinMsg(checkinRes.data.message);
       })();
 
       const getAllLeaves = async () => {
@@ -247,12 +249,14 @@ const MonthlyCalendar = ({ navigation }) => {
                   !isCheckIn ? (
                     <Text style={[styles.calendarText, { fontSize: 9 }]}>
                       {shiftObj[date.dateString]?.hours}h{" "}
-                      {shiftObj[date.dateString]?.minutes}m {"\n"}Checked In
+                      {shiftObj[date.dateString]?.minutes}m {"\n"}
+                      {checkinMsg}
                     </Text>
                   ) : (
                     <Text style={[styles.calendarText, { fontSize: 9 }]}>
                       {shiftObj[date.dateString]?.hours}h{" "}
-                      {shiftObj[date.dateString]?.minutes}m {"\n"}Checked Out
+                      {shiftObj[date.dateString]?.minutes}m {"\n"}
+                      {checkinMsg}
                     </Text>
                   )
                 ) : (
