@@ -13,7 +13,11 @@ import Toast from "react-native-root-toast";
 import Icon from "react-native-vector-icons/FontAwesome5";
 // import { apiDeleteCompany, apiGetAllCompanies } from "../../../apis/companies";
 import { useFocusEffect } from "@react-navigation/native";
-import { apiGetAllLeaves, apiGetLeaveTypes } from "../../../apis/leaves";
+import {
+  apiGetAllLeaves,
+  apiGetLeaveTypes,
+  apiGetLeavesGroup,
+} from "../../../apis/leaves";
 import moment from "moment";
 
 const randomHexColor = () => {
@@ -34,7 +38,7 @@ const LeavesList = ({ navigation }) => {
 
       const getAllLeaves = async () => {
         try {
-          const res = await apiGetAllLeaves();
+          const res = await apiGetLeavesGroup();
           setLeavesList([...res?.data?.leaves]);
           console.log("leaves: ", res?.data.leaves);
         } catch (err) {
@@ -54,8 +58,8 @@ const LeavesList = ({ navigation }) => {
   const handleDelete = async () => {};
 
   const dateSort = (a, b) => {
-    const formattedA = moment(a.date).format("MM/DD/YYYY");
-    const formattedB = moment(b.date).format("MM/DD/YYYY");
+    const formattedA = moment(a.date_from).format("MM/DD/YYYY");
+    const formattedB = moment(b.date_from).format("MM/DD/YYYY");
 
     if (formattedA < formattedB) {
       return 1;
@@ -90,9 +94,11 @@ const LeavesList = ({ navigation }) => {
                 // navigation.setOptions({ title: "Updated!" });
               }}
             >
-              <Text style={styles.item}>
+              <Text style={[styles.item, { fontSize: 14.5 }]}>
                 {item?.leave_type?.type} {"\n"}
-                Date: {item?.date} {"\n"}
+                Date: {item?.date_from}{" "}
+                {item?.date_to > item?.date_from && <>to {item?.date_to}</>} (
+                {item.days} {item.days > 1 ? <>days</> : <>day</>}){"\n"}
                 {/* {item.to && item.to != item.from && <> to {item.to} </>} */}
                 Applied on: {moment(item?.created_at).format(
                   "YYYY-MM-DD"
