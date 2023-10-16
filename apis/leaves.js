@@ -41,3 +41,14 @@ export const apiGetAllLeaves = async () => {
   });
   return response;
 };
+
+export const apiGetLeavesGroup = async () => {
+  const token = await AsyncStorage.getItem("token");
+  const response = await request({
+    path: "fetch/leaves_group",
+    headers: {
+      Authorization: `Bearer ${JSON.parse(token)}`,
+    },
+  });
+  return response;
+};
