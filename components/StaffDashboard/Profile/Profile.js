@@ -75,22 +75,21 @@ const Profile = ({ navigation }) => {
         flex: 1,
         alignItems: "center",
         padding: 10,
-        justifyContent: "center",
+        // justifyContent: "center",
       }}
     >
       <>
         <View
           style={{
-            width: 300,
+            width: "95%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            padding: 22,
-            // alignItems: "center",
+            justifyContent: "space-between",
+            padding: 16,
             backgroundColor: "#fff",
-            // height: "92%",
+            height: "100%",
             borderRadius: 16,
-            height: "70%",
+            // height: "50%",
           }}
         >
           {/* <View style={{ display: "flex", flexDirection: "row", margin: 10 }}>
@@ -114,50 +113,52 @@ const Profile = ({ navigation }) => {
                 <Icon name="edit" size={20} style={{ color: "#fff" }} />
               </Pressable>
             </View> */}
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Name: </Text>
-            <Text>{userData.name}</Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Email: </Text>
-            <Text> {userData.email} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Username: </Text>
-            <Text> {userData.username} </Text>
-          </View>
-          {/*<View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>ID: </Text>
-            <Text> {userData.employee_id} </Text>
-          </View>
-           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Phone Number: </Text>
-            <Text> {userData.phone_number} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Address: </Text>
-            <Text> {userData.address} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>State/UT: </Text>
-            <Text> {userData.state} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Country: </Text>
-            <Text> {userData.country} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Zip Code: </Text>
-            <Text> {userData.zip_code} </Text>
-          </View> */}
-          <View style={{ marginVertical: 18, width: "100%" }}>
-            <Button
-              style={{ marginBottom: 10 }}
-              onPress={() => navigation.navigate("Edit Profile")}
-              title="Edit"
-              color="#055C9D"
-            />
-          </View>
+            <View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Name</Text>
+                  <Text style={styles.feildDetail}>{userData.name}</Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Email</Text>
+                  <Text style={styles.feildDetail}>{userData.email} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Username</Text>
+                  <Text style={styles.feildDetail}>{userData.username} </Text>
+                </View>
+                {/*<View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>ID: </Text>
+                  <Text> {userData.employee_id} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Phone Number: </Text>
+                  <Text> {userData.phone_number} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Address: </Text>
+                  <Text> {userData.address} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>State/UT: </Text>
+                  <Text> {userData.state} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Country: </Text>
+                  <Text> {userData.country} </Text>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldName}>Zip Code: </Text>
+                  <Text> {userData.zip_code} </Text>
+                </View> */}
+            </View>
+            <View style={{ marginVertical: 18, width: "100%" }}>
+              <Button
+                style={{ marginBottom: 10,}}
+                onPress={() => navigation.navigate("Edit Profile")}
+                title="Edit"
+                color="#055C9D"
+              />
+            </View>
         </View>
         {/* <Pressable
           onPress={() => navigation.navigate("Edit Profile")}
@@ -177,7 +178,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    width: "90%",
     marginBottom: 5,
   },
   icon: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     top: 8,
     zIndex: 999,
     paddingHorizontal: 8,
-    fontSize: 14,
+    fontSize: 17,
   },
   placeholderStyle: {
     fontSize: 16,
@@ -215,10 +215,21 @@ const styles = StyleSheet.create({
 
   fieldContainer: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     marginTop: 5,
-    marginBottom: 5,
-    // padding: 2,
+    marginBottom: 20,
+    backgroundColor: "#055C9D",
+    padding: 10,
+    borderBottomWidth: 4,
+    borderBottomColor: "#b1b1b3",
+    // borderTopLeftRadius: 8,
+    // borderTopRightRadius: 8
+  
+  },
+
+  feildDetail: {
+    fontSize: 17,
+    color: "white"
   },
 
   input: {
@@ -259,6 +270,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     display: "flex",
     flexDirection: "row",
+    marginBottom: 5,
+    fontSize: 15,
+    color: "#f4f4f4"
   },
 
   errorText: {

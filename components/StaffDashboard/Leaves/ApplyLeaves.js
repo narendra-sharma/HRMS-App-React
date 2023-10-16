@@ -269,10 +269,10 @@ const ApplyLeaves = ({ navigation, route }) => {
   return (
     <View
       style={{
-        flex: 1,
-        alignItems: "center",
-        paddingHorizontal: 6,
-        paddingVertical: 24,
+        display: "flex",
+        padding: 22,
+        justifyContent: "center",
+        width: "100%"
       }}
     >
       <ScrollView
@@ -493,14 +493,13 @@ const styles = StyleSheet.create({
   scrollviewContainer: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
     padding: 22,
-    //   alignItems: "center",
     backgroundColor: "#fff",
+    justifyContent: "space-between",
     height: "100%",
     borderRadius: 16,
-    width: 320,
-    // maxHeight: "100%",
+    width: "100%"
+    // backgroundColor: "black"
   },
   dropdown: {
     height: 50,
@@ -516,6 +515,7 @@ const styles = StyleSheet.create({
   },
   labelField: {
     margin: 2,
+    fontWeight: "600"
   },
   label: {
     position: "absolute",
