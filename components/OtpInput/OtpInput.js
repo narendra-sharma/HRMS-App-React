@@ -108,7 +108,8 @@ const OtpInput = ({
   return (
     <Pressable style={styles.otpInputContainer} onPress={Keyboard.dismiss}>
       <View style={styles.otpInputContainer}>
-        <Text>Enter the 4-digit code:</Text>
+        <Text style={styles.otpHeading}>OTP Verification</Text>
+        <Text style={{color: "#e3e3e3"}}>Enter the 4-digit code:</Text>
         <Pressable
           onPress={handleOnPress}
           style={styles.splitOTPBoxesContainer}
@@ -155,7 +156,7 @@ const OtpInput = ({
           style={
             isPinReady
               ? styles.submitButton
-              : [styles.submitButton, { backgroundColor: "gray" }]
+              : [styles.submitButton, { backgroundColor: "white" }]
           }
         >
           {isLoading ? (
@@ -176,6 +177,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#055C9D"
+  },
+
+  otpHeading: {
+    fontSize: 24,
+    color: "white",
+    marginBottom: 10
   },
 
   textInputHidden: {
@@ -191,54 +199,49 @@ const styles = StyleSheet.create({
   },
 
   splitOTPBoxesContainer: {
-    width: "80%",
+    width: "70%",
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
 
   splitBoxes: {
-    marginTop: 10,
-    borderColor: "#000",
+    marginTop: 20,
+    borderColor: "#fff",
     borderWidth: 1,
-    bordeRadius: "5px",
+    borderRadius: 5,
     padding: "12px",
-    width: 35,
-    height: 40,
+    width: 45,
+    height: 45,
     display: "flex",
     justifyContent: "center",
   },
 
   splitBoxesFocused: {
-    marginTop: 10,
     borderColor: "#e5e5e5",
     borderWidth: 1,
-    bordeRadius: "5px",
+    borderRadius: 5,
     padding: "12px",
-    width: 35,
-    height: 40,
+    width: 45,
+    height: 45,
     display: "flex",
     justifyContent: "center",
-    elevation: 1,
-    shadowColor: "#52006A",
   },
 
   splitBoxText: {
     textAlign: "center",
-    color: "#000",
-    // color: "magenta",
+    color: "#fff",
   },
 
   submitButton: {
     marginTop: 20,
-    backgroundColor: "#055C9D",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 5,
     width: "80%",
     alignItems: "center",
   },
 
   submitText: {
-    color: "white",
+    color: "black",
     width: "80%",
   },
 });

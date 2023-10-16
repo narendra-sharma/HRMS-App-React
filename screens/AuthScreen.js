@@ -214,7 +214,7 @@ const AuthScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#055C9D" }}>
       <Text style={styles.heading}>Login</Text>
 
       {/**********  INPUTS VIEW *********/}
@@ -276,7 +276,7 @@ const AuthScreen = ({ navigation }) => {
         // onPress={() => navigation.navigate("OTP")}
         onPress={() => navigation.navigate("Forgot Password")}
       >
-        <Text>Forgot Password? Click here</Text>
+        <Text style={{color: "#fff"}}>Forgot Password? Click here</Text>
       </Pressable>
     </View>
   );
@@ -286,32 +286,38 @@ export default AuthScreen;
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 8
   },
 
   input: {
-    borderWidth: 1,
-    width: 300,
-    height: 35,
+    height: 46,
     marginBottom: 5,
     marginTop: 10,
-    padding: 5,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 5,
     width: "100%",
+    backgroundColor: "#fff",
   },
 
   submitButton: {
-    marginTop: 10,
-    backgroundColor: "#055C9D",
+    borderStyle: "solid",
+    marginTop: 20,
+    borderColor: "#fff",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 34,
     width: "80%",
     alignItems: "center",
+    color: "#fff",
+    borderColor: '#fff',
+    borderWidth: 1,
   },
 
   submitText: {
-    color: "white",
+    color: "#fff",
+    fontWeight: "600"
   },
 
   opacity: {
@@ -320,6 +326,7 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: "red",
-    fontSize: 10,
+    fontSize: 13,
+    marginBottom: 8
   },
 });

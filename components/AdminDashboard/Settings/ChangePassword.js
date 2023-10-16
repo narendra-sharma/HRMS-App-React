@@ -184,8 +184,8 @@ const ChangePassword = ({ navigation }) => {
         display: "flex",
         padding: 22,
         width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
       {/**********  INPUT PASSWORDS VIEW *********/}
@@ -195,7 +195,7 @@ const ChangePassword = ({ navigation }) => {
           display: "flex",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "space-between",
           padding: 22,
           // alignItems: "center",
           backgroundColor: "#fff",
@@ -205,7 +205,7 @@ const ChangePassword = ({ navigation }) => {
         }}
         keyboardShouldPersistTaps="always"
       >
-        <Text>Enter Current Password: </Text>
+        <Text style={styles.labelField}>Enter Current Password: </Text>
         <View
           style={[
             {
@@ -239,7 +239,7 @@ const ChangePassword = ({ navigation }) => {
           <Text style={styles.errorText}>{oldPasswordError}</Text>
         ) : null}
 
-        <Text>Enter New Password: </Text>
+        <Text style={styles.labelField}>Enter New Password: </Text>
         <View
           style={[
             {
@@ -271,7 +271,7 @@ const ChangePassword = ({ navigation }) => {
           <Text style={styles.errorText}>{newPasswordError}</Text>
         ) : null}
 
-        <Text>Confirm New Password: </Text>
+        <Text style={styles.labelField}>Confirm New Password: </Text>
         <View
           style={[
             {
@@ -359,6 +359,11 @@ const styles = StyleSheet.create({
 
   submitText: {
     color: "white",
+  },
+
+  labelField: {
+    margin: 2,
+    fontWeight: "600"
   },
 
   errorText: {

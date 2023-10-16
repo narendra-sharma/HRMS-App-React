@@ -67,10 +67,10 @@ const ResendOtp = ({ email }) => {
       }}
     >
       {time > 0 ? (
-        <Text>Resend Code in: {time} seconds</Text>
+        <Text style={{color:"#f5f5f5", marginTop: 10}}>Resend Code in: {time} seconds</Text>
       ) : (
         <>
-          <Text>Did not receive OTP? </Text>
+          <Text style={{color:"#ddd", marginTop: 10}}>Did not receive OTP? </Text>
           <Pressable onPress={handleResendOtp} style={styles.submitButton}>
             <Text style={styles.submitText}>Resend Code</Text>
           </Pressable>

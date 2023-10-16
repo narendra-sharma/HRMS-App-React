@@ -246,30 +246,38 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderWidth: 1,
-    height: 35,
+    width: 300,
+    height: 46,
     marginBottom: 5,
     marginTop: 10,
-    padding: 5,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 5,
+    width: "100%",
+    backgroundColor: "#fff",
   },
 
   submitButton: {
-    margin: 10,
-    backgroundColor: "#055C9D",
+    borderStyle: "solid",
+    marginTop: 20,
+    borderColor: "#fff",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 34,
     width: "80%",
     alignItems: "center",
+    color: "#fff",
+    borderColor: '#fff',
+    borderWidth: 1,
   },
 
   submitText: {
     color: "white",
+    fontWeight: "600"
   },
 
   errorText: {
     color: "red",
-    fontSize: 10,
+    fontSize: 13,
+    marginBottom: 8
   },
 });
 

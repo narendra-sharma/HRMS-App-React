@@ -182,7 +182,6 @@ const ChangePassword = ({ navigation }) => {
         display: "flex",
         padding: 22,
         width: "100%",
-        alignItems: "center",
         justifyContent: "center",
       }}
     >
@@ -190,21 +189,22 @@ const ChangePassword = ({ navigation }) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          width: 300,
+          width: "100%",
           display: "flex",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "space-between",
           padding: 22,
           // alignItems: "center",
           backgroundColor: "#fff",
           // height: "92%",
           borderRadius: 16,
-          minHeight: "95%",
+          height: "100%"
         }}
         keyboardShouldPersistTaps="always"
       >
-        <Text>Enter Current Password: </Text>
+      <View>
+        <Text style={styles.labelField}>Enter Current Password: </Text>
         <View
           style={[
             {
@@ -238,7 +238,7 @@ const ChangePassword = ({ navigation }) => {
           <Text style={styles.errorText}>{oldPasswordError}</Text>
         ) : null}
 
-        <Text>Enter New Password: </Text>
+        <Text style={styles.labelField}>Enter New Password: </Text>
         <View
           style={[
             {
@@ -270,7 +270,7 @@ const ChangePassword = ({ navigation }) => {
           <Text style={styles.errorText}>{newPasswordError}</Text>
         ) : null}
 
-        <Text>Confirm New Password: </Text>
+        <Text style={styles.labelField}>Confirm New Password: </Text>
         <View
           style={[
             {
@@ -301,6 +301,7 @@ const ChangePassword = ({ navigation }) => {
         {confirmPasswordError ? (
           <Text style={styles.errorText}>{confirmPasswordError}</Text>
         ) : null}
+      </View>
 
         <View style={{ marginVertical: 18 }}>
           <Button
@@ -358,6 +359,11 @@ const styles = StyleSheet.create({
 
   submitText: {
     color: "white",
+  },
+
+  labelField: {
+    margin: 2,
+    fontWeight: "600"
   },
 
   errorText: {

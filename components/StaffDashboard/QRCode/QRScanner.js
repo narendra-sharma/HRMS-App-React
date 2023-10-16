@@ -258,6 +258,7 @@ const styles = StyleSheet.create({
   paragraph: {
     fontSize: 16,
     marginBottom: 40,
+    fontWeight: "500"
   },
   cameraContainer: {
     width: "100%",
@@ -268,6 +269,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    // width: 400
   },
   button: {
     backgroundColor: "blue",
