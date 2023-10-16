@@ -21,49 +21,44 @@ const QRScanner = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isCameraVisible, setIsCameraVisible] = useState(false);
   const [isCheckIn, setIsCheckIn] = useState(null);
-  const [clockType, setClockType] = useState(0);
 
-  // console.log("formData, ", formData);
-  // console.log("checkin status, ", isCheckIn);
+  console.log("formData, ", formData);
 
-  //permissions
+  //permissions for camera and location
   useEffect(() => {
+    //permission for camera
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setCameraHasPermission(status === "granted");
     })();
-  }, []);
 
-  //get location
-  useEffect(() => {
+    //permission for location
     (async () => {
-      // setIsCameraVisible(false);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
-      const user = await AsyncStorage.getItem("profile");
-      setLocation({ ...location });
+    })();
+  }, []);
 
-      //check if user is clocking in or clocking out
+  //get checkin status
+  useEffect(() => {
+    (async () => {
+      const user = await AsyncStorage.getItem("profile");
+      //function to check if user is clocking in or clocking out
       const checkinRes = await apiGetCheckinStatus({
         user_id: JSON.parse(user).id,
       });
       console.log(checkinRes.data);
-      setIsCheckIn(!checkinRes.data.checkin);
-
-      setFormData({
-        ...formData,
-        user_lat: location.coords.latitude,
-        user_long: location.coords.longitude,
-        user_id: JSON.parse(user).id,
-        purpose: checkinRes.data.checkin ? 2 : 1,
+      setIsCheckIn(checkinRes.data.checkin);
+      setFormData((prev) => {
+        return { ...prev, purpose: checkinRes.data.checkin ? 2 : 1 };
       });
     })();
-  }, []);
+  }, [scanned]);
 
+  // get location coordinates
   useFocusEffect(
     useCallback(() => {
       (async () => {
@@ -93,23 +88,6 @@ const QRScanner = () => {
         }));
       })();
     }, [])
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      (async () => {
-        const user = await AsyncStorage.getItem("profile");
-        //function to check if user is clocking in or clocking out
-        const checkinRes = await apiGetCheckinStatus({
-          user_id: JSON.parse(user).id,
-        });
-        console.log(checkinRes.data);
-        setIsCheckIn(checkinRes.data.checkin);
-        setFormData((prev) => {
-          return { ...prev, purpose: checkinRes.data.checkin ? 2 : 1 };
-        });
-      })();
-    }, [scanned])
   );
 
   //get location permission and other data
