@@ -4,11 +4,11 @@
     "slug": "hrms",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/newIcon.png",
+    "icon": "./assets/splashScreen.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/bigger.png",
-      "resizeMode": "contain",
+      "image": "./assets/splashScreen.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ADD8E6"
     },
     "assetBundlePatterns": ["**/*"],
@@ -44,7 +44,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/hrmsLogo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.manyavv.hrms",
