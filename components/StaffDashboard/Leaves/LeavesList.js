@@ -109,14 +109,15 @@ const LeavesList = ({ navigation }) => {
                 <Text
                   style={
                     item.status == "Pending"
-                      ? { color: "orange" }
+                      ? { color: "orange", fontWeight: "600" }
                       : item.status == "Approved"
                       ? {
                           color: "lightgreen",
+                          fontWeight: "600"
                           // margin: 4,
                           // color: "#fff",
                         }
-                      : { color: "red" }
+                      : { color: "red", fontWeight: "600" }
                   }
                 >
                   {item.status}
@@ -196,16 +197,16 @@ const styles = StyleSheet.create({
   listItem: {
     backgroundColor: "#fff",
     // margin: 2,
-    minWidth: "98%",
-    maxWidth: "98%",
+    minWidth: "100%",
+    maxWidth: "100%",
     display: "flex",
     flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#d9d9d9",
+    backgroundColor: "#f5f5f5",
     justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 16,
+    padding: 10,
   },
 
   item: {
