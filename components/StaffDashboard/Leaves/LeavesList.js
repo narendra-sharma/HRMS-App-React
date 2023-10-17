@@ -58,8 +58,8 @@ const LeavesList = ({ navigation }) => {
   const handleDelete = async () => {};
 
   const dateSort = (a, b) => {
-    const formattedA = moment(a.date_from).format("MM/DD/YYYY");
-    const formattedB = moment(b.date_from).format("MM/DD/YYYY");
+    const formattedA = moment(a.from_date).format("MM/DD/YYYY");
+    const formattedB = moment(b.from_date).format("MM/DD/YYYY");
 
     if (formattedA < formattedB) {
       return 1;
@@ -96,18 +96,18 @@ const LeavesList = ({ navigation }) => {
             >
               <Text style={[styles.item, { fontSize: 14.5 }]}>
                 {item?.leave_type?.type} {"\n"}
-                Date: {item?.date_from}{" "}
-                {item?.date_to > item?.date_from && <>to {item?.date_to}</>} (
+                Date: {item?.from_date}{" "}
+                {item?.to_date > item?.from_date && <>to {item?.to_date}</>} (
                 {item.days} {item.days > 1 ? <>days</> : <>day</>}){"\n"}
                 {/* {item.to && item.to != item.from && <> to {item.to} </>} */}
                 Applied on: {moment(item?.created_at).format(
                   "YYYY-MM-DD"
                 )} at {moment(item?.created_at).format("hh:mm a")}
               </Text>
-              <Text style={styles.item}>
+              <Text style={[styles.item, { fontSize: 14.5 }]}>
                 Status:{" "}
                 <Text
-                  style={
+                  style={[
                     item.status == "Pending"
                       ? { color: "orange" }
                       : item.status == "Approved"
@@ -116,8 +116,9 @@ const LeavesList = ({ navigation }) => {
                           // margin: 4,
                           // color: "#fff",
                         }
-                      : { color: "red" }
-                  }
+                      : { color: "red" },
+                    ,
+                  ]}
                 >
                   {item.status}
                 </Text>
