@@ -118,8 +118,6 @@ const LeavesList = ({ navigation }) => {
                           // color: "#fff",
                         }
                       : { color: "red", fontWeight: "600" }
-                  }
-
                      
                   ]}
 
