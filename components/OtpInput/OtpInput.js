@@ -109,7 +109,7 @@ const OtpInput = ({
     <Pressable style={styles.otpInputContainer} onPress={Keyboard.dismiss}>
       <View style={styles.otpInputContainer}>
         <Text style={styles.otpHeading}>OTP Verification</Text>
-        <Text style={{color: "#e3e3e3"}}>Enter the 4-digit code:</Text>
+        <Text style={{color: "#e3e3e3"}}>Enter the 4-digit code</Text>
         <Pressable
           onPress={handleOnPress}
           style={styles.splitOTPBoxesContainer}

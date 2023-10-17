@@ -324,22 +324,20 @@ const MonthlyCalendar = ({ navigation, route }) => {
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        // borderRadius: 5, // Border radius to make it look like a box
-                        // backgroundColor: "lightblue",
-                        // borderWidth: 1,
-                        // borderColor: "lightblue",
-                        // marginHorizontal: 1,
-                        paddingHorizontal: 2,
+                        padding: 3,
+                        borderRadius: 5,
                         fontSize: 10,
+                        backgroundColor: "#055C9D",
+                        color: "#fff"
                       }}
                     >
                       Required Emp:{" "}
-                      <Text style={{ fontWeight: "bold" }}>
+                      <Text style={{color: "white", fontWeight: "bold" }}>
                         {employeesRequired}
                       </Text>{" "}
                       {"\n"}
                       Assigned Emp:{" "}
-                      <Text style={{ fontWeight: "bold" }}>
+                      <Text style={{color: "white", fontWeight: "bold" }}>
                         {
                           employeesData[
                             employeesData.findIndex(
@@ -374,234 +372,240 @@ const MonthlyCalendar = ({ navigation, route }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  marginBottom: 4,
-                  fontSize: 15,
-                }}
-              >
-                {/* Date:  */}
-                {modalData}
-              </Text>
+                <View style={styles.just}>
+                  <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        marginBottom: 4,
+                        fontSize: 15,
+                      }}
+                      >
+                      {/* Date:  */}
+                      {modalData}
+                    </Text>
 
-              {/* Employees Listing */}
-              {employeesData[
-                employeesData.findIndex((obj) => obj.date == modalData)
-              ]?.data?.length > 0 && (
-                <>
-                  <Text>Assigned Employees:</Text>
-                  <View
-                    style={{
-                      height: 100,
-                      marginVertical: 10,
-                      padding: 6,
-                      borderWidth: 1,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <FlatList
-                      persistentScrollbar={true}
-                      showsVerticalScrollIndicator={true}
-                      data={
-                        employeesData[
-                          employeesData.findIndex(
-                            (obj) => obj.date == modalData
-                          )
-                        ]?.data
-                      }
-                      renderItem={({ item }) => (
-                        // item.date == modalData ? (
-                        // <Text> Name: {JSON.stringify(item?.user)} </Text>
-                        // ) :
+                    {/* Employees Listing */}
+                    {employeesData[
+                      employeesData.findIndex((obj) => obj.date == modalData)
+                    ]?.data?.length > 0 && (
+                      <View>
+                        <Text style={{fontWeight: "600"}}>Assigned Employees:</Text>
                         <View
                           style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 5,
+                            height: 100,
+                            marginVertical: 10,
+                            padding: 6,
+                            borderWidth: 1,
+                            borderColor: "lightgray",
                           }}
                         >
-                          <Text style={{ fontSize: 15 }}>
-                            {item?.user?.name}
-                          </Text>
-                          {modalData >= new Date().toJSON().slice(0, 10) && (
-                            <TouchableOpacity
-                              onPress={() =>
-                                handleEmployeeDelete(
-                                  item?.user?.name,
-                                  item?.user?.id,
-                                  modalData
+                          <FlatList
+                            persistentScrollbar={true}
+                            showsVerticalScrollIndicator={true}
+                            data={
+                              employeesData[
+                                employeesData.findIndex(
+                                  (obj) => obj.date == modalData
                                 )
-                              }
-                            >
-                              <Icon name="trash-alt" size={17} color="red" />
-                            </TouchableOpacity>
-                          )}
+                              ]?.data
+                            }
+                            renderItem={({ item }) => (
+                              // item.date == modalData ? (
+                              // <Text> Name: {JSON.stringify(item?.user)} </Text>
+                              // ) :
+                              <View
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                  padding: 5,
+                                }}
+                              >
+                                <Text style={{ fontSize: 15 }}>
+                                  {item?.user?.name}
+                                </Text>
+                                {modalData >= new Date().toJSON().slice(0, 10) && (
+                                  <TouchableOpacity
+                                    onPress={() =>
+                                      handleEmployeeDelete(
+                                        item?.user?.name,
+                                        item?.user?.id,
+                                        modalData
+                                      )
+                                    }
+                                  >
+                                    <Icon name="trash-alt" size={17} color="red" />
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                            )}
+                          />
                         </View>
-                      )}
+                        <View
+                          style={{
+                            margin: 8,
+                            borderBottomColor: "gray",
+                            borderBottomWidth: StyleSheet.hairlineWidth,
+                          }}
+                        />
+                      </View>
+                    )}
+
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        padding: 6,
+                        fontWeight: "600",
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      Assign A New Employee:
+                    </Text>
+
+                    {/* Add Employee */}
+                      <Text style={{marginBottom: 2, marginTop: 10, fontWeight: "600"}}>Employee:</Text>
+                      <DropdownMenu
+                        data={employeesDropdownList}
+                        placeholder="Select Employee"
+                        value={formData.user_id}
+                        setValue={setFormData}
+                        label="user_id"
+                        originalObj={formData}
+                        setErrorState={setEmployeeError}
+                      />
+                      {employeeError ? (
+                        <Text style={styles.errorText}>{employeeError}</Text>
+                      ) : null}
+
+                    <DateTimePickerModal
+                      isVisible={isStartDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleStartDateConfirm}
+                      onCancel={hideStartDatePicker}
+                      // minimumDate={modalData}
                     />
-                  </View>
-                  <View
-                    style={{
-                      margin: 8,
-                      borderBottomColor: "gray",
-                      borderBottomWidth: StyleSheet.hairlineWidth,
-                    }}
-                  />
-                </>
-              )}
+                    <Text style={{marginBottom: 2, marginTop: 10, fontWeight: "600"}}>Start Date:</Text>
+                    <Pressable
+                      // onPress={() => {
+                      //   setStartDateVisibility(true);
+                      //   setFormData({
+                      //     ...formData,
+                      //     start_date: moment(startDate).format("MM/DD/YYYY"),
+                      //   });
+                      //   setStartDateError(null);
+                      // }}
+                      style={[
+                        styles.input,
+                        {
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          backgroundColor: "#e5e5e5",
+                        },
+                      ]}
+                      name="startDate"
+                      value={formData.start_date}
+                    >
+                      <Icon name="calendar-alt" size={25} color="#A9A9AC" />
+                      {startDate ? (
+                        <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
+                          {moment(startDate).format("MM/DD/YYYY")}
+                        </Text>
+                      ) : (
+                        <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
+                          Start Date
+                        </Text>
+                      )}
+                    </Pressable>
+                    {startDateError ? (
+                      <Text style={styles.errorText}>{startDateError}</Text>
+                    ) : null}
 
-              <Text
-                style={{
-                  textAlign: "center",
-                  padding: 6,
-                  textDecorationLine: "underline",
-                }}
-              >
-                Assign A New Employee:
-              </Text>
+                    <DateTimePickerModal
+                      minimumDate={moment(modalData, "YYYY-MM-DD").toDate()}
+                      maximumDate={moment(route.params.end_date, [
+                        "MM/DD/YYYY",
+                        "YYYY-MM-DD",
+                      ]).toDate()}
+                      isVisible={isEndDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleEndDateConfirm}
+                      onCancel={hideEndDatePicker}
+                      // minimumDate={modalData}
+                    />
+                    <Text style={{marginBottom: 2,  marginTop: 10, fontWeight: "600"}}>End Date:</Text>
+                    <Pressable
+                      onPress={() => {
+                        setEndDateVisibility(true);
+                        setFormData({
+                          ...formData,
+                          end_date: moment(endDate).format("MM/DD/YYYY"),
+                        });
+                        setDeadlineError(null);
+                      }}
+                      style={[
+                        styles.input,
+                        {
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          color: "#d9d9d9",
+                        },
+                      ]}
+                      name="startDate"
+                      value={formData.deadline}
+                    >
+                      <Icon name="calendar-alt" size={25} color="#A9A9AC" />
+                      {endDate ? (
+                        <Text style={{ color: "#000", marginLeft: 10 }}>
+                          {moment(endDate).format("MM/DD/YYYY")}
+                        </Text>
+                      ) : (
+                        <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
+                          End Date
+                        </Text>
+                      )}
+                    </Pressable>
+                    {deadlineError ? (
+                      <Text style={styles.errorText}>{deadlineError}</Text>
+                    ) : null}
+                </View>
 
-              {/* Add Employee */}
-              <Text>Employee:</Text>
-              <DropdownMenu
-                data={employeesDropdownList}
-                placeholder="Select Employee"
-                value={formData.user_id}
-                setValue={setFormData}
-                label="user_id"
-                originalObj={formData}
-                setErrorState={setEmployeeError}
-              />
-              {employeeError ? (
-                <Text style={styles.errorText}>{employeeError}</Text>
-              ) : null}
+                <View>
+                      <TouchableOpacity
+                      style={styles.customButton}
+                      onPress={() => {
+                        handleSubmit();
+                      }}
+                      >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          color: "#fff",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Assign Employee
+                      </Text>
+                    </TouchableOpacity>
 
-              <DateTimePickerModal
-                isVisible={isStartDatePickerVisible}
-                mode="date"
-                onConfirm={handleStartDateConfirm}
-                onCancel={hideStartDatePicker}
-                // minimumDate={modalData}
-              />
-              <Text>Start Date:</Text>
-              <Pressable
-                // onPress={() => {
-                //   setStartDateVisibility(true);
-                //   setFormData({
-                //     ...formData,
-                //     start_date: moment(startDate).format("MM/DD/YYYY"),
-                //   });
-                //   setStartDateError(null);
-                // }}
-                style={[
-                  styles.input,
-                  {
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "#e5e5e5",
-                  },
-                ]}
-                name="startDate"
-                value={formData.start_date}
-              >
-                <Icon name="calendar-alt" size={25} color="#A9A9AC" />
-                {startDate ? (
-                  <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
-                    {moment(startDate).format("MM/DD/YYYY")}
-                  </Text>
-                ) : (
-                  <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
-                    Start Date
-                  </Text>
-                )}
-              </Pressable>
-              {startDateError ? (
-                <Text style={styles.errorText}>{startDateError}</Text>
-              ) : null}
-
-              <DateTimePickerModal
-                minimumDate={moment(modalData, "YYYY-MM-DD").toDate()}
-                maximumDate={moment(route.params.end_date, [
-                  "MM/DD/YYYY",
-                  "YYYY-MM-DD",
-                ]).toDate()}
-                isVisible={isEndDatePickerVisible}
-                mode="date"
-                onConfirm={handleEndDateConfirm}
-                onCancel={hideEndDatePicker}
-                // minimumDate={modalData}
-              />
-              <Text>End Date:</Text>
-              <Pressable
-                onPress={() => {
-                  setEndDateVisibility(true);
-                  setFormData({
-                    ...formData,
-                    end_date: moment(endDate).format("MM/DD/YYYY"),
-                  });
-                  setDeadlineError(null);
-                }}
-                style={[
-                  styles.input,
-                  {
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    color: "#d9d9d9",
-                  },
-                ]}
-                name="startDate"
-                value={formData.deadline}
-              >
-                <Icon name="calendar-alt" size={25} color="#A9A9AC" />
-                {endDate ? (
-                  <Text style={{ color: "#000", marginLeft: 10 }}>
-                    {moment(endDate).format("MM/DD/YYYY")}
-                  </Text>
-                ) : (
-                  <Text style={{ color: "#A9A9AC", marginLeft: 10 }}>
-                    End Date
-                  </Text>
-                )}
-              </Pressable>
-              {deadlineError ? (
-                <Text style={styles.errorText}>{deadlineError}</Text>
-              ) : null}
-
-              <TouchableOpacity
-                style={styles.customButton}
-                onPress={() => {
-                  handleSubmit();
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#fff",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Assign Employee
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.customButton}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#fff",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Close
-                </Text>
-              </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.customButton}
+                      onPress={() => setModalVisible(false)}
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          color: "#fff",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Close
+                      </Text>
+                    </TouchableOpacity>
+                </View>
+              
             </View>
           </View>
         </Modal>
@@ -716,7 +720,7 @@ const styles = StyleSheet.create({
     width: 49,
     height: 85,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     // borderRadius: 5, // Border radius to make it look like a box
     // borderColor: "lightgray",
     // borderWidth: 0.5,
@@ -729,19 +733,24 @@ const styles = StyleSheet.create({
   },
 
   centeredView: {
+    width: "100%",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
+    // alignItems: "center",
+    paddingTop: 16,
+    paddingBottom: 16
   },
   modalView: {
+    display: "flex",
     margin: 20,
-    minWidth: "60%",
+    justifyContent: "space-between",
+    // minWidth: "60%",
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 16,
     // alignItems: "center",
     shadowColor: "#000",
+    height: "100%",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -771,11 +780,11 @@ const styles = StyleSheet.create({
     // textAlign: "center",
   },
   customButton: {
-    width: 238,
-    margin: 10,
-    backgroundColor: "#1FAAE2",
-    padding: 10,
-    borderRadius: 4,
+    width: "100%",
+    marginBottom: 10,
+    backgroundColor: "#055C9D",
+    padding: 14,
+    borderRadius: 8,
   },
 
   dropdown: {
@@ -784,8 +793,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    width: 250,
-    marginBottom: 5,
+    width: "100%",
+    marginBottom: 5
   },
   placeholderStyle: {
     fontSize: 16,
@@ -799,14 +808,14 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 10,
     marginTop: -4,
-    marginBottom: 4,
+    // marginBottom: 10,
   },
 
   input: {
-    width: 250,
+    width: "100%",
     height: 35,
     marginTop: 2,
-    marginBottom: 10,
+    marginBottom: 5,
     padding: 5,
     borderRadius: 8,
     minWidth: 80,

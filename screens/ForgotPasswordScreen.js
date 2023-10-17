@@ -99,7 +99,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         backgroundColor: "#055C9D"
       }}
     >
-      <Text style={styles.heading}>Enter your email address:</Text>
+      <Text style={styles.heading}>Enter your email address</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

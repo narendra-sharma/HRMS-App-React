@@ -191,7 +191,7 @@ const ChangePassword = ({ navigation }) => {
       {/**********  INPUT PASSWORDS VIEW *********/}
       <ScrollView
         contentContainerStyle={{
-          width: 300,
+          width: "100%",
           display: "flex",
           display: "flex",
           flexDirection: "column",
@@ -201,118 +201,123 @@ const ChangePassword = ({ navigation }) => {
           backgroundColor: "#fff",
           // height: "92%",
           borderRadius: 16,
-          minHeight: "95%",
+          height: "100%"
         }}
         keyboardShouldPersistTaps="always"
       >
+      <View>
         <Text style={styles.labelField}>Enter Current Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            ref={passRef}
-            autoCorrect={false}
-            name="oldPassword"
-            placeholder="Current Password"
-            value={formData.oldPassword}
-            onChangeText={(text) => handleChange(text, "oldPassword")}
-            secureTextEntry={isOldPasswordVisible ? false : true}
-          />
-          {formData.oldPassword.length > 0 && passRef ? (
-            <Icon
-              onPress={() => setIsOldPasswordVisible((prev) => !prev)}
-              name={isOldPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              ref={passRef}
+              autoCorrect={false}
+              name="oldPassword"
+              placeholder="Current Password"
+              value={formData.oldPassword}
+              onChangeText={(text) => handleChange(text, "oldPassword")}
+              secureTextEntry={isOldPasswordVisible ? false : true}
             />
+            {formData.oldPassword.length > 0 && passRef ? (
+              <Icon
+                onPress={() => setIsOldPasswordVisible((prev) => !prev)}
+                name={isOldPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {oldPasswordError ? (
+            <Text style={styles.errorText}>{oldPasswordError}</Text>
           ) : null}
-        </View>
-        {oldPasswordError ? (
-          <Text style={styles.errorText}>{oldPasswordError}</Text>
-        ) : null}
 
-        <Text style={styles.labelField}>Enter New Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            name="newPassword"
-            placeholder="New Password"
-            value={formData.newPassword}
-            onChangeText={(text) => handleChange(text, "newPassword")}
-            secureTextEntry={isNewPasswordVisible ? false : true}
-          />
-          {formData.newPassword.length > 0 ? (
-            <Icon
-              onPress={() => setIsNewPasswordVisible((prev) => !prev)}
-              name={isNewPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+          <Text style={styles.labelField}>Enter New Password: </Text>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              name="newPassword"
+              placeholder="New Password"
+              value={formData.newPassword}
+              onChangeText={(text) => handleChange(text, "newPassword")}
+              secureTextEntry={isNewPasswordVisible ? false : true}
             />
+            {formData.newPassword.length > 0 ? (
+              <Icon
+                onPress={() => setIsNewPasswordVisible((prev) => !prev)}
+                name={isNewPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {newPasswordError ? (
+            <Text style={styles.errorText}>{newPasswordError}</Text>
           ) : null}
-        </View>
-        {newPasswordError ? (
-          <Text style={styles.errorText}>{newPasswordError}</Text>
-        ) : null}
 
-        <Text style={styles.labelField}>Confirm New Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChangeText={(text) => handleChange(text, "confirmPassword")}
-            secureTextEntry={isConfirmPasswordVisible ? false : true}
-          />
-          {formData.confirmPassword.length > 0 ? (
-            <Icon
-              onPress={() => setIsConfirmPasswordVisible((prev) => !prev)}
-              name={isConfirmPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+          <Text style={styles.labelField}>Confirm New Password: </Text>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChangeText={(text) => handleChange(text, "confirmPassword")}
+              secureTextEntry={isConfirmPasswordVisible ? false : true}
             />
+            {formData.confirmPassword.length > 0 ? (
+              <Icon
+                onPress={() => setIsConfirmPasswordVisible((prev) => !prev)}
+                name={isConfirmPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {confirmPasswordError ? (
+            <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
-        </View>
-        {confirmPasswordError ? (
-          <Text style={styles.errorText}>{confirmPasswordError}</Text>
-        ) : null}
+      </View>
 
-        <View style={{ width: "100%", marginVertical: 18 }}>
+        {/* <View style={{ width: "100%"}}>
           <Button
             style={{ marginBottom: 10 }}
             onPress={handleSubmit}
             title="Submit"
             color="#055C9D"
           />
-        </View>
-        {isLoading && <ActivityIndicator size="large" />}
-      </ScrollView>
+        </View> */}
+        <TouchableOpacity style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
+            </TouchableOpacity>
+            {isLoading && <ActivityIndicator size="large" />}
+       </ScrollView>
 
       {/* <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
         <Text style={styles.submitText}>Submit</Text>

@@ -8,6 +8,7 @@ import {
   Button,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { apiChangePasswordFromDashboard } from "../../../apis/auth";
@@ -303,14 +304,17 @@ const ChangePassword = ({ navigation }) => {
         ) : null}
       </View>
 
-        <View style={{ marginVertical: 18 }}>
+        {/* <View style={{ marginVertical: 0 }}>
           <Button
             style={{ width: "30%", marginBottom: 10 }}
             onPress={handleSubmit}
             title="Submit"
             color="#055C9D"
           />
-        </View>
+        </View> */}
+        <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
+        </TouchableOpacity>
         {isLoading && <ActivityIndicator size="large" />}
       </ScrollView>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, Pressable } from "react-native";
+import { View, Text, Button, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { apiGetProfileDetails, apiUpdateProfile } from "../../../apis/auth";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDrawerStatus } from "@react-navigation/drawer";
@@ -85,7 +85,7 @@ const Profile = ({ navigation }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: 16,
+            padding: 22,
             backgroundColor: "#fff",
             height: "100%",
             borderRadius: 16,
@@ -151,14 +151,17 @@ const Profile = ({ navigation }) => {
                   <Text> {userData.zip_code} </Text>
                 </View> */}
             </View>
-            <View style={{ marginVertical: 18, width: "100%" }}>
+            {/* <View style={{ width: "100%" }}>
               <Button
                 style={{ marginBottom: 10, borderRadius: 10}}
                 onPress={() => navigation.navigate("Edit Profile")}
                 title="Edit"
                 color="#055C9D"
               />
-            </View>
+            </View> */}
+            <TouchableOpacity onPress={() => navigation.navigate("Edit Profile")} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14,    borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Edit</Text>
+            </TouchableOpacity>
         </View>
         {/* <Pressable
           onPress={() => navigation.navigate("Edit Profile")}
@@ -218,12 +221,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 5,
     marginBottom: 20,
-    // backgroundColor: "#055C9D",
+    backgroundColor: "#f5f5f5",
     padding: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#ddd",
-    // borderTopLeftRadius: 8,
-    // borderTopRightRadius: 8
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
   
   },
 

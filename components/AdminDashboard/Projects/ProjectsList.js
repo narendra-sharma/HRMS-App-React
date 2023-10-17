@@ -148,7 +148,7 @@ const ProjectsList = ({ navigation }) => {
               {
                 borderWidth: 0,
                 width: "100%",
-                backgroundColor: "#e5e5e5",
+                backgroundColor: "#055C9D",
               },
             ]}
           >
@@ -158,7 +158,8 @@ const ProjectsList = ({ navigation }) => {
                 {
                   fontWeight: "bold",
                   fontSize: 11.5,
-                  textDecorationLine: "underline",
+                  color: "white",
+                  // textDecorationLine: "underline",
                   // textAlign: "center",
                 },
               ]}
@@ -172,9 +173,10 @@ const ProjectsList = ({ navigation }) => {
                   {
                     fontWeight: "bold",
                     fontSize: 11.5,
-                    textDecorationLine: "underline",
+                    // textDecorationLine: "underline",
                     textAlign: "center",
                     paddingHorizontal: 0,
+                    color: "white",
                   },
                 ]}
               >
@@ -186,9 +188,10 @@ const ProjectsList = ({ navigation }) => {
                   {
                     fontWeight: "bold",
                     fontSize: 11.5,
-                    textDecorationLine: "underline",
+                    // textDecorationLine: "underline",
                     textAlign: "center",
                     paddingHorizontal: 0,
+                    color: "white",
                   },
                 ]}
               >
@@ -261,6 +264,7 @@ const ProjectsList = ({ navigation }) => {
               textAlign: "center",
               padding: 4,
               fontSize: 16,
+              fontWeight: "600",
               lineHeight: 28,
             }}
           >
@@ -363,27 +367,25 @@ export default ProjectsList;
 
 const styles = StyleSheet.create({
   centeredView: {
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     // backgroundColor: "pink",
     padding: 20,
-    margin: 20,
     marginTop: 50,
-    height: "60%",
-    // justifyContent: "space-between",
     alignItems: "center",
+    // backgroundColor: "#ddd"
   },
   opacity: {
     width: 200,
     marginTop: 20,
-    backgroundColor: "#1FAAE2",
+    backgroundColor: "#055C9D",
     padding: 10,
-    borderRadius: 4,
+    borderRadius: 5,
   },
 
   container: {
     flex: 1,
-    paddingTop: 22,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",

@@ -159,21 +159,19 @@ const EditProfile = ({ navigation }) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          width: 300,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           padding: 22,
-          // alignItems: "center",
           backgroundColor: "#fff",
-          // height: "92%",
+          justifyContent: "space-between",
+          height: "100%",
           borderRadius: 16,
-          minHeight: "95%",
+          width: "100%"
         }}
         keyboardShouldPersistTaps="always"
       >
         <View style={styles.formContainer}>
-          <Text>Name:</Text>
+          <Text style={styles.labelInput}>Name:</Text>
           <TextInput
             style={styles.input}
             name="name"
@@ -186,7 +184,7 @@ const EditProfile = ({ navigation }) => {
           />
           {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
 
-          <Text>Username:</Text>
+          <Text style={styles.labelInput}>Username:</Text>
           <TextInput
             style={styles.input}
             name="name"
@@ -201,7 +199,7 @@ const EditProfile = ({ navigation }) => {
             <Text style={styles.errorText}>{usernameError}</Text>
           ) : null}
 
-          <Text>Email:</Text>
+          <Text style={styles.labelInput}>Email:</Text>
           <TextInput
             style={styles.input}
             name="email"
@@ -483,9 +481,7 @@ const styles = StyleSheet.create({
   centeredView: {
     display: "flex",
     padding: 22,
-    width: "100%",
     justifyContent: "center",
-    alignItems: "center",
   },
 
   dropdown: {
@@ -530,6 +526,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 
+  labelInput: {
+    fontWeight: "600"
+  },
+
   fieldContainer: {
     display: "flex",
     flexDirection: "row",
@@ -540,12 +540,11 @@ const styles = StyleSheet.create({
 
   input: {
     width: "100%",
-    height: 35,
+    height: 46,
     marginTop: 2,
     marginBottom: 10,
     padding: 5,
-    borderRadius: 8,
-    minWidth: 80,
+    borderRadius: 5,
     paddingHorizontal: 8,
     height: 50,
     borderColor: "gray",
@@ -557,7 +556,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#055C9D",
     padding: 12,
     borderRadius: 8,
-    width: "30%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
     alignContent: "space-around",

@@ -449,8 +449,11 @@ const ApplyLeaves = ({ navigation, route }) => {
             </>
           ) : null}
         </View>
+        <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Apply Leave</Text>
+          </TouchableOpacity>
 
-        <Button title="Apply Leave" onPress={handleSubmit} color="#055C9D" />
+        {/* <Button title="Apply Leave" onPress={handleSubmit} color="#055C9D" /> */}
       </ScrollView>
     </View>
   );

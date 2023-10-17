@@ -590,7 +590,7 @@ const QRCodeGenerator = ({ navigation }) => {
 
               setFormData({ ...formData, address: null });
             }}
-            style={{ marginBottom: 10 }}
+            style={{ marginBottom: 10}}
             color="#055C9D"
           />
         </View>
@@ -782,9 +782,10 @@ const placesStyle = StyleSheet.create({
 const styles = StyleSheet.create({
   mainContainer: {
     height: "100%",
+    width: "100%",
     padding: 22,
     display: "flex",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "flex-end",
     // backgroundColor: "pink",
   },
@@ -796,9 +797,9 @@ const styles = StyleSheet.create({
     padding: 22,
     // alignItems: "center",
     backgroundColor: "#fff",
-    minHeight: "92%",
+    minHeight: "100%",
     borderRadius: 16,
-    width: 320,
+    width: "100%",
   },
 
   formContainer: {
@@ -826,7 +827,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 35,
     marginTop: 2,
-    // marginBottom: 10,
+    marginBottom: 10,
     padding: 5,
     borderRadius: 8,
     minWidth: 80,
@@ -834,7 +835,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderColor: "gray",
     borderWidth: 0.5,
-    marginBottom: 4,
   },
 
   submitButton: {

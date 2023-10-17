@@ -117,7 +117,7 @@ const LeavesList = ({ navigation }) => {
                           // margin: 4,
                           // color: "#fff",
                         }
-                      : { color: "red", fontWeight: "600" },
+                      : { color: "red", fontWeight: "600" }            
                   ]}
                 >
                   {item.status}

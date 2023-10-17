@@ -203,21 +203,23 @@ const QRScanner = () => {
         keyboardShouldPersistTaps="always"
       >
         {!isCheckIn ? (
-          <Text style={styles.paragraph}>Scan the QR Code to Check In.</Text>
+          <Text style={styles.paragraph}> Code to Check In.</Text>
         ) : (
           <Text style={styles.paragraph}>Scan the QR Code to Check Out.</Text>
         )}
 
         {isCameraVisible && renderCamera()}
 
-        <Button
-          title={isCameraVisible ? "Close Scanner" : "Launch Scanner"}
-          color="#055C9D"
-          onPress={() => {
-            setIsCameraVisible((prev) => !prev);
-            setScanned(false);
-          }}
+          <View>
+            <Button
+            title={isCameraVisible ? "Close Scanner" : "Launch Scanner"}
+            color="#055C9D"
+            onPress={() => {
+              setIsCameraVisible((prev) => !prev);
+              setScanned(false);
+            }}
         />
+          </View>
 
         {/* <TouchableOpacity
         style={styles.button}
