@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -408,24 +409,30 @@ const EditProfile = ({ navigation }) => {
             // justifyContent: "space-around",
           }}
         >
-          <View style={{ marginVertical: 18 }}>
+          {/* <View style={{ width: "100%", marginVertical: 10 }}>
             <Button
-              style={{ width: "30%", marginBottom: 10 }}
+              style={{marginBottom: 10 }}
               onPress={handleSubmit}
               title="Submit"
               color="#055C9D"
             />
-          </View>
+          </View> */}
+          <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14,    borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
+          </TouchableOpacity>
           {/* <Pressable onPress={handleSubmit} style={styles.submitButton}>
             <Text>Submit</Text>
           </Pressable> */}
-          <View style={{ marginBottom: 10 }}>
+          {/* <View style={{marginVertical: 10, width: "100%"}}>
             <Button
               onPress={() => navigation.goBack()}
               title="Cancel"
               color="#055C9D"
             />
-          </View>
+          </View> */}
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14,    borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Cancel</Text>
+          </TouchableOpacity>
 
           {/* <Pressable
             onPress={() => navigation.goBack()}
@@ -545,7 +552,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 10,
     padding: 5,
-    borderRadius: 8,
+    borderRadius: 5,
     paddingHorizontal: 8,
     height: 50,
     borderColor: "gray",

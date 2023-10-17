@@ -125,6 +125,7 @@ export default function App() {
                 // headerShown: false,
                 headerTitle: "Back to Login",
                 headerTransparent: true,
+                headerTintColor: '#fff',
                 // headerLeft: () => (
                 //   <Pressable
                 //     onPress={() => navigation.goBack()}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, Pressable } from "react-native";
+import { View, Text, Button, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { apiGetProfileDetails, apiUpdateProfile } from "../../../apis/auth";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDrawerStatus } from "@react-navigation/drawer";
@@ -74,23 +74,23 @@ const Profile = ({ navigation }) => {
       style={{
         flex: 1,
         alignItems: "center",
-        padding: 10,
+        padding: 20,
         justifyContent: "center",
       }}
     >
-      <>
+     
         <View
           style={{
-            width: 300,
+            width: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            padding: 22,
+            justifyContent: "space-between",
+            padding: 16,
             // alignItems: "center",
             backgroundColor: "#fff",
             // height: "92%",
             borderRadius: 16,
-            height: "70%",
+            height: "100%",
           }}
         >
           {/* <View style={{ display: "flex", flexDirection: "row", margin: 10 }}>
@@ -114,58 +114,62 @@ const Profile = ({ navigation }) => {
                 <Icon name="edit" size={20} style={{ color: "#fff" }} />
               </Pressable>
             </View> */}
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Name: </Text>
-            <Text>{userData.name}</Text>
+          <View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Name</Text>
+              <Text style={styles.feildDetail}>{userData.name}</Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Email</Text>
+              <Text style={styles.feildDetail}>{userData.email} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Username</Text>
+              <Text style={styles.feildDetail}>{userData.username} </Text>
+            </View>
+            {/*<View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>ID: </Text>
+              <Text> {userData.employee_id} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Phone Number: </Text>
+              <Text> {userData.phone_number} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Address: </Text>
+              <Text> {userData.address} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>State/UT: </Text>
+              <Text> {userData.state} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Country: </Text>
+              <Text> {userData.country} </Text>
+            </View>
+            <View style={styles.fieldContainer}>
+              <Text style={styles.fieldName}>Zip Code: </Text>
+              <Text> {userData.zip_code} </Text>
+            </View> */}
           </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Email: </Text>
-            <Text> {userData.email} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Username: </Text>
-            <Text> {userData.username} </Text>
-          </View>
-          {/*<View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>ID: </Text>
-            <Text> {userData.employee_id} </Text>
-          </View>
-           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Phone Number: </Text>
-            <Text> {userData.phone_number} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Address: </Text>
-            <Text> {userData.address} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>State/UT: </Text>
-            <Text> {userData.state} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Country: </Text>
-            <Text> {userData.country} </Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>Zip Code: </Text>
-            <Text> {userData.zip_code} </Text>
-          </View> */}
-          <View style={{ marginVertical: 18, width: "100%" }}>
-            <Button
-              style={{ marginBottom: 10 }}
+          {/* <View style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 10, borderRadius: 4 }}> */}
+            {/* <Button
+              style = {{ elevation: 0 }}
               onPress={() => navigation.navigate("Edit Profile")}
               title="Edit"
               color="#055C9D"
-            />
+            /> 
+         </View> */}
+            <TouchableOpacity style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
+              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Edit</Text>
+            </TouchableOpacity>
           </View>
-        </View>
         {/* <Pressable
           onPress={() => navigation.navigate("Edit Profile")}
           style={styles.submitButton}
         >
           <Text style={styles.submitText}>Edit</Text>
         </Pressable> */}
-      </>
     </View>
   );
 };
@@ -213,12 +217,22 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 
+  feildDetail: {
+    fontSize: 17,
+    color: "#000000"
+  },
+
   fieldContainer: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     marginTop: 5,
-    marginBottom: 5,
-    // padding: 2,
+    marginBottom: 20,
+    backgroundColor: "#f5f5f5",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    padding: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: "#ddd",
   },
 
   input: {
@@ -259,6 +273,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     display: "flex",
     flexDirection: "row",
+    marginBottom: 5,
+    fontSize: 15,
+    color: "#000000"
   },
 
   errorText: {

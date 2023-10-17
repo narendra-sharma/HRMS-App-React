@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: 40,
     maxWidth: "90%",
+    gap: 8
   },
 
   subMenuButton: {
