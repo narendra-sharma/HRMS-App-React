@@ -153,7 +153,7 @@ const Profile = ({ navigation }) => {
             </View>
             <View style={{ marginVertical: 18, width: "100%" }}>
               <Button
-                style={{ marginBottom: 10,}}
+                style={{ marginBottom: 10, borderRadius: 10}}
                 onPress={() => navigation.navigate("Edit Profile")}
                 title="Edit"
                 color="#055C9D"
@@ -218,10 +218,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 5,
     marginBottom: 20,
-    backgroundColor: "#055C9D",
+    // backgroundColor: "#055C9D",
     padding: 10,
-    borderBottomWidth: 4,
-    borderBottomColor: "#b1b1b3",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
     // borderTopLeftRadius: 8,
     // borderTopRightRadius: 8
   
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
 
   feildDetail: {
     fontSize: 17,
-    color: "white"
+    color: "#000000"
   },
 
   input: {
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 5,
     fontSize: 15,
-    color: "#f4f4f4"
+    color: "#000000"
   },
 
   errorText: {
