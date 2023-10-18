@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import * as Location from "expo-location";
 import { apiGetCheckinStatus, apiScannedQrData } from "../../../apis/qr";
@@ -203,23 +210,42 @@ const QRScanner = () => {
         keyboardShouldPersistTaps="always"
       >
         {!isCheckIn ? (
-          <Text style={styles.paragraph}> Code to Check In.</Text>
+          <Text style={styles.paragraph}>Scan the QR Code to Check In.</Text>
         ) : (
           <Text style={styles.paragraph}>Scan the QR Code to Check Out.</Text>
         )}
 
         {isCameraVisible && renderCamera()}
 
-          <View>
-            <Button
+        <TouchableOpacity
+          onPress={() => {
+            setIsCameraVisible((prev) => !prev);
+            setScanned(false);
+          }}
+          style={{
+            marginVertical: 10,
+            width: "100%",
+            backgroundColor: "#055C9D",
+            padding: 14,
+            borderRadius: 8,
+          }}
+        >
+          <Text
+            style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+          >
+            {isCameraVisible ? "Close Scanner" : "Launch Scanner"}
+          </Text>
+        </TouchableOpacity>
+        {/* <View>
+          <Button
             title={isCameraVisible ? "Close Scanner" : "Launch Scanner"}
             color="#055C9D"
             onPress={() => {
               setIsCameraVisible((prev) => !prev);
               setScanned(false);
             }}
-        />
-          </View>
+          />
+        </View> */}
 
         {/* <TouchableOpacity
         style={styles.button}
@@ -259,19 +285,24 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 16,
-    marginBottom: 40,
-    fontWeight: "500"
+    marginBottom: 10,
+    fontWeight: "500",
   },
   cameraContainer: {
     width: "100%",
-    aspectRatio: 1,
+    // aspectRatio: 1,
     overflow: "hidden",
-    borderRadius: 10,
+    // borderRadius: 10,
     marginBottom: 40,
+    height: 400,
+    // width: 500,
+    // backgroundColor: "pink",
+    // margin: "0 auto",
   },
   camera: {
-    flex: 1,
-    // width: 400
+    width: "100%",
+    aspectRatio: 1 / 2,
+    // borderRadius: 10,
   },
   button: {
     backgroundColor: "blue",

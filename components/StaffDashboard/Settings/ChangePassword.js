@@ -200,109 +200,109 @@ const ChangePassword = ({ navigation }) => {
           backgroundColor: "#fff",
           // height: "92%",
           borderRadius: 16,
-          height: "100%"
+          height: "100%",
         }}
         keyboardShouldPersistTaps="always"
       >
-      <View>
-        <Text style={styles.labelField}>Enter Current Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            ref={passRef}
-            autoCorrect={false}
-            name="oldPassword"
-            placeholder="Current Password"
-            value={formData.oldPassword}
-            onChangeText={(text) => handleChange(text, "oldPassword")}
-            secureTextEntry={isOldPasswordVisible ? false : true}
-          />
-          {formData.oldPassword.length > 0 && passRef ? (
-            <Icon
-              onPress={() => setIsOldPasswordVisible((prev) => !prev)}
-              name={isOldPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+        <View>
+          <Text style={styles.labelField}>Enter Current Password: </Text>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              ref={passRef}
+              autoCorrect={false}
+              name="oldPassword"
+              placeholder="Current Password"
+              value={formData.oldPassword}
+              onChangeText={(text) => handleChange(text, "oldPassword")}
+              secureTextEntry={isOldPasswordVisible ? false : true}
             />
+            {formData.oldPassword.length > 0 && passRef ? (
+              <Icon
+                onPress={() => setIsOldPasswordVisible((prev) => !prev)}
+                name={isOldPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {oldPasswordError ? (
+            <Text style={styles.errorText}>{oldPasswordError}</Text>
           ) : null}
-        </View>
-        {oldPasswordError ? (
-          <Text style={styles.errorText}>{oldPasswordError}</Text>
-        ) : null}
 
-        <Text style={styles.labelField}>Enter New Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            name="newPassword"
-            placeholder="New Password"
-            value={formData.newPassword}
-            onChangeText={(text) => handleChange(text, "newPassword")}
-            secureTextEntry={isNewPasswordVisible ? false : true}
-          />
-          {formData.newPassword.length > 0 ? (
-            <Icon
-              onPress={() => setIsNewPasswordVisible((prev) => !prev)}
-              name={isNewPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+          <Text style={styles.labelField}>Enter New Password: </Text>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              name="newPassword"
+              placeholder="New Password"
+              value={formData.newPassword}
+              onChangeText={(text) => handleChange(text, "newPassword")}
+              secureTextEntry={isNewPasswordVisible ? false : true}
             />
+            {formData.newPassword.length > 0 ? (
+              <Icon
+                onPress={() => setIsNewPasswordVisible((prev) => !prev)}
+                name={isNewPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {newPasswordError ? (
+            <Text style={styles.errorText}>{newPasswordError}</Text>
           ) : null}
-        </View>
-        {newPasswordError ? (
-          <Text style={styles.errorText}>{newPasswordError}</Text>
-        ) : null}
 
-        <Text style={styles.labelField}>Confirm New Password: </Text>
-        <View
-          style={[
-            {
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
-            styles.input,
-          ]}
-        >
-          <TextInput
-            style={{ width: "90%" }}
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChangeText={(text) => handleChange(text, "confirmPassword")}
-            secureTextEntry={isConfirmPasswordVisible ? false : true}
-          />
-          {formData.confirmPassword.length > 0 ? (
-            <Icon
-              onPress={() => setIsConfirmPasswordVisible((prev) => !prev)}
-              name={isConfirmPasswordVisible ? "eye-slash" : "eye"}
-              size={20}
+          <Text style={styles.labelField}>Confirm New Password: </Text>
+          <View
+            style={[
+              {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+              styles.input,
+            ]}
+          >
+            <TextInput
+              style={{ width: "90%" }}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChangeText={(text) => handleChange(text, "confirmPassword")}
+              secureTextEntry={isConfirmPasswordVisible ? false : true}
             />
+            {formData.confirmPassword.length > 0 ? (
+              <Icon
+                onPress={() => setIsConfirmPasswordVisible((prev) => !prev)}
+                name={isConfirmPasswordVisible ? "eye-slash" : "eye"}
+                size={20}
+              />
+            ) : null}
+          </View>
+          {confirmPasswordError ? (
+            <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
         </View>
-        {confirmPasswordError ? (
-          <Text style={styles.errorText}>{confirmPasswordError}</Text>
-        ) : null}
-      </View>
 
         {/* <View style={{ marginVertical: 0 }}>
           <Button
@@ -312,10 +312,26 @@ const ChangePassword = ({ navigation }) => {
             color="#055C9D"
           />
         </View> */}
-        <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
-              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={{
+            marginVertical: 10,
+            width: "100%",
+            backgroundColor: "#055C9D",
+            padding: 14,
+            borderRadius: 8,
+          }}
+        >
+          {isLoading ? (
+            <ActivityIndicator size={22} />
+          ) : (
+            <Text
+              style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+            >
+              Submit
+            </Text>
+          )}
         </TouchableOpacity>
-        {isLoading && <ActivityIndicator size="large" />}
       </ScrollView>
 
       {/* <Pressable onPress={handleSubmit} style={styles.submitButton}>
@@ -367,7 +383,7 @@ const styles = StyleSheet.create({
 
   labelField: {
     margin: 2,
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   errorText: {
