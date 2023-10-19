@@ -201,12 +201,12 @@ const ChangePassword = ({ navigation }) => {
           backgroundColor: "#fff",
           // height: "92%",
           borderRadius: 16,
-          height: "100%"
+          height: "100%",
         }}
         keyboardShouldPersistTaps="always"
       >
-      <View>
-        <Text style={styles.labelField}>Enter Current Password: </Text>
+        <View>
+          <Text style={styles.labelField}>Enter Current Password: </Text>
           <View
             style={[
               {
@@ -303,7 +303,7 @@ const ChangePassword = ({ navigation }) => {
           {confirmPasswordError ? (
             <Text style={styles.errorText}>{confirmPasswordError}</Text>
           ) : null}
-      </View>
+        </View>
 
         {/* <View style={{ width: "100%"}}>
           <Button
@@ -313,11 +313,24 @@ const ChangePassword = ({ navigation }) => {
             color="#055C9D"
           />
         </View> */}
-        <TouchableOpacity style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
-              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
-            </TouchableOpacity>
-            {isLoading && <ActivityIndicator size="large" />}
-       </ScrollView>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={{
+            marginVertical: 10,
+            width: "100%",
+            backgroundColor: "#055C9D",
+            padding: 14,
+            borderRadius: 8,
+          }}
+        >
+          <Text
+            style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+          >
+            Submit
+          </Text>
+        </TouchableOpacity>
+        {isLoading && <ActivityIndicator size="large" />}
+      </ScrollView>
 
       {/* <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
         <Text style={styles.submitText}>Submit</Text>
@@ -368,7 +381,7 @@ const styles = StyleSheet.create({
 
   labelField: {
     margin: 2,
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   errorText: {

@@ -272,7 +272,7 @@ const ApplyLeaves = ({ navigation, route }) => {
         display: "flex",
         padding: 22,
         justifyContent: "center",
-        width: "100%"
+        width: "100%",
       }}
     >
       <ScrollView
@@ -449,9 +449,22 @@ const ApplyLeaves = ({ navigation, route }) => {
             </>
           ) : null}
         </View>
-        <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14, borderRadius: 8 }}>
-              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Apply Leave</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={{
+            marginVertical: 10,
+            width: "100%",
+            backgroundColor: "#055C9D",
+            padding: 14,
+            borderRadius: 8,
+          }}
+        >
+          <Text
+            style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+          >
+            Apply Leave
+          </Text>
+        </TouchableOpacity>
 
         {/* <Button title="Apply Leave" onPress={handleSubmit} color="#055C9D" /> */}
       </ScrollView>
@@ -501,7 +514,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "100%",
     borderRadius: 16,
-    width: "100%"
+    width: "100%",
     // backgroundColor: "black"
   },
   dropdown: {
@@ -518,7 +531,7 @@ const styles = StyleSheet.create({
   },
   labelField: {
     margin: 2,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   label: {
     position: "absolute",
