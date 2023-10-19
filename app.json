@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "hrms",
+    "name": "HRPMS",
     "slug": "hrms",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/splashScreen.png",
+    "icon": "./assets/hrmsLogo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashScreen.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ADD8E6"
+      "backgroundColor": "#055C9D"
     },
     "assetBundlePatterns": ["**/*"],
     "plugins": [
@@ -45,7 +45,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/hrmsLogo.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#055C9D"
       },
       "package": "com.manyavv.hrms",
       "permissions": [

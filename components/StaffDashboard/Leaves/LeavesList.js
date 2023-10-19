@@ -38,7 +38,7 @@ const LeavesList = ({ navigation }) => {
 
       const getAllLeaves = async () => {
         try {
-          const res = await apiGetLeavesGroup();
+          const res = await apiGetAllLeaves();
           setLeavesList([...res?.data?.leaves]);
           console.log("leaves: ", res?.data.leaves);
         } catch (err) {
@@ -58,8 +58,8 @@ const LeavesList = ({ navigation }) => {
   const handleDelete = async () => {};
 
   const dateSort = (a, b) => {
-    const formattedA = moment(a.from_date).format("MM/DD/YYYY");
-    const formattedB = moment(b.from_date).format("MM/DD/YYYY");
+    const formattedA = moment(a.from).format("MM/DD/YYYY");
+    const formattedB = moment(b.from).format("MM/DD/YYYY");
 
     if (formattedA < formattedB) {
       return 1;
@@ -96,9 +96,22 @@ const LeavesList = ({ navigation }) => {
             >
               <Text style={[styles.item, { fontSize: 14.5 }]}>
                 {item?.leave_type?.type} {"\n"}
-                Date: {item?.from_date}{" "}
-                {item?.to_date > item?.from_date && <>to {item?.to_date}</>} (
-                {item.days} {item.days > 1 ? <>days</> : <>day</>}){"\n"}
+                Date: {item?.from} {item?.to > item?.from && <>to {item?.to}</>}{" "}
+                ({/* compute the number of days leave is applied for */}
+                {(moment(item.to).toDate().getTime() -
+                  moment(item.from).toDate().getTime()) /
+                  (1000 * 60 * 60 * 24) +
+                  1}{" "}
+                {(moment(item.to).toDate().getTime() -
+                  moment(item.from).toDate().getTime()) /
+                  (1000 * 60 * 60 * 24) +
+                  1 >
+                1 ? (
+                  <>days</>
+                ) : (
+                  <>day</>
+                )}
+                ){"\n"}
                 {/* {item.to && item.to != item.from && <> to {item.to} </>} */}
                 Applied on: {moment(item?.created_at).format(
                   "YYYY-MM-DD"

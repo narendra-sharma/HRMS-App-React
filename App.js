@@ -108,9 +108,13 @@ export default function App() {
 
   return (
     <RootSiblingParent>
+      <StatusBar style="auto" />
       <NavigationContainer>
         <DrawerStatusProvider>
-          <Stack.Navigator initialRouteName={initialScreenName}>
+          <Stack.Navigator
+            initialRouteName={initialScreenName}
+            screenOptions={{ animation: "none" }}
+          >
             {/* Common Screens */}
             <Stack.Screen
               name="Login"
@@ -125,7 +129,7 @@ export default function App() {
                 // headerShown: false,
                 headerTitle: "Back to Login",
                 headerTransparent: true,
-                headerTintColor: '#fff',
+                headerTintColor: "#fff",
                 // headerLeft: () => (
                 //   <Pressable
                 //     onPress={() => navigation.goBack()}

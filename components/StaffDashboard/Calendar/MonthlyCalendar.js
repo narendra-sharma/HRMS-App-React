@@ -20,6 +20,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { apiGetCheckinStatus } from "../../../apis/qr";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
 
 const MonthlyCalendar = ({ navigation }) => {
   //   const [jobsList, setJobsList] = useState([]);
@@ -44,7 +45,7 @@ const MonthlyCalendar = ({ navigation }) => {
         const checkinRes = await apiGetCheckinStatus({
           user_id: JSON.parse(user).id,
         });
-        console.log("response", checkinRes.data);
+        // console.log("response", checkinRes.data);
         setIsCheckIn(!checkinRes.data.checkin);
         setCheckinMsg(checkinRes.data.message);
       })();
@@ -52,7 +53,7 @@ const MonthlyCalendar = ({ navigation }) => {
       const getAllLeaves = async () => {
         try {
           const res = await apiGetAllLeaves();
-          setLeavesList([...res?.data?.leaves]);
+          // setLeavesList([...res?.data?.leaves]);
           // console.log("leaves: ", res?.data.leaves);
           let tempDatesObj = {};
 
@@ -65,21 +66,37 @@ const MonthlyCalendar = ({ navigation }) => {
                 : "red";
 
             //we ain't displaying leaves with status pending
-            if (leave.status == "Approved")
-              tempDatesObj[leave.date] = {
+            if (leave.status == "Approved") {
+              tempDatesObj[leave.from] = {
                 selected: true,
                 // disableTouchEvent: true,
                 selectedColor: dateColor,
                 leaveStatus: leave.status,
               };
 
-            if (leave.status == "Approved")
-              tempDatesObj[leave.date] = {
+              //get all dates between leave.to and leave.from
+              let dates = [];
+              var startDate = moment(leave.from).startOf("day");
+              var lastDate = moment(leave.to).startOf("day");
+              while (startDate.add(1, "days").diff(lastDate) < 0) {
+                // console.log(startDate.toDate());
+                dates.push(startDate.clone().toDate());
+                tempDatesObj[moment(startDate).format("YYYY-MM-DD")] = {
+                  selected: true,
+                  // disableTouchEvent: true,
+                  selectedColor: dateColor,
+                  leaveStatus: leave.status,
+                };
+              }
+              console.log("dates ", dates);
+
+              tempDatesObj[leave.to] = {
                 selected: true,
                 // disableTouchEvent: true,
                 selectedColor: dateColor,
                 leaveStatus: leave.status,
               };
+            }
           });
           setMarkedDatesObj({ ...tempDatesObj });
         } catch (err) {
@@ -172,7 +189,7 @@ const MonthlyCalendar = ({ navigation }) => {
     }, 2000);
   }, []);
 
-  console.log("checkin? ", isCheckIn);
+  // console.log("checkin? ", isCheckIn);
 
   return (
     <View style={{ backgroundColor: "#fff", height: "100%" }}>

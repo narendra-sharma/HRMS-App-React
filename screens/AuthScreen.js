@@ -61,37 +61,38 @@ const AuthScreen = ({ navigation }) => {
 
   //handle change in input text
   const handleChange = (value, label) => {
-    setFormData({ ...formData, [label]: value });
+    if (label == "email") setFormData({ ...formData, [label]: value.trim() });
+    else setFormData({ ...formData, [label]: value });
 
-    switch (label) {
-      case "email":
-        return validateEmail(value);
-      case "password":
-        return validatePassword(value);
-      default:
-        return;
-    }
+    // switch (label) {
+    //   case "email":
+    //   return validateEmail(value);
+    //   case "password":
+    //     return validatePassword(value);
+    //   default:
+    //     return;
+    // }
   };
 
   //handle email validation
   const validateEmail = (email) => {
-    if (email == "") {
+    if (email == "" || email == null) {
       setEmailError("Email is required");
       return false;
     }
 
-    setEmailError(null);
-    return true;
+    // setEmailError(null);
+    // return true;
 
-    // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
-    // if (reg.test(email) === false) {
-    //   setEmailError("Please Enter a valid email address");
-    //   return false; //return false if in wrong format
-    // } else {
-    //   setEmailError(null);
-    //   return true; //return true if in right format
-    // }
+    if (reg.test(email) === false) {
+      setEmailError("Please Enter a valid email address");
+      return false; //return false if in wrong format
+    } else {
+      setEmailError(null);
+      return true; //return true if in right format
+    }
   };
 
   //handle password validation
@@ -202,9 +203,9 @@ const AuthScreen = ({ navigation }) => {
       // console.log(token);
 
       // console.log(jwtDecode(res.data.token));
-    }
-    if (!validateEmail(formData.email)) {
-      //   setEmailError("Please enter a valid email address");
+    } else {
+      validateEmail(formData.email);
+      // setEmailError("Please enter a valid email address");
       console.log(emailError);
     }
     if (formData.password.length == 0) {
@@ -214,7 +215,14 @@ const AuthScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#055C9D" }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#055C9D",
+      }}
+    >
       <Text style={styles.heading}>Login</Text>
 
       {/**********  INPUTS VIEW *********/}
@@ -224,7 +232,10 @@ const AuthScreen = ({ navigation }) => {
           name="email"
           placeholder="Email"
           value={formData.email}
-          onChangeText={(text) => handleChange(text, "email")}
+          onChangeText={(text) => {
+            handleChange(text, "email");
+            setEmailError(null);
+          }}
           type="email"
         />
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
@@ -244,7 +255,10 @@ const AuthScreen = ({ navigation }) => {
             style={{ width: "90%" }}
             placeholder="Password"
             value={formData.password}
-            onChangeText={(text) => handleChange(text, "password")}
+            onChangeText={(text) => {
+              handleChange(text, "password");
+              setPasswordError(null);
+            }}
             secureTextEntry={isPasswordVisible ? false : true}
           />
           {formData.password.length > 0 ? (
@@ -276,7 +290,7 @@ const AuthScreen = ({ navigation }) => {
         // onPress={() => navigation.navigate("OTP")}
         onPress={() => navigation.navigate("Forgot Password")}
       >
-        <Text style={{color: "#fff"}}>Forgot Password? Click here</Text>
+        <Text style={{ color: "#fff" }}>Forgot Password? Click here</Text>
       </Pressable>
     </View>
   );
@@ -289,7 +303,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
-    marginBottom: 8
+    marginBottom: 8,
   },
 
   input: {
@@ -311,13 +325,13 @@ const styles = StyleSheet.create({
     width: "80%",
     alignItems: "center",
     color: "#fff",
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderWidth: 1,
   },
 
   submitText: {
     color: "#fff",
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   opacity: {
@@ -327,6 +341,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 13,
-    marginBottom: 8
+    marginBottom: 8,
   },
 });
