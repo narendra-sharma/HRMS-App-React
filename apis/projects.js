@@ -52,6 +52,14 @@ export const apiAssignEmployeeToProject = async (formData) => {
   return response;
 };
 
+export const apiReverseGeocoding = async (lat, lng) => {
+  const response = await request({
+    path: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0`,
+    method: "get",
+  });
+  return response;
+};
+
 // export const apiGetPreFilledProjectDetails = async (id) => {
 //   const token = await AsyncStorage.getItem("token");
 //   const response = await request({

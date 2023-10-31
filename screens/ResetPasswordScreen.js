@@ -265,19 +265,19 @@ const styles = StyleSheet.create({
     width: "80%",
     alignItems: "center",
     color: "#fff",
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderWidth: 1,
   },
 
   submitText: {
     color: "white",
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   errorText: {
     color: "red",
     fontSize: 13,
-    marginBottom: 8
+    marginBottom: 8,
   },
 });
 

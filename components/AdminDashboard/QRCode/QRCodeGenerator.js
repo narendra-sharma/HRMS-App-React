@@ -25,6 +25,7 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
 import { apiGetAllProjects } from "../../../apis/projects";
+import axios from "axios";
 
 const initialData = {
   project_id: "",
@@ -50,7 +51,7 @@ const QRCodeGenerator = ({ navigation }) => {
 
   const viewShotRef = useRef();
 
-  console.log("form data.......", formData);
+  // console.log("form data.......", formData);
 
   useEffect(() => {
     (async () => {
@@ -65,22 +66,63 @@ const QRCodeGenerator = ({ navigation }) => {
       });
 
       let storagecoords = await AsyncStorage.getItem("coords");
+      let address = "";
 
-      setMapRegion({
-        latitude:
-          JSON.parse(storagecoords)?.latitude || location.coords.latitude,
-        longitude:
-          JSON.parse(storagecoords)?.longitude || location.coords.longitude,
-        // latitudeDelta: 0.04,
-        // longitudeDelta: 0.05,
-      });
-      setFormData((prev) => ({
-        ...prev,
-        lat: JSON.parse(storagecoords)?.latitude || location.coords.latitude,
-        long: JSON.parse(storagecoords)?.longitude || location.coords.longitude,
-        address: "",
-      }));
-      // console.log(location.coords.latitude, location.coords.longitude);
+      if (storagecoords) {
+        console.log("storage coords exist");
+        axios
+          .get(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${
+              JSON.parse(storagecoords)?.latitude
+            },${
+              JSON.parse(storagecoords)?.longitude
+            }&location_type=ROOFTOP&result_type=street_address&key=AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0`
+          )
+          .then((res) => {
+            console.log(res?.data);
+            console.log(res?.data?.results[0]?.formatted_address);
+            address =
+              res?.data?.results[0]?.formatted_address ||
+              res?.data?.plus_code?.compound_code;
+
+            setMapRegion({
+              latitude:
+                JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+              longitude:
+                JSON.parse(storagecoords)?.longitude ||
+                location.coords.longitude,
+              // latitudeDelta: 0.04,
+              // longitudeDelta: 0.05,
+            });
+            setFormData((prev) => ({
+              ...prev,
+              lat:
+                JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+              long:
+                JSON.parse(storagecoords)?.longitude ||
+                location.coords.longitude,
+              address: address,
+            }));
+          });
+      } else {
+        setMapRegion({
+          latitude:
+            JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+          longitude:
+            JSON.parse(storagecoords)?.longitude || location.coords.longitude,
+          // latitudeDelta: 0.04,
+          // longitudeDelta: 0.05,
+        });
+        setFormData((prev) => ({
+          ...prev,
+          lat: JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+          long:
+            JSON.parse(storagecoords)?.longitude || location.coords.longitude,
+          address: address,
+          // project_id: route?.params?.project_id,
+        }));
+        // console.log(location.coords.latitude, location.coords.longitude);
+      }
     })();
   }, []);
 
@@ -100,24 +142,66 @@ const QRCodeGenerator = ({ navigation }) => {
         });
 
         let storagecoords = await AsyncStorage.getItem("coords");
+        let address = "";
 
-        setMapRegion({
-          latitude:
-            JSON.parse(storagecoords)?.latitude || location.coords.latitude,
-          longitude:
-            JSON.parse(storagecoords)?.longitude || location.coords.longitude,
-          // latitudeDelta: 0.04,
-          // longitudeDelta: 0.05,
-        });
-        setFormData((prev) => ({
-          ...prev,
-          lat: JSON.parse(storagecoords)?.latitude || location.coords.latitude,
-          long:
-            JSON.parse(storagecoords)?.longitude || location.coords.longitude,
-          address: "",
-          // project_id: route?.params?.project_id,
-        }));
-        // console.log(location.coords.latitude, location.coords.longitude);
+        if (storagecoords) {
+          console.log("storage coords exist");
+          axios
+            .get(
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${
+                JSON.parse(storagecoords)?.latitude
+              },${
+                JSON.parse(storagecoords)?.longitude
+              }&location_type=ROOFTOP&result_type=street_address&key=AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0`
+            )
+            .then((res) => {
+              console.log(res?.data);
+              console.log(res?.data?.results[0]?.formatted_address);
+              address =
+                res?.data?.results[0]?.formatted_address ||
+                res?.data?.plus_code?.compound_code;
+
+              setMapRegion({
+                latitude:
+                  JSON.parse(storagecoords)?.latitude ||
+                  location.coords.latitude,
+                longitude:
+                  JSON.parse(storagecoords)?.longitude ||
+                  location.coords.longitude,
+                // latitudeDelta: 0.04,
+                // longitudeDelta: 0.05,
+              });
+              setFormData((prev) => ({
+                ...prev,
+                lat:
+                  JSON.parse(storagecoords)?.latitude ||
+                  location.coords.latitude,
+                long:
+                  JSON.parse(storagecoords)?.longitude ||
+                  location.coords.longitude,
+                address: address,
+              }));
+            });
+        } else {
+          setMapRegion({
+            latitude:
+              JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+            longitude:
+              JSON.parse(storagecoords)?.longitude || location.coords.longitude,
+            // latitudeDelta: 0.04,
+            // longitudeDelta: 0.05,
+          });
+          setFormData((prev) => ({
+            ...prev,
+            lat:
+              JSON.parse(storagecoords)?.latitude || location.coords.latitude,
+            long:
+              JSON.parse(storagecoords)?.longitude || location.coords.longitude,
+            address: address,
+            // project_id: route?.params?.project_id,
+          }));
+          // console.log(location.coords.latitude, location.coords.longitude);
+        }
       })();
 
       const getUserId = async () => {
@@ -590,7 +674,7 @@ const QRCodeGenerator = ({ navigation }) => {
 
               setFormData({ ...formData, address: null });
             }}
-            style={{ marginBottom: 10}}
+            style={{ marginBottom: 10 }}
             color="#055C9D"
           />
         </View>

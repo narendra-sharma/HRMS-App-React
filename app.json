@@ -57,7 +57,9 @@
         "android.permission.ACCESS_MEDIA_LOCATION"
       ],
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0" }
+        "googleMaps": {
+          "apiKey": "AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0"
+        }
       }
     },
     "web": {
@@ -65,7 +67,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "7055afa9-3494-4aa4-bee5-09ad37970b03"
+        "projectId": "769da07b-7918-4494-a1a7-e51c847d6119"
       }
     }
   }
