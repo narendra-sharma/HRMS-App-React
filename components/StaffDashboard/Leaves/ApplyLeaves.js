@@ -55,11 +55,12 @@ const ApplyLeaves = ({ navigation, route }) => {
     const getLeaveTypes = async () => {
       try {
         const res = await apiGetLeaveTypes();
-        // console.log("jobs: ", res?.data);
+        console.log("leaves: ", res?.data?.leave_types);
         const temp = res?.data?.leave_types.map((type) => {
           return {
             label: type.type,
             value: type.id,
+            image: type.image,
           };
         });
         setleaveTypeList([...temp]);
@@ -132,8 +133,8 @@ const ApplyLeaves = ({ navigation, route }) => {
 
   //handle form submit
   const handleSubmit = async () => {
+    //CASE OF LEAVES WITH DOC
     if (
-      //CASE OF MEDICAL LEAVE
       requiredValidation(
         setLeaveTypeError,
         formData.leave_type_id,
@@ -147,7 +148,7 @@ const ApplyLeaves = ({ navigation, route }) => {
       requiredValidation(setStartDateError, formData.end_date, "End Date") &&
       requiredValidation(setReasonError, formData.reason, "Reason") &&
       requiredValidation(setDocumentError, formData.document, "Document") &&
-      formData.leave_type_id == 1
+      formData?.image == 1
     ) {
       try {
         var form_data = new FormData();
@@ -195,7 +196,7 @@ const ApplyLeaves = ({ navigation, route }) => {
         });
       }
     } else if (
-      //CASE OF ANY OTHER TYPE OF LEAVE
+      //CASE OF LEAVES WITHOUT DOC
       requiredValidation(
         setLeaveTypeError,
         formData.leave_type_id,
@@ -208,7 +209,7 @@ const ApplyLeaves = ({ navigation, route }) => {
       ) &&
       requiredValidation(setStartDateError, formData.end_date, "End Date") &&
       requiredValidation(setReasonError, formData.reason, "Reason") &&
-      formData.leave_type_id != 1
+      formData?.image != 1
     ) {
       try {
         // var form_data = new FormData();
@@ -285,11 +286,6 @@ const ApplyLeaves = ({ navigation, route }) => {
           {/* Select Leave Type */}
           <Text style={styles.labelField}>Leave Type:</Text>
           <DropdownMenu
-            // data={[
-            //   { label: "Sick Leave", value: "1" },
-            //   { label: "Casual Leave", value: "2" },
-            //   { label: "Some Leave Type", value: "3" },
-            // ]}
             data={leaveTypeList}
             placeholder="Select Leave Type"
             value={formData.leave_type_id}
@@ -410,7 +406,7 @@ const ApplyLeaves = ({ navigation, route }) => {
           ) : null}
 
           {/* Upload document in case of medical leave */}
-          {formData.leave_type_id == 1 ? (
+          {formData?.image == 1 ? (
             <>
               <Text style={styles.labelField}>Select Document:</Text>
               <Pressable
@@ -498,7 +494,7 @@ const DropdownMenu = ({
       dropdownPosition="bottom"
       value={value}
       onChange={(item) => {
-        setValue({ ...originalObj, [label]: item.value });
+        setValue({ ...originalObj, [label]: item.value, image: item?.image });
         setErrorState(null);
       }}
     />

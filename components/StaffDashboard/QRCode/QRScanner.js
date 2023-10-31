@@ -6,6 +6,8 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  InteractionManager,
+  ActivityIndicator,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import * as Location from "expo-location";
@@ -22,6 +24,7 @@ const QRScanner = () => {
     qr_key: "",
     purpose: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [cameraHasPermission, setCameraHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [location, setLocation] = useState({});
@@ -34,47 +37,21 @@ const QRScanner = () => {
   //permissions for camera and location
   useEffect(() => {
     //permission for camera
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setCameraHasPermission(status === "granted");
-    })();
-
-    //permission for location
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-    })();
-  }, []);
-
-  //get checkin status
-  useEffect(() => {
-    (async () => {
-      const user = await AsyncStorage.getItem("profile");
-      //function to check if user is clocking in or clocking out
-      const checkinRes = await apiGetCheckinStatus({
-        user_id: JSON.parse(user).id,
-      });
-      console.log(checkinRes.data);
-      setIsCheckIn(checkinRes.data.checkin);
-      setFormData((prev) => {
-        return { ...prev, purpose: checkinRes.data.checkin ? 2 : 1 };
-      });
-    })();
-  }, [scanned]);
-
-  // get location coordinates
-  useFocusEffect(
-    useCallback(() => {
+    const task = InteractionManager.runAfterInteractions(() => {
       (async () => {
-        // setIsCameraVisible(false);
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setCameraHasPermission(status === "granted");
+      })();
+
+      //permission for location
+      (async () => {
+        setIsLoading(true);
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
           setErrorMsg("Permission to access location was denied");
           return;
         }
+
         let location = await Location.getCurrentPositionAsync({});
         const user = await AsyncStorage.getItem("profile");
         setLocation({ ...location });
@@ -93,9 +70,96 @@ const QRScanner = () => {
           user_id: JSON.parse(user).id,
           purpose: checkinRes.data.checkin ? 2 : 1,
         }));
+        setIsLoading(false);
       })();
-    }, [])
-  );
+      // setIsLoading(false);
+    });
+    // setIsLoading(false);
+
+    return () => task.cancel();
+  }, []);
+
+  //temporary useEffect
+  useEffect(() => {
+    //permission for location
+    setIsLoading(true);
+    (async () => {
+      let location = await Location.getCurrentPositionAsync({});
+      const user = await AsyncStorage.getItem("profile");
+      setLocation({ ...location });
+
+      //function to check if user is clocking in or clocking out
+      const checkinRes = await apiGetCheckinStatus({
+        user_id: JSON.parse(user).id,
+      });
+      console.log(checkinRes.data);
+      setIsCheckIn(checkinRes.data.checkin);
+
+      setFormData((prev) => ({
+        ...prev,
+        user_lat: location.coords.latitude,
+        user_long: location.coords.longitude,
+        user_id: JSON.parse(user).id,
+        purpose: checkinRes.data.checkin ? 2 : 1,
+      }));
+      setIsLoading(false);
+    })();
+    setIsLoading(false);
+  }, [isCameraVisible]);
+
+  //get checkin status
+  // useEffect(() => {
+  //   (async () => {
+  //     const user = await AsyncStorage.getItem("profile");
+  //     //function to check if user is clocking in or clocking out
+  //     const checkinRes = await apiGetCheckinStatus({
+  //       user_id: JSON.parse(user).id,
+  //     });
+  //     console.log(checkinRes.data);
+  //     setIsCheckIn(checkinRes.data.checkin);
+  //     setFormData((prev) => {
+  //       return { ...prev, purpose: checkinRes.data.checkin ? 2 : 1 };
+  //     });
+  //   })();
+  // }, [scanned]);
+
+  // get location coordinates
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const task = InteractionManager.runAfterInteractions(() => {
+  //       (async () => {
+  //         // setIsCameraVisible(false);
+  //         // let { status } = await Location.requestForegroundPermissionsAsync();
+  //         // if (status !== "granted") {
+  //         //   setErrorMsg("Permission to access location was denied");
+  //         //   return;
+  //         // }
+  //         setIsLoading(true);
+  //         let location = await Location.getCurrentPositionAsync({});
+  //         const user = await AsyncStorage.getItem("profile");
+  //         setLocation({ ...location });
+
+  //         //function to check if user is clocking in or clocking out
+  //         const checkinRes = await apiGetCheckinStatus({
+  //           user_id: JSON.parse(user).id,
+  //         });
+  //         console.log(checkinRes.data);
+  //         setIsCheckIn(checkinRes.data.checkin);
+
+  //         setFormData((prev) => ({
+  //           ...prev,
+  //           user_lat: location.coords.latitude,
+  //           user_long: location.coords.longitude,
+  //           user_id: JSON.parse(user).id,
+  //           purpose: checkinRes.data.checkin ? 2 : 1,
+  //         }));
+  //         setIsLoading(false);
+  //       })();
+  //     });
+
+  //     return () => task.cancel();
+  //   }, [])
+  // );
 
   //get location permission and other data
   // useEffect(() => {
@@ -131,39 +195,39 @@ const QRScanner = () => {
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    console.log("data, ", JSON.parse(data).qr_key);
 
-    //if user attempts to scan the opposite clock type
-    // if (JSON.parse(data).purpose != clockType) {
-    try {
-      const res = await apiScannedQrData({
-        ...formData,
-        qr_key: JSON.parse(data).qr_key,
-        // purpose: JSON.parse(data).purpose,
-      });
-      console.log("scanned response: ", res.data);
-      if (res.data.status == true) {
-        // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-        alert(`${res.data.message}`);
-        // setIsCheckIn((prev) => !prev);
-      } else {
-        alert(`${res.data.message}`);
+    if (formData.user_long && formData.user_lat) {
+      try {
+        const res = await apiScannedQrData({
+          ...formData,
+          qr_key: JSON.parse(data).qr_key,
+          // purpose: JSON.parse(data).purpose,
+        });
+        console.log("scanned response: ", res.data);
+        if (res.data.status == true) {
+          // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+          alert(`${res.data.message}`);
+          // setIsCheckIn((prev) => !prev);
+        } else {
+          alert(`${res.data.message}`);
+        }
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+        Toast.show("Server Error", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
+        console.log(error.response.data);
       }
-      console.log(res.data);
-    } catch (error) {
-      Toast.show("Server Error", {
-        duration: Toast.durations.SHORT,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        delay: 0,
-      });
-      console.log(error.response.data);
+    } else {
+      alert("Unable to get location coordinates, please scan again");
     }
-    // } else {
-    //   if (clockType == 1) alert(`Checkout QR Code should be scanned!`);
-    //   else alert(`Checkin QR Code should be scanned!`);
-    // }
 
     setIsCameraVisible(false);
 
@@ -233,7 +297,13 @@ const QRScanner = () => {
           <Text
             style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
           >
-            {isCameraVisible ? "Close Scanner" : "Launch Scanner"}
+            {isLoading ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={styles.submitText}>
+                {isCameraVisible ? "Close Scanner" : "Launch Scanner"}{" "}
+              </Text>
+            )}
           </Text>
         </TouchableOpacity>
         {/* <View>

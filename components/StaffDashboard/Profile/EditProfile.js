@@ -167,7 +167,7 @@ const EditProfile = ({ navigation }) => {
           justifyContent: "space-between",
           height: "100%",
           borderRadius: 16,
-          width: "100%"
+          width: "100%",
         }}
         keyboardShouldPersistTaps="always"
       >
@@ -405,7 +405,7 @@ const EditProfile = ({ navigation }) => {
           style={{
             display: "flex",
             flexDirection: "column",
-            marginTop: 20
+            marginTop: 20,
             // justifyContent: "space-around",
           }}
         >
@@ -417,8 +417,21 @@ const EditProfile = ({ navigation }) => {
               color="#055C9D"
             />
           </View> */}
-          <TouchableOpacity onPress={handleSubmit} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14,    borderRadius: 8 }}>
-              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Submit</Text>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            style={{
+              marginVertical: 10,
+              width: "100%",
+              backgroundColor: "#055C9D",
+              padding: 14,
+              borderRadius: 8,
+            }}
+          >
+            <Text
+              style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+            >
+              Submit
+            </Text>
           </TouchableOpacity>
           {/* <Pressable onPress={handleSubmit} style={styles.submitButton}>
             <Text>Submit</Text>
@@ -430,8 +443,21 @@ const EditProfile = ({ navigation }) => {
               color="#055C9D"
             />
           </View> */}
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginVertical: 10, width: "100%", backgroundColor: "#055C9D", padding: 14,    borderRadius: 8 }}>
-              <Text style={{textAlign: "center", color: "#fff", fontWeight: "600"}}>Cancel</Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              marginVertical: 10,
+              width: "100%",
+              backgroundColor: "#055C9D",
+              padding: 14,
+              borderRadius: 8,
+            }}
+          >
+            <Text
+              style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
+            >
+              Cancel
+            </Text>
           </TouchableOpacity>
 
           {/* <Pressable
@@ -543,7 +569,7 @@ const styles = StyleSheet.create({
   },
 
   labelInput: {
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   input: {

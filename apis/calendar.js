@@ -15,6 +15,19 @@ export const apiGetMonthlyCalendar = async (month, year) => {
   return response;
 };
 
+export const apiGetFutureShiftsForCalendar = async (month, year) => {
+  const token = await AsyncStorage.getItem("token");
+  const response = await request({
+    path: "project-monthly",
+    method: "post",
+    body: qs.stringify({ month: month, year: year }),
+    headers: {
+      Authorization: `Bearer ${JSON.parse(token)}`,
+    },
+  });
+  return response;
+};
+
 export const apiGetShiftInformationBreakdown = async (day, month, year) => {
   const token = await AsyncStorage.getItem("token");
   const response = await request({

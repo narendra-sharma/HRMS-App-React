@@ -14,6 +14,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import MonthlyAgenda from "./MonthlyAgenda";
 import { apiGetAllLeaves } from "../../../apis/leaves";
 import {
+  apiGetFutureShiftsForCalendar,
   apiGetMonthlyCalendar,
   apiGetShiftInformationBreakdown,
 } from "../../../apis/calendar";
@@ -27,6 +28,7 @@ const MonthlyCalendar = ({ navigation }) => {
   const [selected, setSelected] = useState("2023-09-09");
   const [markedDatesObj, setMarkedDatesObj] = useState({});
   const [shiftObj, setShiftObj] = useState({});
+  const [futureShiftsList, setFutureShiftsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [leavesList, setLeavesList] = useState([]);
@@ -106,6 +108,7 @@ const MonthlyCalendar = ({ navigation }) => {
 
       const date = new Date();
       getMonthlyCalendar(date.getMonth() + 1, date.getFullYear());
+      getFutureShiftsList(date.getMonth() + 1, date.getFullYear());
       getAllLeaves();
 
       return () => {
@@ -120,8 +123,20 @@ const MonthlyCalendar = ({ navigation }) => {
       // console.log("year", date.getFullYear());
 
       const res = await apiGetMonthlyCalendar(month, year);
-      // console.log("shift: ", res?.data);
       setShiftObj({ ...res?.data?.data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getFutureShiftsList = async (month, year) => {
+    try {
+      // console.log("month", date.getMonth() + 1);
+      // console.log("year", date.getFullYear());
+
+      const res = await apiGetFutureShiftsForCalendar(month, year);
+      console.log("whole projects: ", res?.data?.data);
+      setFutureShiftsList({ ...res?.data?.data });
     } catch (err) {
       console.log(err);
     }
@@ -197,7 +212,7 @@ const MonthlyCalendar = ({ navigation }) => {
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={() => onRefresh()} />
         }
-        style={{ backgroundColor: "#fff", height: "100%", marginTop: 32 }}
+        style={{ backgroundColor: "#fff", height: "100%", marginTop: 80 }}
       >
         <Calendar
           // onDayPress={(day) => handleDateClicked(day)}
@@ -330,93 +345,127 @@ const MonthlyCalendar = ({ navigation }) => {
                     </Text>
                   </Text>
                 ) : null}
+
+                {/* *******FUTURE ASSIGNED DATES******* */}
+                {futureShiftsList.hasOwnProperty(date.dateString) &&
+                date.dateString > new Date().toJSON().slice(0, 10) ? (
+                  <Text
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 5, // Border radius to make it look like a box
+                      // backgroundColor: "lightblue",
+                      // borderWidth: 1,
+                      // marginHorizontal: 1,
+                      paddingHorizontal: 2,
+                      fontSize: 9,
+                      // backgroundColor,
+                      color: "#055C9D",
+                    }}
+                  >
+                    <Text>
+                      {futureShiftsList[date.dateString].project_name}
+                    </Text>
+                  </Text>
+                ) : null}
               </TouchableOpacity>
             );
           }}
         />
+      </ScrollView>
 
-        {/* View date details */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}> Date: {modalData?.date}</Text>
-              <Text style={styles.modalText}>
-                Status:{" "}
-                {/* {shiftObj[modalData?.date]?.hours >= 8
+      {/* View date details */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}> Date: {modalData?.date}</Text>
+            <Text style={styles.modalText}>
+              Project:{" "}
+              {futureShiftsList.hasOwnProperty(modalData?.date) &&
+                futureShiftsList[modalData?.date].project_name}
+            </Text>
+            <Text style={styles.modalText}>
+              Status:{" "}
+              {/* {shiftObj[modalData?.date]?.hours >= 8
                   ? "Full Day"
                   : shiftObj[modalData?.date]?.hours > 0 &&
                     shiftObj[modalData?.date]?.hours < 8
                   ? "Short Leave"
                   : "Absent"} */}
-                {calculateShiftType(shiftObj[modalData?.date]?.hours).text}
-              </Text>
+              {calculateShiftType(shiftObj[modalData?.date]?.hours).text}
+            </Text>
 
-              {shiftLogs?.length > 0 && (
-                <View>
-                  <Text style={{ textDecorationLine: "underline" }}>
-                    Shift Breakdown:
-                  </Text>
+            {shiftLogs?.length > 0 && (
+              <View>
+                <Text style={{ textDecorationLine: "underline" }}>
+                  Shift Breakdown: {"\n"}
+                </Text>
+                <ScrollView
+                  showsVerticalScrollIndicator={true}
+                  persistentScrollbar={true}
+                  style={{ maxHeight: "70%" }}
+                >
                   {shiftLogs.map((log) => (
                     <Text>
                       {log.type} : {log?.in_hrs ? log?.in_hrs : log?.message}
                     </Text>
                   ))}
-                </View>
-              )}
+                </ScrollView>
+              </View>
+            )}
 
-              {!modalData?.leaveApplied &&
-                modalData?.date?.dateString >
-                  new Date().toJSON().slice(0, 10) && (
-                  <TouchableOpacity
-                    style={styles.customButton}
-                    onPress={() => {
-                      navigation.navigate("Leaves", {
-                        screen: "Apply Leaves",
-                        initial: false,
-                        params: { date: modalData },
-                      });
-                      // navigation.navigate("Leaves");
-                      setModalVisible(false);
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color: "#fff",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Apply Leave
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
-              <TouchableOpacity
-                style={styles.customButton}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#fff",
-                    fontWeight: "bold",
+            {!modalData?.leaveApplied &&
+              modalData?.date?.dateString >
+                new Date().toJSON().slice(0, 10) && (
+                <TouchableOpacity
+                  style={styles.customButton}
+                  onPress={() => {
+                    navigation.navigate("Leaves", {
+                      screen: "Apply Leaves",
+                      initial: false,
+                      params: { date: modalData },
+                    });
+                    // navigation.navigate("Leaves");
+                    setModalVisible(false);
                   }}
                 >
-                  Close
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#fff",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Apply Leave
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+            <TouchableOpacity
+              style={styles.customButton}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+              >
+                Close
+              </Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -457,6 +506,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    maxHeight: "80%",
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "flex-start",
   },
   button: {
     borderRadius: 20,
