@@ -156,7 +156,7 @@ const OtpInput = ({
           style={
             isPinReady
               ? styles.submitButton
-              : [styles.submitButton, { backgroundColor: "white" }]
+              : [styles.submitButton, {paddingHorizontal: 50, borderRadius: 34, borderWidth: 1, borderColor: "#fff", backgroundColor: "transparent"}]
           }
         >
           {isLoading ? (
@@ -235,13 +235,16 @@ const styles = StyleSheet.create({
   submitButton: {
     marginTop: 20,
     padding: 12,
-    borderRadius: 5,
-    width: "80%",
+    borderRadius: 34,
+    paddingHorizontal: 50,
+    width: "100%",
     alignItems: "center",
+    backgroundColor: "#4db3ff",
+    // color: "#fff"
   },
 
   submitText: {
-    color: "black",
+    color: "#fff",
     width: "80%",
   },
 });

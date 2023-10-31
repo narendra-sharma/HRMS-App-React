@@ -147,6 +147,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "#055C9D"
       }}
     >
       <Text style={styles.heading}>Reset Password</Text>
@@ -238,6 +239,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#fff"
   },
 
   inputContainer: {
