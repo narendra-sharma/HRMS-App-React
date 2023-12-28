@@ -30,6 +30,7 @@ import ViewProjects from "../Projects/ViewProjects";
 import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useCustomDrawerStatus } from "../../../Contexts/DrawerStatusContext";
+import HomeStackScreen from "../Home/HomeStackScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -434,8 +435,9 @@ const RightDrawer = ({ navigation }) => {
         options={{
           drawerIcon: () => <Icon name="home" size={28} />,
           // drawerItemStyle: { display: "none" },
+          headerShown: false,
         }}
-        component={Home}
+        component={HomeStackScreen}
       />
 
       {/* All Company Screens */}
@@ -608,7 +610,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: 40,
     maxWidth: "90%",
-    gap: 8
+    gap: 8,
   },
 
   subMenuButton: {

@@ -11,7 +11,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#055C9D"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "plugins": [
       [
         "expo-location",
@@ -67,8 +69,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "769da07b-7918-4494-a1a7-e51c847d6119"
+        "projectId": "0e22c036-9a1e-436e-b4c3-6aa349b33fcf"
       }
-    }
+    },
+    "owner": "ajay2305"
   }
 }

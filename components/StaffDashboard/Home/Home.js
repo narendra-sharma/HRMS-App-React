@@ -1,12 +1,23 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, ScrollView, StyleSheet } from "react-native";
+import MonthlyCalendar from "../Calendar/MonthlyCalendar";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
-    <View>
-      <Text>Staff Dashboard</Text>
+    <View style={styles.container}>
+      <MonthlyCalendar />
     </View>
   );
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: { backgroundColor: "#fff", height: "100%", marginTop: -40 },
+
+  scrollviewContainer: {
+    backgroundColor: "#fff",
+    height: "100%",
+    marginTop: 80,
+  },
+});
