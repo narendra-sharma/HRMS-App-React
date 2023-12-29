@@ -2,7 +2,7 @@
   "expo": {
     "name": "HRPMS",
     "slug": "hrms",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/hrmsLogo.png",
     "userInterfaceStyle": "light",
@@ -11,9 +11,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#055C9D"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-location",
@@ -42,6 +40,9 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0"
       }
     },
     "android": {

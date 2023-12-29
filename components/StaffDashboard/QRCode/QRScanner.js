@@ -60,7 +60,7 @@ const QRScanner = () => {
         const checkinRes = await apiGetCheckinStatus({
           user_id: JSON.parse(user).id,
         });
-        console.log(checkinRes.data);
+        console.log("INNNNNN", checkinRes.data);
         setIsCheckIn(checkinRes.data.checkin);
 
         setFormData((prev) => ({
@@ -72,7 +72,7 @@ const QRScanner = () => {
         }));
         setIsLoading(false);
       })();
-      // setIsLoading(false);
+      setIsLoading(false);
     });
     // setIsLoading(false);
 
@@ -92,7 +92,7 @@ const QRScanner = () => {
       const checkinRes = await apiGetCheckinStatus({
         user_id: JSON.parse(user).id,
       });
-      console.log(checkinRes.data);
+      console.log("CCCCCCC", checkinRes.data);
       setIsCheckIn(checkinRes.data.checkin);
 
       setFormData((prev) => ({
@@ -286,19 +286,23 @@ const QRScanner = () => {
             setIsCameraVisible((prev) => !prev);
             setScanned(false);
           }}
+          disabled={isLoading}
           style={{
             marginVertical: 10,
             width: "100%",
             backgroundColor: "#055C9D",
             padding: 14,
             borderRadius: 8,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
           }}
         >
           <Text
             style={{ textAlign: "center", color: "#fff", fontWeight: "600" }}
           >
             {isLoading ? (
-              <ActivityIndicator />
+              <ActivityIndicator size={20} />
             ) : (
               <Text style={styles.submitText}>
                 {isCameraVisible ? "Close Scanner" : "Launch Scanner"}{" "}

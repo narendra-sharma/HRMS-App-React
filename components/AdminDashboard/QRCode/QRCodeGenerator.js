@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  Platform,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { Dropdown } from "react-native-element-dropdown";
@@ -34,7 +35,6 @@ const initialData = {
   created_by_id: "",
   qr_key: "",
 };
-
 const QRCodeGenerator = ({ navigation }) => {
   const [isCodeGenerated, setIsCodeGenerated] = useState(false);
   const [formData, setFormData] = useState(initialData);
@@ -459,6 +459,10 @@ const QRCodeGenerator = ({ navigation }) => {
       );
     }
   };
+  const query = useRef({
+    key: "AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0",
+    language: "en",
+  }).current;
 
   return (
     <View style={styles.mainContainer}>
@@ -557,99 +561,101 @@ const QRCodeGenerator = ({ navigation }) => {
         ) : null} */}
 
         <Text style={styles.fieldName}>Address:</Text>
-        <GooglePlacesAutocomplete
-          placeholder="Search"
-          autoFocus={true}
-          listViewDisplayed="auto"
-          returnKeyType={"search"}
-          fetchDetails={true}
-          textInputProps={{
-            value: formData.address,
-            onChangeText: (text) => {
-              setFormData({ ...formData, address: text });
-            },
+        <View
+          style={{
+            borderWidth: 0.5,
+            borderColor: "black",
           }}
-          onPress={(data, details = null) => {
-            // console.log("details: ", details);
-            console.log(
-              "details.address_components: ",
-              details.address_components
-            );
+        >
+          {console.log("ADDDRESSSS", formData?.address)}
+          <GooglePlacesAutocomplete
+            placeholder="Search"
+            autoFocus={true}
+            listViewDisplayed="auto"
+            returnKeyType={"search"}
+            fetchDetails={true}
+            textInputProps={{
+              value: formData.address,
+              onChangeText: (text) => {
+                setFormData({ ...formData, address: text });
+              },
+            }}
+            onPress={(data, details) => {
+              console.log("details: ", details);
+              console.log(
+                "details.address_components: ",
+                details.address_components
+              );
 
-            const countryName =
-              details.address_components[
-                details.address_components.findIndex(
-                  (obj) => obj.types[0] == "country"
-                )
-              ]?.long_name;
-
-            const countryCode =
-              details.address_components[
-                details.address_components.findIndex(
-                  (obj) => obj.types[0] == "country"
-                )
-              ]?.short_name;
-
-            const stateName =
-              details.address_components[
-                details.address_components.findIndex(
-                  (obj) => obj.types[0] == "administrative_area_level_1"
-                )
-              ]?.long_name;
-
-            const areaZip = details.address_components[
-              details.address_components.findIndex(
-                (obj) => obj.types[0] == "postal_code"
-              )
-            ]?.long_name
-              ? details.address_components[
+              const countryName =
+                details.address_components[
                   details.address_components.findIndex(
-                    (obj) => obj.types[0] == "postal_code"
+                    (obj) => obj.types[0] == "country"
                   )
-                ]?.long_name
-              : null;
+                ]?.long_name;
 
-            console.log(
-              details.formatted_address,
-              " ",
-              stateName,
-              " ",
-              countryName,
-              " ",
-              countryCode,
-              " ",
-              areaZip
-            );
+              const countryCode =
+                details.address_components[
+                  details.address_components.findIndex(
+                    (obj) => obj.types[0] == "country"
+                  )
+                ]?.short_name;
 
-            // props.notifyChange(details.geometry.location, data);
+              const stateName =
+                details.address_components[
+                  details.address_components.findIndex(
+                    (obj) => obj.types[0] == "administrative_area_level_1"
+                  )
+                ]?.long_name;
 
-            setFormData({
-              ...formData,
-              lat: details.geometry.location.lat,
-              long: details.geometry.location.lng,
-              address: details.formatted_address,
-              // state: stateName,
-              // zip_code: areaZip,
-              // country_code: countryCode,
-              // country: countryName,
-            });
+              const areaZip = details.address_components[
+                details.address_components.findIndex(
+                  (obj) => obj.types[0] == "postal_code"
+                )
+              ]?.long_name
+                ? details.address_components[
+                    details.address_components.findIndex(
+                      (obj) => obj.types[0] == "postal_code"
+                    )
+                  ]?.long_name
+                : null;
 
-            setMapRegion({
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
-            });
+              console.log(
+                "Detaillsss",
+                details.formatted_address,
+                " ",
+                stateName,
+                " ",
+                countryName,
+                " ",
+                countryCode,
+                " ",
+                areaZip
+              );
 
-            // console.log("formData: ", console.log(formData));
-          }}
-          query={{
-            key: "AIzaSyAzXDEebJV9MxtPAPhP1B2w5T3AYK2JOu0",
-            language: "en",
-          }}
-          nearbyPlacesAPI="GooglePlacesSearch"
-          debounce={200}
-          styles={placesStyle}
-        />
+              // props.notifyChange(details.geometry.location, data);
 
+              setFormData({
+                ...formData,
+                lat: details.geometry.location.lat,
+                long: details.geometry.location.lng,
+                address: details.formatted_address,
+                // state: stateName,
+                // zip_code: areaZip,
+                // country_code: countryCode,
+                // country: countryName,
+              });
+
+              setMapRegion({
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+              });
+
+              // console.log("formData: ", console.log(formData));
+            }}
+            query={query}
+          />
+        </View>
         <View
           style={{
             marginBottom: 22,
@@ -663,7 +669,12 @@ const QRCodeGenerator = ({ navigation }) => {
           Or Pick on Location Map:
         </Text>
 
-        <View style={{ marginVertical: 12 }}>
+        <View
+          style={{
+            marginVertical: 12,
+            backgroundColor: Platform.OS == "ios" ? "#055C9D" : "",
+          }}
+        >
           <Button
             title="Open Map"
             onPress={() => {
@@ -675,7 +686,7 @@ const QRCodeGenerator = ({ navigation }) => {
               setFormData({ ...formData, address: null });
             }}
             style={{ marginBottom: 10 }}
-            color="#055C9D"
+            color={Platform.OS == "ios" ? "white" : "#055C9D"}
           />
         </View>
 
@@ -708,12 +719,17 @@ const QRCodeGenerator = ({ navigation }) => {
         <Text>Open Map</Text>
       </Pressable> */}
 
-        <View style={{ marginVertical: 8 }}>
+        <View
+          style={{
+            marginVertical: 12,
+            backgroundColor: Platform.OS == "ios" ? "#055C9D" : "",
+          }}
+        >
           <Button
             style={{ width: "30%" }}
             onPress={() => handleQrGenerate()}
             title="Generate QR Code"
-            color="#055C9D"
+            color={Platform.OS == "ios" ? "white" : "#055C9D"}
           />
         </View>
       </ScrollView>
@@ -904,7 +920,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     display: "flex",
     flexDirection: "row",
-    marginBottom: 2,
+    marginBottom: 13,
   },
 
   input: {
@@ -939,7 +955,7 @@ const styles = StyleSheet.create({
 
   opacity: {
     width: 200,
-    marginTop: 20,
+    marginTop: 15,
     backgroundColor: "#1FAAE2",
     padding: 10,
     borderRadius: 4,
@@ -966,9 +982,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     // backgroundColor: "pink",
-    padding: 20,
+    padding: 10,
     margin: 20,
-    marginTop: 50,
+    marginTop: 30,
     height: "70%",
     justifyContent: "space-between",
     alignItems: "center",

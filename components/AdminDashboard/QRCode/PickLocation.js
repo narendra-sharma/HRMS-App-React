@@ -8,6 +8,7 @@ import {
   Button,
   Pressable,
   Alert,
+  Platform,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import MapView from "react-native-maps";
@@ -15,7 +16,6 @@ import * as Location from "expo-location";
 import { Marker } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PROVIDER_GOOGLE } from "react-native-maps";
-
 const PickLocation = ({ navigation, route }) => {
   // const [mapRegion, setMapRegion] = useState({
   //   latitude: 37.78825,
@@ -26,8 +26,8 @@ const PickLocation = ({ navigation, route }) => {
   const [pin, setPin] = useState({
     latitude: route.params.lat,
     longitude: route.params.long,
-    latitudeDelta: 0.0,
-    longitudeDelta: 0.0,
+    latitudeDelta: Platform.OS === "ios" ? 0.3 : 0,
+    longitudeDelta: Platform.OS === "ios" ? 0.3 : 0,
   });
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -80,6 +80,8 @@ const PickLocation = ({ navigation, route }) => {
           // backgroundColor: "rgba(0,0,0, 0.1)",
           position: "absolute",
           fontSize: 18,
+          left: 20,
+          bottom: 20,
         }}
       >
         Long press the marker to drag
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     // width: "90%",
-    // height: "30%",
+    // height: "98%",
     justifyContent: "flex-end",
   },
 

@@ -14,7 +14,6 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
 import { Dropdown } from "react-native-element-dropdown";
-import MapView from "react-native-maps";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
