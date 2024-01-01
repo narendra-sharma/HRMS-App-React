@@ -94,15 +94,25 @@ const ApplyLeaves = ({ navigation, route }) => {
   };
 
   const handleEndDateConfirm = (date) => {
-    if (
-      moment(startDate).format("MM/DD/YYYY") <=
-      moment(date).format("MM/DD/YYYY")
-    ) {
-      setEndDate(date);
-      setFormData({ ...formData, end_date: moment(date).format("YYYY-MM-DD") });
+    console.log("Date", endDate);
+    const isSameOrAfter = moment(date).isSameOrAfter(moment(startDate), "day");
+    console.log("SAME", isSameOrAfter);
+
+    if (isSameOrAfter || Platform.OS === "ios") {
+      setEndDate(date >= startDate ? date : startDate);
+      setFormData({
+        ...formData,
+        end_date: moment(date >= startDate ? date : startDate).format(
+          "YYYY-MM-DD"
+        ),
+      });
+      setEndDateError(null);
     } else {
-      // setend_dateError("end_date cannot be before the start date");
+      setEndDateError(
+        "End date should be equal or greater than the start date"
+      );
     }
+
     hideEndDatePicker();
   };
 
@@ -110,6 +120,15 @@ const ApplyLeaves = ({ navigation, route }) => {
   const requiredValidation = (setError, value, label) => {
     if (value == "" || value == null) {
       setError(`${label} is required*`);
+      return false;
+    }
+    return true;
+  };
+
+  // handle start date and end date validation
+  const validateEndAndStartDate = (startDate, endDate) => {
+    if (startDate > endDate) {
+      setStartDateError("Start date should not be greater then end date");
       return false;
     }
     return true;
@@ -147,6 +166,7 @@ const ApplyLeaves = ({ navigation, route }) => {
       ) &&
       requiredValidation(setStartDateError, formData.end_date, "End Date") &&
       requiredValidation(setReasonError, formData.reason, "Reason") &&
+      validateEndAndStartDate(startDate, endDate) &&
       requiredValidation(setDocumentError, formData.document, "Document") &&
       formData?.image == 1
     ) {
@@ -208,6 +228,7 @@ const ApplyLeaves = ({ navigation, route }) => {
         "Start date"
       ) &&
       requiredValidation(setStartDateError, formData.end_date, "End Date") &&
+      validateEndAndStartDate(startDate, endDate) &&
       requiredValidation(setReasonError, formData.reason, "Reason") &&
       formData?.image != 1
     ) {

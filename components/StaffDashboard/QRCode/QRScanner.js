@@ -72,7 +72,7 @@ const QRScanner = () => {
         }));
         setIsLoading(false);
       })();
-      setIsLoading(false);
+      // setIsLoading(false);
     });
     // setIsLoading(false);
 
@@ -214,7 +214,7 @@ const QRScanner = () => {
         }
         console.log(res.data);
       } catch (error) {
-        console.log(error);
+        console.log("MYYYYYYY", error);
         Toast.show("Server Error", {
           duration: Toast.durations.SHORT,
           position: Toast.positions.BOTTOM,
